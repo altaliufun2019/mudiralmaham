@@ -1,4 +1,4 @@
-package com.example.mudiralmaham.pages
+package com.example.mudiralmaham.Pages
 
 import android.app.Activity.RESULT_OK
 import android.os.Bundle
@@ -7,18 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.mudiralmaham.R
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
 import android.widget.*
-import butterknife.Unbinder
 
 
 class LoginFragment: Fragment() {
-    lateinit var unBinder: Unbinder
 
     var _emailText: EditText? = null
     var _passwordText: EditText? = null
@@ -28,7 +23,7 @@ class LoginFragment: Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var rootView: View = inflater.inflate(R.layout.login_fragment, container, false)
+        val rootView: View = inflater.inflate(R.layout.login_fragment, container, false)
         _emailText = rootView.findViewById(R.id.input_email)
         _passwordText = rootView.findViewById(R.id.input_password)
         _loginButton = rootView.findViewById(R.id.btn_login)
@@ -72,7 +67,6 @@ class LoginFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        unBinder.unbind()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
