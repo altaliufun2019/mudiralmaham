@@ -20,6 +20,7 @@ class MainActivity: AppCompatActivity() {
     }
 
     private fun initWebservice() {
+
         Constants.webservice = RetrofitInstance.retrofit?.create(EndPoints::class.java)!!
     }
 

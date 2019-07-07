@@ -11,6 +11,12 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.util.Log
 import android.widget.*
+import com.example.mudiralmaham.Constants
+import com.example.mudiralmaham.Webservice.Request.LoginRequest
+import com.example.mudiralmaham.Webservice.Response.LoginResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class LoginFragment: Fragment() {
@@ -20,6 +26,7 @@ class LoginFragment: Fragment() {
     var _loginButton: Button? = null
     var _signupLink: TextView? = null
     var _layout: RelativeLayout? = null
+    var _progress_dialog: ProgressDialog? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,32 +43,7 @@ class LoginFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _loginButton?.setOnClickListener{
-            Log.d(TAG, "Login")
-
-            if (!validate()) {
-                onLoginFailed()
-                return@setOnClickListener
-            }
-
-            _loginButton?.setEnabled(false)
-
-            val prog = ProgressDialog()
-            prog.isCancelable = false
-            prog.show(fragmentManager, "login_progress")
-
-            val email = _emailText?.getText().toString()
-            val password = _passwordText?.getText().toString()
-
-            // TODO: Implement your own authentication logic here.
-
-            android.os.Handler().postDelayed(
-                {
-                    // On complete call either onLoginSuccess or onLoginFailed
-                    onLoginSuccess()
-                    // onLoginFailed();
-//                    ProgressDialog.setVisibility(View.GONE);
-                }, 3000
-            )
+            loginToServer()
         }
     }
 
@@ -77,6 +59,40 @@ class LoginFragment: Fragment() {
                 // By default we just finish the Activity and log them in automatically
             }
         }
+    }
+
+    fun loginToServer() {
+        Log.d(TAG, "Login initialized")
+
+        if (!validate()) {
+            onLoginFailed()
+            return
+        }
+
+        _loginButton?.isEnabled = false
+
+        _progress_dialog = ProgressDialog()
+        _progress_dialog?.isCancelable = false
+        _progress_dialog?.show(fragmentManager, "login_progress")
+
+        val email = _emailText?.getText().toString()
+        val password = _passwordText?.getText().toString()
+        val data = LoginRequest(email, password)
+
+        val request: Call<LoginResponse> = Constants.webservice.login(data)
+        request.enqueue(object: Callback<LoginResponse>{
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                Toast.makeText(activity?.applicationContext, "logined", Toast.LENGTH_SHORT).show()
+                _loginButton?.isEnabled = true
+                _progress_dialog?.dismiss()
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.d(TAG, "response failed")
+                _loginButton?.isEnabled = true
+                _progress_dialog?.dismiss()
+            }
+        })
     }
 
     fun onBackPressed() {
