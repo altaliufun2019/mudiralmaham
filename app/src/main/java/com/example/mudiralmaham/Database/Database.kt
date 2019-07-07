@@ -7,8 +7,9 @@ import com.example.mudiralmaham.Dao.TaskDao
 import com.example.mudiralmaham.DataModels.Project
 import com.example.mudiralmaham.DataModels.Task
 
-@Database(entities = [Task::class, Project::class], version = 1)
+@Database(entities = arrayOf(Task::class, Project::class), version = 1)
 abstract class Database: RoomDatabase() {
     abstract fun taskDao(): TaskDao
     abstract fun projectDao(): ProjectDao
 }
+

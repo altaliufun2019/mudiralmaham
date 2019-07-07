@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:theme="@style/AppTheme.Dark.Dialog"
+>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress_text"
+            android:textSize="32sp"
+            android:textFontWeight="10"
+            android:layout_centerHorizontal="true"
+            android:textAlignment="center"
+            android:text="@string/wait"/>
+    <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/progress_text" android:layout_marginEnd="8dp">
+
+    </ProgressBar>
+</RelativeLayout>
