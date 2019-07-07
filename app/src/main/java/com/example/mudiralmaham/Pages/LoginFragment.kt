@@ -21,12 +21,12 @@ import retrofit2.Response
 
 class LoginFragment: Fragment() {
 
-    var _emailText: EditText? = null
-    var _passwordText: EditText? = null
-    var _loginButton: Button? = null
-    var _signupLink: TextView? = null
-    var _layout: RelativeLayout? = null
-    var _progress_dialog: ProgressDialog? = null
+    private var _emailText: EditText? = null
+    private var _passwordText: EditText? = null
+    private var _loginButton: Button? = null
+    private var _signupLink: TextView? = null
+    private var _layout: RelativeLayout? = null
+    private var _progress_dialog: ProgressDialog? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,7 +61,7 @@ class LoginFragment: Fragment() {
         }
     }
 
-    fun loginToServer() {
+    private fun loginToServer() {
         Log.d(TAG, "Login initialized")
 
         if (!validate()) {
@@ -75,20 +75,28 @@ class LoginFragment: Fragment() {
         _progress_dialog?.isCancelable = false
         _progress_dialog?.show(fragmentManager, "login_progress")
 
-        val email = _emailText?.getText().toString()
-        val password = _passwordText?.getText().toString()
+        val email = _emailText?.text.toString()
+        val password = _passwordText?.text.toString()
         val data = LoginRequest(email, password)
 
         val request: Call<LoginResponse> = Constants.webservice.login(data)
         request.enqueue(object: Callback<LoginResponse>{
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                Toast.makeText(activity?.applicationContext, "logined", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    activity?.applicationContext,
+                    "logged in successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
                 _loginButton?.isEnabled = true
                 _progress_dialog?.dismiss()
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.d(TAG, "response failed")
+                Toast.makeText(
+                    activity?.applicationContext,
+                    "authentication failed",
+                    Toast.LENGTH_SHORT
+                ).show()
                 _loginButton?.isEnabled = true
                 _progress_dialog?.dismiss()
             }
@@ -100,33 +108,33 @@ class LoginFragment: Fragment() {
     }
 
     fun onLoginSuccess() {
-        _loginButton?.setEnabled(true)
+        _loginButton?.isEnabled = true
     }
 
     fun onLoginFailed() {
         Toast.makeText(activity?.applicationContext, "Login failed", Toast.LENGTH_LONG).show()
 
-        _loginButton?.setEnabled(true)
+        _loginButton?.isEnabled = true
     }
 
     fun validate(): Boolean {
         var valid = true
 
-        val email = _emailText?.getText().toString()
-        val password = _passwordText?.getText().toString()
+        val email = _emailText?.text.toString()
+        val password = _passwordText?.text.toString()
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText?.setError("enter a valid email address")
+            _emailText?.error = "enter a valid email address"
             valid = false
         } else {
-            _emailText?.setError(null)
+            _emailText?.error = null
         }
 
         if (password.isEmpty() || password.length < 4 || password.length > 10) {
-            _passwordText?.setError("between 4 and 10 alphanumeric characters")
+            _passwordText?.error = "between 4 and 10 alphanumeric characters"
             valid = false
         } else {
-            _passwordText?.setError(null)
+            _passwordText?.error = null
         }
 
         return valid
