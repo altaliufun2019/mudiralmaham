@@ -1,9 +1,9 @@
 package com.example.mudiralmaham
 
-import android.arch.persistence.room.Room
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.example.mudiralmaham.Database.Database
+import com.example.mudiralmaham.DataModels.DaoMaster
+import com.example.mudiralmaham.DataModels.DaoSession
 import com.example.mudiralmaham.Pages.LoginFragment
 import com.example.mudiralmaham.Webservice.EndPoints
 import com.example.mudiralmaham.Webservice.RetrofitInstance
@@ -13,7 +13,7 @@ class MainActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         initWebservice()
-//        initDb()
+        initDb()
 //        Constants.database
         showLoginFragment()
 
@@ -25,9 +25,8 @@ class MainActivity: AppCompatActivity() {
     }
 
     private fun initDb() {
-        Constants.database = Room
-            .databaseBuilder(applicationContext, Database::class.java, Constants.databaseName)
-            .build()
+        Constants.dbHelper = DaoMaster.DevOpenHelper(this, Constants.databaseName)
+        Constants.mDaoSession = DaoMaster(Constants.dbHelper.writableDb).newSession()
     }
 
     private fun showLoginFragment() {
