@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorAccent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
@@ -13,7 +13,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:windowBackground">@color/colorPrimary</item>
+        <!--<item name="android:windowBackground">@color/colorPrimary</item>-->
+        <item name="android:windowBackground">@drawable/background_splash</item>
 
         <item name="colorControlNormal">@color/iron</item>
         <item name="colorControlActivated">@color/white</item>
@@ -29,5 +30,46 @@
         <item name="android:textColorPrimary">@color/iron</item>
         <item name="android:background">@color/colorPrimary</item>
     </style>
+
+    <!--Floating label text style-->
+    <style name="MyHintText" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/light_orange</item>
+    </style>
+
+    <!--Input field style-->
+    <style name="MyEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/base</item>
+        <item name="colorControlActivated">@color/light_orange</item>
+    </style>
+
+    <style name="MyToolbar">
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <!--<item name="navigationIcon">@drawable/back</item>-->
+        <item name="titleMarginTop">?actionBarSize</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <style name="MyCardViewStyle" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="cardCornerRadius">5dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="contentPaddingBottom">24dp</item>
+        <item name="contentPaddingTop">24dp</item>
+        <item name="contentPaddingLeft">16dp</item>
+        <item name="contentPaddingRight">16dp</item>
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
+
+    <style name="MyInputCard" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="cardCornerRadius">5dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="contentPaddingBottom">12dp</item>
+        <item name="contentPaddingTop">12dp</item>
+        <item name="contentPaddingLeft">10dp</item>
+        <item name="contentPaddingRight">10dp</item>
+        <item name="cardBackgroundColor">@color/white</item>
+    </style>
+
 
 </resources>

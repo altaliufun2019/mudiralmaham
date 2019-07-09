@@ -3,8 +3,10 @@ package com.example.mudiralmaham
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.example.mudiralmaham.DataModels.DaoMaster
-import com.example.mudiralmaham.DataModels.DaoSession
 import com.example.mudiralmaham.Pages.LoginFragment
+import com.example.mudiralmaham.Pages.TaskCreationFragment
+import com.example.mudiralmaham.Utils.ContextHolder
+import com.example.mudiralmaham.Utils.Database
 import com.example.mudiralmaham.Webservice.EndPoints
 import com.example.mudiralmaham.Webservice.RetrofitInstance
 
@@ -14,27 +16,30 @@ class MainActivity: AppCompatActivity() {
         setContentView(R.layout.main_activity)
         initWebservice()
         initDb()
-//        Constants.database
+        getCacheData()
         showLoginFragment()
+    }
 
+    private fun getCacheData() {
+        ContextHolder.projects = Database.getProjects()
+        ContextHolder.tasks = Database.getTasks()
     }
 
     private fun initWebservice() {
-
-        Constants.webservice = RetrofitInstance.retrofit?.create(EndPoints::class.java)!!
+        ContextHolder.webservice = RetrofitInstance.retrofit?.create(EndPoints::class.java)!!
     }
 
     private fun initDb() {
-        Constants.dbHelper = DaoMaster.DevOpenHelper(this, Constants.databaseName)
-        Constants.mDaoSession = DaoMaster(Constants.dbHelper.writableDb).newSession()
+        ContextHolder.dbHelper = DaoMaster.DevOpenHelper(this, ContextHolder.databaseName)
+        ContextHolder.mDaoSession = DaoMaster(ContextHolder.dbHelper.writableDb).newSession()
     }
 
     private fun showLoginFragment() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         val loginFragment = LoginFragment()
-        fragmentTransaction.replace(R.id.fragment_holder, loginFragment)
+        fragmentTransaction.replace(R.id.fragment_holder, TaskCreationFragment())
+//        fragmentTransaction.replace(R.id.fragment_holder, loginFragment)
         fragmentTransaction.addToBackStack(null)
-
         fragmentTransaction.commit()
     }
 
@@ -52,5 +57,6 @@ class MainActivity: AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        getCacheData()
     }
 }

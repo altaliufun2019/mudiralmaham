@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:id="@+id/task_creation_fragment"
+                android:layout_width="match_parent"
+                style="@style/AppTheme"
+                android:background="@color/bg_color"
+                android:layout_height="match_parent">
+
+
+    <!-- toolbar -->
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/add_task"
+            style="@style/MyToolbar"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:elevation="4dp"
+    >
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <ImageView
+                    android:layout_margin="10dp"
+                    android:layout_marginLeft="0dp"
+                    android:id="@+id/back_btn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/back"
+            />
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_task"
+                    android:layout_toRightOf="@id/back_btn"
+                    android:layout_centerVertical="true"
+                    android:textSize="24dp"
+                    android:textColor="@color/white"
+                    android:textFontWeight="10"
+            />
+            <ImageView
+                    android:layout_margin="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/save_btn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/send"
+            />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+
+<!-- cards for task creation-->
+
+    <!--name input-->
+    <android.support.v7.widget.CardView
+            android:id="@+id/name_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/my_toolbar"
+            style="@style/MyInputCard"
+    >
+        <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/name_input_holder"
+                app:hintTextAppearance="@style/MyHintText"
+        >
+            <EditText android:id="@+id/task_name"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:inputType="text"
+                      android:textColorHint="@color/colorPrimary"
+                      android:textColor="@color/colorPrimary"
+                      android:theme="@style/MyEditText"
+                      android:hint="@string/name_label" />
+        </android.support.design.widget.TextInputLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <!--comment input-->
+    <android.support.v7.widget.CardView
+            android:id="@+id/comment_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_card"
+            style="@style/MyInputCard"
+    >
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+
+            <android.support.v7.widget.AppCompatImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/comment_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@drawable/conversation"
+            />
+            <android.support.design.widget.TextInputLayout
+                    android:layout_toRightOf="@id/comment_img"
+                    android:id="@+id/comment_input_holder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/MyHintText"
+                    app:counterEnabled="false"
+                    app:counterMaxLength="256"
+            >
+                <EditText android:id="@+id/input_comment"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:inputType="text"
+                          android:theme="@style/MyEditText"
+                          android:hint="@string/comment_label"
+                />
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+    <!--parent input-->
+    <android.support.v7.widget.CardView
+            android:id="@+id/parent_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/comment_card"
+            style="@style/MyInputCard"
+    >
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+            <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/parent_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/project"/>
+            <TextView
+                    android:layout_marginLeft="8dp"
+                    android:id="@+id/parent_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Parent"
+                    android:textSize="20dp"
+                    android:layout_toRightOf="@id/parent_img"
+                    android:textColor="@color/oil"/>
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                    android:layout_marginLeft="8dp"
+                    android:layout_below="@id/parent_label"
+                    android:id="@+id/parent_spinner"
+                    android:textColor="@color/base"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+    <!--date input-->
+    <android.support.v7.widget.CardView
+            android:id="@+id/date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/parent_card"
+            android:focusable="true"
+            android:clickable="true"
+            style="@style/MyCardViewStyle"
+    >
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+            <ImageView
+                    android:id="@+id/calendar_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/calendar"
+                    android:layout_centerVertical="true"
+            />
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/calendar_img"
+        >
+            <TextView
+                    android:text="Date"
+                    android:textColor="@color/oil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+
+            />
+            <TextView
+                    android:id="@+id/date_text"
+                    android:text="pick date"
+                    android:textColor="@color/base"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+            />
+        </LinearLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <!--time input-->
+    <android.support.v7.widget.CardView
+            android:id="@+id/time_picker"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/date_picker"
+
+            android:focusable="true"
+            android:clickable="true"
+
+            style="@style/MyCardViewStyle"
+    >
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+            <ImageView
+                    android:id="@+id/clock_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/clock"
+                    android:layout_centerVertical="true"
+            />
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="8dp"
+                    android:layout_toRightOf="@id/clock_img"
+            >
+                <TextView
+                        android:text="Time"
+                        android:textColor="@color/oil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+
+                />
+                <TextView
+                        android:id="@+id/time_text"
+                        android:text="pick time"
+                        android:textColor="@color/base"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                />
+            </LinearLayout>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

@@ -5,4 +5,10 @@
     <string name="email_label">Email</string>
     <string name="signUp_recom">No account yet? Create one</string>
     <string name="wait">wait...</string>
+    <string name="add_task">Add Task</string>
+    <string name="name_label">Name</string>
+    <string name="date_label">date</string>
+    <string name="comment_label">comment</string>
+    <string name="time_pick">due time</string>
+    <string name="date_pick">due date</string>
 </resources>
