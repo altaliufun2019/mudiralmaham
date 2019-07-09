@@ -37,9 +37,9 @@ class MainActivity: AppCompatActivity() {
     private fun showLoginFragment() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         val loginFragment = LoginFragment()
-        fragmentTransaction.replace(R.id.fragment_holder, TaskCreationFragment())
-//        fragmentTransaction.replace(R.id.fragment_holder, loginFragment)
-        fragmentTransaction.addToBackStack(null)
+//        fragmentTransaction.replace(R.id.fragment_holder, TaskCreationFragment())
+        fragmentTransaction.replace(R.id.fragment_holder, loginFragment).disallowAddToBackStack()
+//        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 

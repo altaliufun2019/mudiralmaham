@@ -122,8 +122,7 @@ class LoginFragment: Fragment() {
 
     private fun nextPage(page: Fragment) {
         val transaction = fragmentManager?.beginTransaction()
-        transaction?.replace(R.id.fragment_holder, page)
-        transaction?.addToBackStack(null)
+        transaction?.replace(R.id.fragment_holder, page)?.disallowAddToBackStack()
         transaction?.commit()
     }
 

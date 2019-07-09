@@ -65,11 +65,18 @@
             android:layout_below="@id/my_toolbar"
             style="@style/MyInputCard"
     >
-        <android.support.design.widget.TextInputLayout
+        <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/name_input_holder"-->
+                <!--app:hintTextAppearance="@style/MyHintText"-->
+        <!--&gt;-->
+        <com.github.florent37.materialtextfield.MaterialTextField
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/name_input_holder"
-                app:hintTextAppearance="@style/MyHintText"
+                app:mtf_labelColor="#666"
+                app:mtf_image="@drawable/task_name1"
+                app:mtf_openKeyboardOnFocus="true"
         >
             <EditText android:id="@+id/task_name"
                       android:layout_width="match_parent"
@@ -79,7 +86,8 @@
                       android:textColor="@color/colorPrimary"
                       android:theme="@style/MyEditText"
                       android:hint="@string/name_label" />
-        </android.support.design.widget.TextInputLayout>
+        <!--</android.support.design.widget.TextInputLayout>-->
+        </com.github.florent37.materialtextfield.MaterialTextField>
     </android.support.v7.widget.CardView>
 
 
@@ -93,22 +101,29 @@
     >
         <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
 
-            <android.support.v7.widget.AppCompatImageView
-                    android:layout_centerVertical="true"
-                    android:id="@+id/comment_img"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginRight="8dp"
-                    android:src="@drawable/conversation"
-            />
-            <android.support.design.widget.TextInputLayout
-                    android:layout_toRightOf="@id/comment_img"
-                    android:id="@+id/comment_input_holder"
+            <!--<android.support.v7.widget.AppCompatImageView-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:id="@+id/comment_img"-->
+                    <!--android:layout_width="25dp"-->
+                    <!--android:layout_height="25dp"-->
+                    <!--android:layout_marginRight="8dp"-->
+                    <!--android:src="@drawable/conversation"-->
+            <!--/>-->
+            <!--<android.support.design.widget.TextInputLayout-->
+                    <!--android:layout_toRightOf="@id/comment_img"-->
+                    <!--android:id="@+id/comment_input_holder"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--app:hintTextAppearance="@style/MyHintText"-->
+                    <!--app:counterEnabled="false"-->
+                    <!--app:counterMaxLength="256"-->
+            <!--&gt;-->
+            <com.github.florent37.materialtextfield.MaterialTextField
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintTextAppearance="@style/MyHintText"
-                    app:counterEnabled="false"
-                    app:counterMaxLength="256"
+                    app:mtf_labelColor="#666"
+                    app:mtf_image="@drawable/conversation"
+                    android:id="@+id/comment_input_holder"
             >
                 <EditText android:id="@+id/input_comment"
                           android:layout_width="match_parent"
@@ -117,8 +132,8 @@
                           android:theme="@style/MyEditText"
                           android:hint="@string/comment_label"
                 />
-            </android.support.design.widget.TextInputLayout>
-
+            <!--</android.support.design.widget.TextInputLayout>-->
+            </com.github.florent37.materialtextfield.MaterialTextField>
         </RelativeLayout>
         </android.support.v7.widget.CardView>
 
@@ -135,7 +150,7 @@
                     android:id="@+id/parent_img"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/project"/>
+                    android:src="@drawable/order"/>
             <TextView
                     android:layout_marginLeft="8dp"
                     android:id="@+id/parent_label"
