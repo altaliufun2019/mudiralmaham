@@ -9,6 +9,7 @@ import com.example.mudiralmaham.Utils.ContextHolder
 import com.example.mudiralmaham.Utils.Database
 import com.example.mudiralmaham.Webservice.EndPoints
 import com.example.mudiralmaham.Webservice.RetrofitInstance
+import org.greenrobot.eventbus.EventBus
 
 class MainActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +40,6 @@ class MainActivity: AppCompatActivity() {
         val loginFragment = LoginFragment()
 //        fragmentTransaction.replace(R.id.fragment_holder, TaskCreationFragment())
         fragmentTransaction.replace(R.id.fragment_holder, loginFragment).disallowAddToBackStack()
-//        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 
@@ -58,5 +58,6 @@ class MainActivity: AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         getCacheData()
+
     }
 }

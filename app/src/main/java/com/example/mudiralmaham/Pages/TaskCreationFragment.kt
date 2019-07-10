@@ -6,22 +6,19 @@ import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.support.v7.widget.CardView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
-import com.example.mudiralmaham.DataModels.Task
+import com.example.mudiralmaham.Events.CreateTaskEvent
 import com.example.mudiralmaham.R
 import com.example.mudiralmaham.Utils.ContextHolder
-import com.example.mudiralmaham.Utils.Database
 import com.jaredrummler.materialspinner.MaterialSpinner
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.Year
-import java.time.ZoneId
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 
@@ -63,8 +60,14 @@ class TaskCreationFragment: Fragment(), DatePickerDialog.OnDateSetListener, Time
         initButtons()
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
     override fun onPause() {
         super.onPause()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onDestroy() {
@@ -129,20 +132,21 @@ class TaskCreationFragment: Fragment(), DatePickerDialog.OnDateSetListener, Time
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNewTask() {
-        var task = Task()
-        var now = LocalDateTime.now()
-        task.created_date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant())
-        var cal = Calendar.getInstance()
-        cal.clear()
-        cal.set(Calendar.YEAR, _date_text?.text?.split('/')?.get(0)?.toInt()!!)
-        cal.set(Calendar.MONTH, _date_text?.text?.split('/')?.get(1)?.toInt()!!)
-        cal.set(Calendar.DAY_OF_MONTH, _date_text?.text?.split('/')?.get(2)?.toInt()!!)
-        cal.set(Calendar.HOUR, _time_text?.text?.split(':')?.get(0)?.toInt()!!)
-        cal.set(Calendar.MINUTE, _time_text?.text?.split(':')?.get(1)?.toInt()!!)
-        task.due_date = cal.time
-        task.name = _task_name_input?.text.toString()
-        task.comment = _comment_input?.text.toString()
-        if(Database.addTask(task))
+        EventBus.getDefault().post(
+            CreateTaskEvent(
+                _task_name_input?.text.toString(),
+                _comment_input?.text.toString(),
+                _date_text?.text?.split('/')?.get(0)?.toInt()!!,
+                _date_text?.text?.split('/')?.get(1)?.toInt()!!,
+                _date_text?.text?.split('/')?.get(2)?.toInt()!!,
+                _time_text?.text?.split(':')?.get(0)?.toInt()!!,
+                _time_text?.text?.split(':')?.get(1)?.toInt()!!
+            ))
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun taskCreated(createTaskEvent: CreateTaskEvent) {
+        if(createTaskEvent.result)
             Snackbar.make(_root_view!!, "task added successfully", Snackbar.LENGTH_SHORT).show()
         else
             Snackbar.make(_root_view!!, "there is already a task with this name", Snackbar.LENGTH_SHORT).show()
