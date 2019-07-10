@@ -7,6 +7,8 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
@@ -73,9 +75,11 @@ class NotificationService: IntentService("NotificationService") {
         }
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
         val builder = NotificationCompat.Builder(this, "taskNotification")
-            .setSmallIcon(R.drawable.due_time)
+            .setSmallIcon(R.drawable.task_name1)
             .setContentTitle("task due time here!")
             .setContentText("${task.name} is no longer available...")
+            .setLargeIcon(BitmapFactory.decodeResource(applicationContext.resources, R.drawable.due_time))
+            .setStyle(NotificationCompat.BigTextStyle().bigText(task.comment))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
@@ -86,7 +90,7 @@ class NotificationService: IntentService("NotificationService") {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "tasknotification"
+            val name = "task-notification"
             val descriptionText =""
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel("taskNotification", name, importance).apply {
