@@ -17,11 +17,12 @@
 
 <!--</LinearLayout>-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/login_fragment"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:fitsSystemWindows="true"
                 android:theme="@style/AppTheme.Dark"
-                android:id="@+id/login_fragment"
+                android:background="@color/colorPrimary"
 >
 
     <LinearLayout

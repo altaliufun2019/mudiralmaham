@@ -1,4 +1,4 @@
-package com.example.mudiralmaham.Webservice.Response
+package com.example.mudiralmaham.webservice.response
 
 import com.google.gson.annotations.SerializedName
 import java.util.*

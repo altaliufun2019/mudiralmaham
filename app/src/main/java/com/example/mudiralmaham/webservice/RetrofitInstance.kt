@@ -1,4 +1,4 @@
-package com.example.mudiralmaham.Webservice
+package com.example.mudiralmaham.webservice
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

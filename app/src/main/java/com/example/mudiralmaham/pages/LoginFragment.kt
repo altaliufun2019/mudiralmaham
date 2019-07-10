@@ -1,4 +1,4 @@
-package com.example.mudiralmaham.Pages
+package com.example.mudiralmaham.pages
 
 import android.app.Activity.RESULT_OK
 import android.os.Bundle
@@ -12,9 +12,9 @@ import android.content.Intent
 import android.support.design.widget.Snackbar
 import android.util.Log
 import android.widget.*
-import com.example.mudiralmaham.Utils.ContextHolder
-import com.example.mudiralmaham.Webservice.Request.LoginRequest
-import com.example.mudiralmaham.Webservice.Response.LoginResponse
+import com.example.mudiralmaham.utils.ContextHolder
+import com.example.mudiralmaham.webservice.request.LoginRequest
+import com.example.mudiralmaham.webservice.response.LoginResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

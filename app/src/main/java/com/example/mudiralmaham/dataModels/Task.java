@@ -1,4 +1,4 @@
-package com.example.mudiralmaham.DataModels;
+package com.example.mudiralmaham.dataModels;
 
 import org.greenrobot.greendao.annotation.Unique;
 import org.greenrobot.greendao.annotation.Entity;
@@ -27,6 +27,8 @@ public class Task {
     @NotNull
     private Date due_date;
 
+    private boolean isDone;
+    private boolean isOver;
 //
     @ToOne
     private Project project;
@@ -39,15 +41,17 @@ public class Task {
     @Generated(hash = 1469429066)
     private transient TaskDao myDao;
 
-    @Generated(hash = 1986940955)
+    @Generated(hash = 698530174)
     public Task(Long id, @NotNull String name, String comment, String description,
-            @NotNull Date created_date, @NotNull Date due_date) {
+            @NotNull Date created_date, @NotNull Date due_date, boolean isDone, boolean isOver) {
         this.id = id;
         this.name = name;
         this.comment = comment;
         this.description = description;
         this.created_date = created_date;
         this.due_date = due_date;
+        this.isDone = isDone;
+        this.isOver = isOver;
     }
 
     @Generated(hash = 733837707)
@@ -168,6 +172,22 @@ public class Task {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    public boolean getIsDone() {
+        return this.isDone;
+    }
+
+    public void setIsDone(boolean isDone) {
+        this.isDone = isDone;
+    }
+
+    public boolean getIsOver() {
+        return this.isOver;
+    }
+
+    public void setIsOver(boolean isOver) {
+        this.isOver = isOver;
     }
 
     /** called by internal mechanisms, do not call yourself. */

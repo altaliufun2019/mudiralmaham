@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:id="@+id/project_creation_fragment"
+                android:layout_width="match_parent"
+                style="@style/AppTheme"
+                android:background="@color/bg_color"
+                android:layout_height="match_parent">
+
+
+    <!-- toolbar -->
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/project_creation_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/add_task"
+            style="@style/MyToolbar"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:elevation="4dp"
+    >
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <ImageView
+                    android:layout_margin="10dp"
+                    android:layout_marginLeft="0dp"
+                    android:id="@+id/project_creation_back_btn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/back"
+            />
+
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_task"
+                    android:layout_toRightOf="@id/project_creation_back_btn"
+                    android:layout_centerVertical="true"
+                    android:textSize="24dp"
+                    android:textColor="@color/white"
+                    android:textFontWeight="10"
+            />
+            <ImageView
+                    android:layout_margin="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/project_creation_save_btn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/send"
+            />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+
+    <!-- cards for task creation-->
+
+    <!--name input-->
+    <android.support.v7.widget.CardView
+            android:id="@+id/name_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/project_creation_toolbar"
+            style="@style/MyInputCard"
+    >
+        <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/name_input_holder"-->
+        <!--app:hintTextAppearance="@style/MyHintText"-->
+        <!--&gt;-->
+        <com.github.florent37.materialtextfield.MaterialTextField
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:mtf_labelColor="#666"
+                app:mtf_image="@drawable/task_name1"
+                app:mtf_openKeyboardOnFocus="true"
+        >
+            <EditText android:id="@+id/project_name"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:inputType="text"
+                      android:textColorHint="@color/colorPrimary"
+                      android:textColor="@color/colorPrimary"
+                      android:theme="@style/MyEditText"
+                      android:hint="@string/name_label" />
+            <!--</android.support.design.widget.TextInputLayout>-->
+        </com.github.florent37.materialtextfield.MaterialTextField>
+    </android.support.v7.widget.CardView>
+
+
+    <!--comment input-->
+    <android.support.v7.widget.CardView
+            android:id="@+id/project_creation_description_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_card"
+            style="@style/MyInputCard"
+    >
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+
+            <!--<android.support.v7.widget.AppCompatImageView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:id="@+id/comment_img"-->
+            <!--android:layout_width="25dp"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_marginRight="8dp"-->
+            <!--android:src="@drawable/conversation"-->
+            <!--/>-->
+            <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_toRightOf="@id/comment_img"-->
+            <!--android:id="@+id/comment_input_holder"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:hintTextAppearance="@style/MyHintText"-->
+            <!--app:counterEnabled="false"-->
+            <!--app:counterMaxLength="256"-->
+            <!--&gt;-->
+            <com.github.florent37.materialtextfield.MaterialTextField
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:mtf_labelColor="#666"
+                    app:mtf_image="@drawable/conversation"
+                    android:id="@+id/description_input_holder"
+            >
+                <EditText android:id="@+id/input_description"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:inputType="text"
+                          android:theme="@style/MyEditText"
+                          android:hint="@string/project_creation_description_label"
+                />
+                <!--</android.support.design.widget.TextInputLayout>-->
+            </com.github.florent37.materialtextfield.MaterialTextField>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

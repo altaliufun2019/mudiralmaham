@@ -11,4 +11,5 @@
     <string name="comment_label">comment</string>
     <string name="time_pick">due time</string>
     <string name="date_pick">due date</string>
+    <string name="project_creation_description_label">Description</string>
 </resources>

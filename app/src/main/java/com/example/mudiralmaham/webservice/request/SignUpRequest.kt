@@ -1,9 +1,9 @@
-package com.example.mudiralmaham.Webservice.Request
+package com.example.mudiralmaham.webservice.request
 
 import com.google.gson.annotations.SerializedName
-import retrofit2.http.Field
 
-class LoginRequest (
+class SignUpRequest (
+    @SerializedName("name") var name: String,
     @SerializedName("username") var username: String,
     @SerializedName("password") var password: String
 )

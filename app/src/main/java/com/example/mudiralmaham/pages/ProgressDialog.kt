@@ -1,4 +1,4 @@
-package com.example.mudiralmaham.Pages
+package com.example.mudiralmaham.pages
 
 import android.app.Dialog
 import android.os.Bundle

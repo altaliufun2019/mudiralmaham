@@ -1,7 +1,6 @@
-package com.example.mudiralmaham.Webservice.Request
+package com.example.mudiralmaham.webservice.request
 
 import com.google.gson.annotations.SerializedName
-import retrofit2.http.Field
 
 class GetEventRequest (
     @SerializedName("username") var username: String

@@ -1,4 +1,4 @@
-package com.example.mudiralmaham.DataModels;
+package com.example.mudiralmaham.dataModels;
 
 import org.greenrobot.greendao.annotation.*;
 

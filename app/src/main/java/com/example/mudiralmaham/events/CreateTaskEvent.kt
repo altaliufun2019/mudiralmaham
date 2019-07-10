@@ -1,9 +1,9 @@
-package com.example.mudiralmaham.Events
+package com.example.mudiralmaham.events
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.mudiralmaham.DataModels.Task
-import com.example.mudiralmaham.Utils.Database
+import com.example.mudiralmaham.dataModels.Task
+import com.example.mudiralmaham.utils.Database
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
@@ -11,6 +11,7 @@ import java.util.*
 @RequiresApi(Build.VERSION_CODES.O)
 class CreateTaskEvent(name: String, comment: String, year: Int, month: Int, day: Int, hour: Int, minute: Int) {
     var result: Boolean = false
+    var reason: Int = 0
 
     init {
         val task = Task()
@@ -26,6 +27,15 @@ class CreateTaskEvent(name: String, comment: String, year: Int, month: Int, day:
         task.due_date = cal.time
         task.name = name
         task.comment = comment
-        result = Database.addTask(task)
+        if (task.due_date.after(task.created_date)) {
+            task.isOver = false
+            task.isDone = false
+            result = Database.addTask(task)
+        }
+        else {
+            task.isOver = true
+            result = false
+            reason = 1
+        }
     }
 }

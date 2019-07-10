@@ -1,15 +1,15 @@
 package com.example.mudiralmaham
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.example.mudiralmaham.DataModels.DaoMaster
-import com.example.mudiralmaham.Pages.LoginFragment
-import com.example.mudiralmaham.Pages.TaskCreationFragment
-import com.example.mudiralmaham.Utils.ContextHolder
-import com.example.mudiralmaham.Utils.Database
-import com.example.mudiralmaham.Webservice.EndPoints
-import com.example.mudiralmaham.Webservice.RetrofitInstance
-import org.greenrobot.eventbus.EventBus
+import com.example.mudiralmaham.dataModels.DaoMaster
+import com.example.mudiralmaham.pages.LoginFragment
+import com.example.mudiralmaham.services.NotificationService
+import com.example.mudiralmaham.utils.ContextHolder
+import com.example.mudiralmaham.utils.Database
+import com.example.mudiralmaham.webservice.EndPoints
+import com.example.mudiralmaham.webservice.RetrofitInstance
 
 class MainActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,6 +18,7 @@ class MainActivity: AppCompatActivity() {
         initWebservice()
         initDb()
         getCacheData()
+        Intent(this, NotificationService::class.java).also { intent -> startService(intent) }
         showLoginFragment()
     }
 

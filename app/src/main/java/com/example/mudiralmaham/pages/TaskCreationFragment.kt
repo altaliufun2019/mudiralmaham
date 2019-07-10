@@ -1,4 +1,4 @@
-package com.example.mudiralmaham.Pages
+package com.example.mudiralmaham.pages
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -12,9 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
-import com.example.mudiralmaham.Events.CreateTaskEvent
+import com.example.mudiralmaham.events.CreateTaskEvent
 import com.example.mudiralmaham.R
-import com.example.mudiralmaham.Utils.ContextHolder
+import com.example.mudiralmaham.utils.ContextHolder
 import com.jaredrummler.materialspinner.MaterialSpinner
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -148,8 +148,12 @@ class TaskCreationFragment: Fragment(), DatePickerDialog.OnDateSetListener, Time
     fun taskCreated(createTaskEvent: CreateTaskEvent) {
         if(createTaskEvent.result)
             Snackbar.make(_root_view!!, "task added successfully", Snackbar.LENGTH_SHORT).show()
-        else
-            Snackbar.make(_root_view!!, "there is already a task with this name", Snackbar.LENGTH_SHORT).show()
+        else {
+            when(createTaskEvent.reason) {
+                0 -> Snackbar.make(_root_view!!, "there is already a task with this name", Snackbar.LENGTH_SHORT).show()
+                1 -> Snackbar.make(_root_view!!, "due date is already over", Snackbar.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
