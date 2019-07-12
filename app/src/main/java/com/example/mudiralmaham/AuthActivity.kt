@@ -11,10 +11,10 @@ import com.example.mudiralmaham.utils.Database
 import com.example.mudiralmaham.webservice.EndPoints
 import com.example.mudiralmaham.webservice.RetrofitInstance
 
-class MainActivity: AppCompatActivity() {
+class AuthActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        setContentView(R.layout.auth_activity)
         initWebservice()
         initDb()
         getCacheData()

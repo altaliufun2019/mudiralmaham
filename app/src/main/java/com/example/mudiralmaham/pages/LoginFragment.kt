@@ -46,6 +46,9 @@ class LoginFragment: Fragment() {
         _loginButton?.setOnClickListener{
             loginToServer()
         }
+        _signupLink?.setOnClickListener {
+            nextPage(SignupFragment())
+        }
     }
 
     override fun onPause() {
