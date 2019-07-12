@@ -19,16 +19,17 @@ class SignupFragment : Fragment() {
     var password: EditText? = null
     var loginlink: TextView? = null
     var signupButton: Button? = null
+    private var root: View? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var rootView: View = inflater.inflate(R.layout.signup_fragment, container, false)
-        name = rootView.findViewById(R.id.signup_input_name)
-        email = rootView.findViewById(R.id.signup_input_email)
-        password = rootView.findViewById(R.id.signup_input_password)
-        loginlink = rootView.findViewById(R.id.link_login)
-        signupButton = rootView.findViewById(R.id.btn_signup)
-        return rootView
+        root= inflater.inflate(R.layout.signup_fragment, container, false)
+        name = root?.findViewById(R.id.signup_input_name)
+        email = root?.findViewById(R.id.signup_input_email)
+        password = root?.findViewById(R.id.signup_input_password)
+        loginlink = root?.findViewById(R.id.link_login)
+        signupButton = root?.findViewById(R.id.btn_signup)
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
