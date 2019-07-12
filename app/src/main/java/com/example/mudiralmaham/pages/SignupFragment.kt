@@ -36,15 +36,20 @@ class SignupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         loginlink?.setOnClickListener {
             Log.d(ContentValues.TAG, "signup link")
-            val signupFragment = LoginFragment()
-            val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
-            fragmentTransaction?.replace(R.id.fragment_holder, signupFragment)
-            fragmentTransaction?.addToBackStack(null)
-            fragmentTransaction?.commit()
+            nextPage(LoginFragment(), true)
 
 
         }
 
+
+    }
+
+    private fun nextPage(page: Fragment, crossFade:Boolean = false) {
+        val transaction = fragmentManager?.beginTransaction()
+        if (crossFade)
+            transaction?.setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+        transaction?.replace(R.id.fragment_holder, page)?.disallowAddToBackStack()
+        transaction?.commit()
     }
 
 

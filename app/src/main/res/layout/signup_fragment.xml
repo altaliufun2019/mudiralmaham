@@ -5,6 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:theme="@style/AppTheme.Dark"
+        android:background="@color/colorPrimary"
         android:id="@+id/signup_fragment"
 >
 
@@ -13,7 +14,7 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="56dp"
+            android:paddingTop="48dp"
             android:paddingLeft="24dp"
             android:paddingRight="24dp">
 
