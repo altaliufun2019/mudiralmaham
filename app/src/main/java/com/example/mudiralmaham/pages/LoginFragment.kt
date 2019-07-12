@@ -46,6 +46,9 @@ class LoginFragment: Fragment() {
         _loginButton?.setOnClickListener{
             loginToServer()
         }
+        _signupLink?.setOnClickListener {
+            nextPage(SignupFragment(), true)
+        }
     }
 
     override fun onPause() {
@@ -120,8 +123,10 @@ class LoginFragment: Fragment() {
         _progress_dialog?.dismiss()
     }
 
-    private fun nextPage(page: Fragment) {
+    private fun nextPage(page: Fragment, crossFade:Boolean = false) {
         val transaction = fragmentManager?.beginTransaction()
+        if (crossFade)
+            transaction?.setCustomAnimations(R.anim.fade_in, R.anim.ltr_slide_out)
         transaction?.replace(R.id.fragment_holder, page)?.disallowAddToBackStack()
         transaction?.commit()
     }

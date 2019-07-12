@@ -1,19 +1,17 @@
 package com.example.mudiralmaham.services
 
-import android.annotation.TargetApi
 import android.app.IntentService
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import androidx.annotation.RequiresApi
-import com.example.mudiralmaham.MainActivity
+import com.example.mudiralmaham.AuthActivity
 import com.example.mudiralmaham.R
 import com.example.mudiralmaham.dataModels.DaoMaster
 import com.example.mudiralmaham.dataModels.DaoSession
@@ -70,7 +68,7 @@ class NotificationService: IntentService("NotificationService") {
     private fun showNotification(task: Task) {
         createNotificationChannel()
 
-        val intent = Intent(this, MainActivity::class.java).apply {
+        val intent = Intent(this, AuthActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
