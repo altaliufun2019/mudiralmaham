@@ -1,6 +1,7 @@
 package com.example.mudiralmaham.pages
 
 import android.content.ContentValues
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import com.example.mudiralmaham.MainActivity
 import com.example.mudiralmaham.R
 
 class SignupFragment : Fragment() {
@@ -23,7 +25,7 @@ class SignupFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        root= inflater.inflate(R.layout.signup_fragment, container, false)
+        root = inflater.inflate(R.layout.signup_fragment, container, false)
         name = root?.findViewById(R.id.signup_input_name)
         email = root?.findViewById(R.id.signup_input_email)
         password = root?.findViewById(R.id.signup_input_password)
@@ -38,13 +40,15 @@ class SignupFragment : Fragment() {
             Log.d(ContentValues.TAG, "signup link")
             nextPage(LoginFragment(), true)
 
-
+        }
+        signupButton?.setOnClickListener {
+            startActivity(Intent(context, MainActivity::class.java))
         }
 
 
     }
 
-    private fun nextPage(page: Fragment, crossFade:Boolean = false) {
+    private fun nextPage(page: Fragment, crossFade: Boolean = false) {
         val transaction = fragmentManager?.beginTransaction()
         if (crossFade)
             transaction?.setCustomAnimations(R.anim.fade_in, R.anim.ltr_slide_out)
