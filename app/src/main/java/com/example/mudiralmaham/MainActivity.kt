@@ -8,11 +8,18 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.support.v4.widget.DrawerLayout
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import com.example.mudiralmaham.pages.TaskFragment
+import com.example.mudiralmaham.pages.dummy.DummyContent
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener ,
+    TaskFragment.OnListFragmentInteractionListener {
+    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
+        return
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +42,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+        showPage(TaskFragment())
     }
 
     override fun onBackPressed() {
@@ -88,4 +96,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
+
+    fun showPage(fragment:Fragment){
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+//        fragmentTransaction.replace(R.id.fragment_holder, TaskCreationFragment())
+        fragmentTransaction.replace(R.id.main_fragment_holder, fragment).disallowAddToBackStack()
+        fragmentTransaction.commit()
+
+    }
+
 }
