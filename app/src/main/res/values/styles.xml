@@ -58,6 +58,12 @@
         <item name="android:background">@color/colorPrimary</item>
     </style>
 
+    <style name="AppTheme.ProgressBar" parent="Theme.AppCompat.Dialog">
+        <item name="colorAccent">@color/oil</item>
+        <item name="android:textColorPrimary">@color/nothing</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
     <!--Floating label text style-->
     <style name="MyHintText" parent="TextAppearance.AppCompat.Small">
         <item name="android:textColor">@color/light_orange</item>
@@ -71,7 +77,7 @@
 
     <style name="MyToolbar">
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="navigationIcon">@drawable/back</item>
+        <!--<item name="navigationIcon">@drawable/back</item>-->
         <item name="titleMarginTop">?actionBarSize</item>
         <item name="android:background">?colorPrimary</item>
         <item name="android:elevation">4dp</item>

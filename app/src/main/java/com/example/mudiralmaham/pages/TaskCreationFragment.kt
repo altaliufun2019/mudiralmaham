@@ -2,14 +2,19 @@ package com.example.mudiralmaham.pages
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.CardView
+import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.annotation.RequiresApi
 import com.example.mudiralmaham.events.CreateTaskEvent
@@ -58,6 +63,23 @@ class TaskCreationFragment: Fragment(), DatePickerDialog.OnDateSetListener, Time
         initSpinner()
         initPickers()
         initButtons()
+
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        val fab: FloatingActionButton? = activity?.findViewById(R.id.fab)
+        fab?.animation = AnimationUtils.loadAnimation(activity?.applicationContext, R.anim.fab_hide)
+        fab?.hide()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        (activity as AppCompatActivity).supportActionBar?.show()
+        val fab: FloatingActionButton? = activity?.findViewById(R.id.fab)
+        fab?.animation = AnimationUtils.loadAnimation(activity?.applicationContext, R.anim.fab_hide)
+        fab?.show()
     }
 
     override fun onStart() {
@@ -68,10 +90,6 @@ class TaskCreationFragment: Fragment(), DatePickerDialog.OnDateSetListener, Time
     override fun onPause() {
         super.onPause()
         EventBus.getDefault().unregister(this)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     private fun initSpinner() {
@@ -132,6 +150,10 @@ class TaskCreationFragment: Fragment(), DatePickerDialog.OnDateSetListener, Time
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNewTask() {
+        if ( !(_date_text?.text?.contains('/')!!) || !(_time_text?.text?.contains(':')!!)){
+            Snackbar.make(_root_view!!, "must choose a date and time", Snackbar.LENGTH_SHORT).show()
+                return
+        }
         EventBus.getDefault().post(
             CreateTaskEvent(
                 _task_name_input?.text.toString(),

@@ -19,13 +19,16 @@ public class Project {
 //    private Project parent;
     private String description;
 
-    @Generated(hash = 619073678)
+    private String owners;
+
+    @Generated(hash = 269448124)
     public Project(Long id, @NotNull String name, @NotNull Date created_date,
-            String description) {
+            String description, String owners) {
         this.id = id;
         this.name = name;
         this.created_date = created_date;
         this.description = description;
+        this.owners = owners;
     }
 
     @Generated(hash = 1767516619)
@@ -64,4 +67,11 @@ public class Project {
         this.description = description;
     }
 
+    public String getOwners() {
+        return this.owners;
+    }
+
+    public void setOwners(String owners) {
+        this.owners = owners;
+    }
 }
