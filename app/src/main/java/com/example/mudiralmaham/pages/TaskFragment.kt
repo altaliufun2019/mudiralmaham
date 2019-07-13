@@ -13,13 +13,17 @@ import com.example.mudiralmaham.R
 
 import com.example.mudiralmaham.pages.dummy.DummyContent
 import com.example.mudiralmaham.pages.dummy.DummyContent.DummyItem
+import com.example.mudiralmaham.utils.OnBackPressed
 
 /**
  * A fragment representing a list of Items.
  * Activities containing this fragment MUST implement the
  * [TaskFragment.OnListFragmentInteractionListener] interface.
  */
-class TaskFragment : Fragment() {
+class TaskFragment : Fragment(), OnBackPressed {
+
+    override fun onBackPressed() {
+    }
 
     // TODO: Customize parameters
     private var columnCount = 1

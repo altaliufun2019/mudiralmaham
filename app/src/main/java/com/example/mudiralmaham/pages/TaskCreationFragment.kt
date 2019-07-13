@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi
 import com.example.mudiralmaham.events.CreateTaskEvent
 import com.example.mudiralmaham.R
 import com.example.mudiralmaham.utils.ContextHolder
+import com.example.mudiralmaham.utils.OnBackPressed
 import com.jaredrummler.materialspinner.MaterialSpinner
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -27,7 +28,7 @@ import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
 
-class TaskCreationFragment: Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+class TaskCreationFragment: Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, OnBackPressed {
 
     private var _task_name_input: EditText? = null
     private var _comment_input: EditText? = null
@@ -92,6 +93,10 @@ class TaskCreationFragment: Fragment(), DatePickerDialog.OnDateSetListener, Time
         EventBus.getDefault().unregister(this)
     }
 
+//    override fun action() {
+//        onBackPressed()
+//    }
+
     private fun initSpinner() {
         // initialize spinner for parent
         val projectNames = mutableListOf<String>()
@@ -144,7 +149,7 @@ class TaskCreationFragment: Fragment(), DatePickerDialog.OnDateSetListener, Time
         }
     }
 
-    private fun onBackPressed() {
+    override fun onBackPressed() {
         fragmentManager?.popBackStack()
     }
 

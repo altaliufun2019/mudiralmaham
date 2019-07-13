@@ -15,6 +15,7 @@ import android.view.Menu
 import com.example.mudiralmaham.pages.TaskCreationFragment
 import com.example.mudiralmaham.pages.TaskFragment
 import com.example.mudiralmaham.pages.dummy.DummyContent
+import com.example.mudiralmaham.utils.OnBackPressed
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener ,
     TaskFragment.OnListFragmentInteractionListener {
@@ -50,7 +51,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            return
+            val fragments: List<Fragment> = supportFragmentManager.fragments
+            for (fragment in fragments) {
+                (fragment as OnBackPressed).onBackPressed()
+            }
         }
     }
 
