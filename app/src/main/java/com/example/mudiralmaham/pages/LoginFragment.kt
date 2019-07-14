@@ -8,11 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.mudiralmaham.R
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.support.design.widget.Snackbar
 import android.util.Log
 import android.widget.*
 import com.example.mudiralmaham.MainActivity
+import com.example.mudiralmaham.dataModels.User
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.webservice.request.LoginRequest
 import com.example.mudiralmaham.webservice.response.LoginResponse
@@ -55,16 +58,6 @@ class LoginFragment: Fragment() {
     override fun onPause() {
         super.onPause()
     }
-//
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-//        if (requestCode == 0) {
-//            if (resultCode == RESULT_OK) {
-//
-//                // TODO: Implement successful signup logic here
-//                // By default we just finish the Activity and log them in automatically
-//            }
-//        }
-//    }
 
     private fun loginToServer() {
         Log.d(TAG, "Login initialized")
@@ -99,10 +92,6 @@ class LoginFragment: Fragment() {
         })
     }
 
-    fun onBackPressed() {
-        activity?.finish()
-    }
-
     fun onLoginSuccess() {
         Snackbar.make(
             _root!!,
@@ -111,6 +100,8 @@ class LoginFragment: Fragment() {
         ).show()
         _loginButton?.isEnabled = true
         _progress_dialog?.dismiss()
+
+        dataUpdate()
         startActivity(Intent(context, MainActivity::class.java))
     }
 
@@ -123,6 +114,25 @@ class LoginFragment: Fragment() {
         _loginButton?.isEnabled = true
         _progress_dialog?.dismiss()
     }
+
+    private fun dataUpdate() {
+        // TODO: request server for past tasks and projects
+        cacheData()
+    }
+
+    private fun cacheData() {
+        // TODO: change "mudir" to name gotten from server
+        ContextHolder.user = User("mudir", _emailText?.text?.toString())
+        val sharedPreferences: SharedPreferences = activity?.getPreferences(Context.MODE_PRIVATE)!!
+        with(sharedPreferences.edit()) {
+            putString("mudir_email", ContextHolder.user?.email)
+            putString("mudir_name", ContextHolder.user?.name)
+            apply()
+        }
+
+        ContextHolder.getCacheData()
+    }
+
 
     private fun nextPage(page: Fragment, crossFade:Boolean = false) {
         val transaction = fragmentManager?.beginTransaction()

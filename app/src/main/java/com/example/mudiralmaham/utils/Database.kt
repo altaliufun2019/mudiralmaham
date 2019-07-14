@@ -1,15 +1,15 @@
 package com.example.mudiralmaham.utils
 
-import com.example.mudiralmaham.dataModels.DaoSession
-import com.example.mudiralmaham.dataModels.Project
-import com.example.mudiralmaham.dataModels.Task
-import com.example.mudiralmaham.dataModels.TaskDao
+import com.example.mudiralmaham.dataModels.*
 import java.lang.Exception
 
 object Database {
     fun getProjects(db: DaoSession = ContextHolder.mDaoSession): MutableList<Project> {
         try {
-            return db.projectDao.loadAll()
+            return db.projectDao.queryBuilder().where(
+                ProjectDao.Properties.Owners.like(
+                    "%${ContextHolder.user?.email}%"
+                )).list()
         } catch (err: Exception) {
             return mutableListOf()
         }
@@ -17,7 +17,10 @@ object Database {
 
     fun getTasks(db: DaoSession = ContextHolder.mDaoSession): MutableList<Task> {
         try {
-            return db.taskDao.loadAll()
+            return db.taskDao.queryBuilder().where(
+                TaskDao.Properties.Owner.eq(
+                    ContextHolder.user?.email
+                )).list()
         }catch (err: Exception) {
             return mutableListOf()
         }
@@ -26,7 +29,11 @@ object Database {
     fun getActiveTasks(db: DaoSession = ContextHolder.mDaoSession): MutableList<Task> {
         try {
             val qb = db.taskDao.queryBuilder()
-            qb.where(TaskDao.Properties.IsOver.eq(false), TaskDao.Properties.IsDone.eq(false))
+            qb.where(
+                TaskDao.Properties.IsOver.eq(false),
+                TaskDao.Properties.IsDone.eq(false),
+                TaskDao.Properties.Owner.eq(ContextHolder.user?.email)
+            )
             return qb.list()
         } catch (err: Exception) {
             return mutableListOf()
@@ -54,6 +61,14 @@ object Database {
     fun addTask(task: Task, db: DaoSession = ContextHolder.mDaoSession): Boolean {
         try {
             db.taskDao.insert(task)
+            return true
+        }catch (err: Exception) {}
+        return false
+    }
+
+    fun addProject(project: Project, db: DaoSession = ContextHolder.mDaoSession): Boolean {
+        try {
+            db.projectDao.insert(project)
             return true
         }catch (err: Exception) {}
         return false
