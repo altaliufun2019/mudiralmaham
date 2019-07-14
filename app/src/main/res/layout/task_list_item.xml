@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:orientation="horizontal"
+android:background="@color/white">
+    <ImageButton android:layout_width="0dp" android:layout_height="@dimen/list_item_height" android:layout_weight="1"
+                 android:src="@drawable/done_button"
+                 android:background=""
+
+                 android:padding="@dimen/list_btn_padding" android:id="@+id/task_list_done_btn"/>
+    <TextView android:layout_width="0dp" android:layout_height="@dimen/list_item_height"
+              android:text="Task" android:layout_weight="5" android:gravity="center_vertical"
+              android:paddingStart="6dp"
+              android:paddingEnd="6dp"
+              android:textColor="@color/black" android:id="@+id/task_list_title"/>
+    <ImageButton android:layout_width="0dp" android:layout_height="@dimen/list_item_height" android:layout_weight="1"
+                 android:src="@drawable/important_btn"
+                 android:background="" android:id="@+id/task_list_important_btn"/>
+
+</android.widget.LinearLayout>
