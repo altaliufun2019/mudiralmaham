@@ -1,20 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="horizontal">
+              android:orientation="vertical"
+              android:background="@color/white">
 
-    <TextView
-            android:id="@+id/item_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:textAppearance="?attr/textAppearanceListItem"/>
 
-    <TextView
-            android:id="@+id/content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:textAppearance="?attr/textAppearanceListItem"/>
+    <LinearLayout
+            android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:background="@color/white">
+        <ImageButton android:layout_width="0dp" android:layout_height="@dimen/list_item_height"
+                     android:layout_weight="1"
+                     android:src="@drawable/done_button"
+                     android:padding="@dimen/list_btn_padding"
+                     android:id="@+id/task_list_done_btn"
+                     android:backgroundTint="@color/white"/>
+        <TextView android:layout_width="0dp" android:layout_height="@dimen/list_item_height"
+                  android:text="Task" android:layout_weight="5" android:gravity="center_vertical"
+                  android:paddingStart="6dp"
+                  android:paddingEnd="6dp"
+                  android:textSize="18sp"
+                  android:textColor="@color/black"
+                  android:id="@+id/task_list_title"/>
+        <ImageButton android:layout_width="0dp" android:layout_height="@dimen/list_item_height"
+                     android:layout_weight="1"
+                     android:src="@drawable/important_btn"
+                     android:id="@+id/task_list_important_btn"
+                     android:backgroundTint="@color/white"/>
+
+
+    </LinearLayout>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
 </LinearLayout>
