@@ -22,10 +22,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_main"/>
-    <FrameLayout android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:id="@+id/main_fragment_holder"
-    />
+
 
 
     <android.support.design.widget.FloatingActionButton
@@ -34,6 +31,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@android:drawable/ic_menu_add"/>
+            app:srcCompat="@drawable/ic_action_btn"/>
 
 </android.support.design.widget.CoordinatorLayout>
