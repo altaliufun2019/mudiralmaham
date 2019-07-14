@@ -12,8 +12,10 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import com.example.mudiralmaham.pages.TaskCreationFragment
 import com.example.mudiralmaham.pages.TaskFragment
 import com.example.mudiralmaham.pages.dummy.DummyContent
+import com.example.mudiralmaham.utils.OnBackPressed
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener ,
     TaskFragment.OnListFragmentInteractionListener {
@@ -30,8 +32,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            showPage(TaskCreationFragment())
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -50,7 +51,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            val fragments: List<Fragment> = supportFragmentManager.fragments
+            for (fragment in fragments) {
+                (fragment as OnBackPressed).onBackPressed()
+            }
         }
     }
 
@@ -100,7 +104,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun showPage(fragment:Fragment){
         val fragmentTransaction = supportFragmentManager.beginTransaction()
 //        fragmentTransaction.replace(R.id.fragment_holder, TaskCreationFragment())
-        fragmentTransaction.replace(R.id.main_fragment_holder, fragment).disallowAddToBackStack()
+        fragmentTransaction.replace(R.id.main_fragment_holder, fragment).addToBackStack("main_page")
         fragmentTransaction.commit()
 
     }

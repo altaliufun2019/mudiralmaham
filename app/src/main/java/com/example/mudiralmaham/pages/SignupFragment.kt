@@ -39,7 +39,6 @@ class SignupFragment : Fragment() {
         loginlink?.setOnClickListener {
             Log.d(ContentValues.TAG, "signup link")
             nextPage(LoginFragment(), true)
-
         }
         signupButton?.setOnClickListener {
             startActivity(Intent(context, MainActivity::class.java))

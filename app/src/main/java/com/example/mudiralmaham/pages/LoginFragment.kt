@@ -12,6 +12,7 @@ import android.content.Intent
 import android.support.design.widget.Snackbar
 import android.util.Log
 import android.widget.*
+import com.example.mudiralmaham.MainActivity
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.webservice.request.LoginRequest
 import com.example.mudiralmaham.webservice.response.LoginResponse
@@ -54,16 +55,16 @@ class LoginFragment: Fragment() {
     override fun onPause() {
         super.onPause()
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        if (requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
-            }
-        }
-    }
+//
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+//        if (requestCode == 0) {
+//            if (resultCode == RESULT_OK) {
+//
+//                // TODO: Implement successful signup logic here
+//                // By default we just finish the Activity and log them in automatically
+//            }
+//        }
+//    }
 
     private fun loginToServer() {
         Log.d(TAG, "Login initialized")
@@ -110,7 +111,7 @@ class LoginFragment: Fragment() {
         ).show()
         _loginButton?.isEnabled = true
         _progress_dialog?.dismiss()
-        nextPage(TaskCreationFragment())
+        startActivity(Intent(context, MainActivity::class.java))
     }
 
     fun onLoginFailed() {
@@ -126,7 +127,7 @@ class LoginFragment: Fragment() {
     private fun nextPage(page: Fragment, crossFade:Boolean = false) {
         val transaction = fragmentManager?.beginTransaction()
         if (crossFade)
-            transaction?.setCustomAnimations(R.anim.fade_in, R.anim.ltr_slide_out)
+            transaction?.setCustomAnimations(R.anim.fade_in, R.anim.ltr_slide_in)
         transaction?.replace(R.id.fragment_holder, page)?.disallowAddToBackStack()
         transaction?.commit()
     }
