@@ -1,44 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:background="@color/white">
 
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="horizontal"
-                  android:background="@color/white"
-    android:paddingStart="@dimen/list_item_btn_padding_sides"
-    android:paddingEnd="@dimen/list_item_btn_padding_sides">
-        <CheckBox android:layout_width="0dp" android:layout_height="@dimen/list_item_height"
-                     android:layout_weight="1"
-                     android:button="@drawable/done_button"
-                     android:padding="@dimen/list_btn_padding"
-                     android:id="@+id/task_list_done_btn"/>
-                     <!--android:backgroundTint="@color/white"/>-->
-        <TextView android:layout_width="0dp" android:layout_height="@dimen/list_item_height"
-                  android:text="Task" android:layout_weight="7" android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:paddingStart="@dimen/list_item_btn_padding_sides"
+            android:paddingEnd="@dimen/list_item_btn_padding_sides">
+        <CheckBox android:layout_height="69dp"
+                  android:button="@drawable/done_button"
+                  android:padding="@dimen/list_btn_padding"
+                  android:id="@+id/task_list_done_btn"
+                  android:backgroundTint="@color/white"
+                  android:layout_width="25dp" app:layout_constraintStart_toStartOf="parent"
+                  android:layout_marginStart="8dp" android:layout_marginTop="2dp"
+                  app:layout_constraintTop_toTopOf="parent"/>
+        <TextView android:layout_height="@dimen/list_item_height"
+                  android:text="Task"
+                  android:gravity="center_vertical"
                   android:paddingStart="6dp"
                   android:paddingEnd="6dp"
                   android:textSize="18sp"
                   android:textColor="@color/black"
-                  android:id="@+id/task_list_title"/>
-        <CheckBox android:layout_width="0dp" android:layout_height="@dimen/list_item_height"
-                     android:layout_weight="1"
-                     android:button="@drawable/important_btn"
-                     android:id="@+id/task_list_important_btn"
-                     android:backgroundTint="@color/white"/>
+                  android:id="@+id/task_list_title"
+                  app:layout_constraintStart_toEndOf="@+id/task_list_done_btn" android:layout_marginStart="8dp"
+                  android:layout_marginEnd="8dp" app:layout_constraintEnd_toStartOf="@+id/task_list_important_btn"
+                  app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="2dp" android:layout_width="0dp"/>
+        <CheckBox android:layout_height="@dimen/list_item_height"
+                  android:button="@drawable/important_btn"
+                  android:id="@+id/task_list_important_btn"
+                  android:backgroundTint="@color/white"
+                  android:layout_marginEnd="8dp"
+                  app:layout_constraintEnd_toEndOf="parent" app:layout_constraintTop_toTopOf="parent"
+                  android:layout_marginTop="2dp" android:layout_width="25dp"/>
 
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
     <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#dddddd"
-    android:layout_marginStart="@dimen/list_item_btn_padding_sides"
-    android:layout_marginEnd="@dimen/list_item_btn_padding_sides"/>
+            android:layout_marginStart="@dimen/list_item_btn_padding_sides"
+            android:layout_marginEnd="@dimen/list_item_btn_padding_sides"/>
 
 </LinearLayout>
