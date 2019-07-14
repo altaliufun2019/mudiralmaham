@@ -50,7 +50,7 @@ class SignupFragment : Fragment() {
     private fun nextPage(page: Fragment, crossFade: Boolean = false) {
         val transaction = fragmentManager?.beginTransaction()
         if (crossFade)
-            transaction?.setCustomAnimations(R.anim.fade_in, R.anim.ltr_slide_out)
+            transaction?.setCustomAnimations(R.anim.no_anim, R.anim.ltr_slide_out)
         transaction?.replace(R.id.fragment_holder, page)?.disallowAddToBackStack()
         transaction?.commit()
     }

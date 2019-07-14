@@ -127,7 +127,7 @@ class LoginFragment: Fragment() {
     private fun nextPage(page: Fragment, crossFade:Boolean = false) {
         val transaction = fragmentManager?.beginTransaction()
         if (crossFade)
-            transaction?.setCustomAnimations(R.anim.fade_in, R.anim.ltr_slide_in)
+            transaction?.setCustomAnimations(R.anim.no_anim, R.anim.ltr_slide_in)
         transaction?.replace(R.id.fragment_holder, page)?.disallowAddToBackStack()
         transaction?.commit()
     }

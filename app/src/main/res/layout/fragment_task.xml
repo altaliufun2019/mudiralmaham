@@ -10,13 +10,15 @@
             android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
-                  android:background="@color/white">
-        <ImageButton android:layout_width="0dp" android:layout_height="@dimen/list_item_height"
+                  android:background="@color/white"
+    android:paddingStart="@dimen/list_item_btn_padding_sides"
+    android:paddingEnd="@dimen/list_item_btn_padding_sides">
+        <CheckBox android:layout_width="0dp" android:layout_height="@dimen/list_item_height"
                      android:layout_weight="1"
-                     android:src="@drawable/done_button"
+                     android:button="@drawable/done_button"
                      android:padding="@dimen/list_btn_padding"
-                     android:id="@+id/task_list_done_btn"
-                     android:backgroundTint="@color/white"/>
+                     android:id="@+id/task_list_done_btn"/>
+                     <!--android:backgroundTint="@color/white"/>-->
         <TextView android:layout_width="0dp" android:layout_height="@dimen/list_item_height"
                   android:text="Task" android:layout_weight="7" android:gravity="center_vertical"
                   android:paddingStart="6dp"
@@ -24,9 +26,9 @@
                   android:textSize="18sp"
                   android:textColor="@color/black"
                   android:id="@+id/task_list_title"/>
-        <ImageButton android:layout_width="0dp" android:layout_height="@dimen/list_item_height"
+        <CheckBox android:layout_width="0dp" android:layout_height="@dimen/list_item_height"
                      android:layout_weight="1"
-                     android:src="@drawable/important_btn"
+                     android:button="@drawable/important_btn"
                      android:id="@+id/task_list_important_btn"
                      android:backgroundTint="@color/white"/>
 
@@ -35,6 +37,8 @@
     <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="#dddddd"
+    android:layout_marginStart="@dimen/list_item_btn_padding_sides"
+    android:layout_marginEnd="@dimen/list_item_btn_padding_sides"/>
 
 </LinearLayout>
