@@ -8,9 +8,11 @@ import android.view.MenuItem
 import android.support.v4.widget.DrawerLayout
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
+import android.support.v4.widget.TextViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.widget.TextView
 import com.example.mudiralmaham.dataModels.Task
 import com.example.mudiralmaham.pages.TaskCreationFragment
 import com.example.mudiralmaham.pages.TaskFragment
@@ -52,16 +54,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navView.setNavigationItemSelectedListener(this)
 
+        val user_name: TextView? = findViewById(R.id.user_nav_name)
+        val user_email: TextView? = findViewById(R.id.user_nav_email)
+        user_name?.text = ContextHolder.user?.name; user_email?.text = ContextHolder.user?.email
+
 //        to init lateinit vars in ContextHolder
         ContextHolder.getCacheData()
 
         addMenuItemInNavMenuDrawer()
-        val taskFragment = TaskFragment()
-        taskFragment.projectName = ""//TODO(proper value)
-        showPage(taskFragment)
 
-        if (currentFragment == null)
+
+        if (currentFragment == null) {
             currentFragment = TaskFragment()
+            (currentFragment as TaskFragment).projectName = "TODAY"
+        }
         currentFragment?.let {
             showPage(it)
         }
@@ -88,7 +94,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // as you specify DueTimeReceiver parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
@@ -97,25 +103,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        when (item.itemId) {
-            R.id.nav_home -> {
-                // Handle the camera action
-            }
-            R.id.nav_gallery -> {
-
-            }
-            R.id.nav_add_project -> {
-
-            }
-            R.id.nav_tools -> {
-
-            }
-           /* R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
-            }*/
+//        if (item.menuInfo)
+        currentFragment = TaskFragment()
+        (currentFragment as TaskFragment).projectName = item.title.toString()
+        currentFragment?.let {
+            showPage(it)
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -137,21 +129,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val submenu = menu?.addSubMenu("Projects")
 
 //        TODO(to be replaced with real projects)
-        submenu?.add("Super Item1")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item2")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item1")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item2")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
-
+        for (project in ContextHolder.projects) {
+            submenu?.add(project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        }
         navView?.invalidate()
     }
 

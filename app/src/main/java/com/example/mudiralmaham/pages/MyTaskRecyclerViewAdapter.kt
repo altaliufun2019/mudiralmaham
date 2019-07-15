@@ -14,7 +14,7 @@ import com.example.mudiralmaham.pages.TaskFragment.OnListFragmentInteractionList
 import kotlinx.android.synthetic.main.fragment_task.view.*
 
 /**
- * [RecyclerView.Adapter] that can display a [Task] and makes a call to the
+ * [RecyclerView.Adapter] that can display DueTimeReceiver [Task] and makes DueTimeReceiver call to the
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
@@ -42,7 +42,7 @@ class MyTaskRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mIdView.text = "Task number " + item.id + " is to be done!"
+        holder.mIdView.text = "${item.name}"
 //        holder.mContentView.text = item.content
 
         with(holder.mView) {

@@ -218,7 +218,7 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNewTask() {
         if (!(_date_text?.text?.contains('/')!!) || !(_time_text?.text?.contains(':')!!)) {
-            Snackbar.make(_root_view!!, "Must choose a date and time", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(_root_view!!, "Must choose DueTimeReceiver date and time", Snackbar.LENGTH_SHORT).show()
             return
         }
         if (selected_owner == null || selected_project == null) {
@@ -229,24 +229,29 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
             CreateTaskEvent(
                 _task_name_input?.text.toString(),
                 _comment_input?.text.toString(),
-                selected_project!!,
+                selected_project?.name!!,
                 selected_owner!!,
                 _date_text?.text?.split('/')?.get(0)?.toInt()!!,
                 _date_text?.text?.split('/')?.get(1)?.toInt()!!,
                 _date_text?.text?.split('/')?.get(2)?.toInt()!!,
                 _time_text?.text?.split(':')?.get(0)?.toInt()!!,
-                _time_text?.text?.split(':')?.get(1)?.toInt()!!
+                _time_text?.text?.split(':')?.get(1)?.toInt()!!,
+                activity?.applicationContext!!
             )
         )
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun taskCreated(createTaskEvent: CreateTaskEvent) {
-        if (createTaskEvent.result)
+        if (createTaskEvent.result) {
             Snackbar.make(_root_view!!, "Task added successfully", Snackbar.LENGTH_SHORT).show()
+            ContextHolder.getCacheData()
+        }
         else {
             when (createTaskEvent.reason) {
-                0 -> Snackbar.make(_root_view!!, "There is already a task with this name", Snackbar.LENGTH_SHORT).show()
+                0 -> {
+                    Snackbar.make(_root_view!!, "There is already DueTimeReceiver task with this name", Snackbar.LENGTH_SHORT).show()
+                }
                 1 -> Snackbar.make(_root_view!!, "Due date is already over", Snackbar.LENGTH_SHORT).show()
             }
         }

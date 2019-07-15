@@ -16,18 +16,11 @@ object ContextHolder {
     var user: User? = null
 
     fun getCacheData() {
-        projects = Database.getProjects()
         tasks = Database.getTasks()
+        projects = Database.getProjects()
     }
 
     fun getProjectTasks(projectName: String): MutableList<Task> {
-
-        for (p in projects){
-            if (p.name == projectName){
-                return Database.getProjectTasks(project = p)
-            }
-        }
-        return MutableList(1) { Task()}
-
+        return Database.getProjectTasks(projectName)
     }
 }

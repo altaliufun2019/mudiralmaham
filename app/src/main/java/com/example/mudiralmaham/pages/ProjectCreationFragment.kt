@@ -101,7 +101,7 @@ class ProjectCreationFragment : Fragment(), OnBackPressed{
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNewProject() {
         if (_project_name_input?.text != null) {
-            Snackbar.make(_root_view!!, "Enter a name to continue", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(_root_view!!, "Enter DueTimeReceiver name to continue", Snackbar.LENGTH_SHORT).show()
             return
         }
         EventBus.getDefault().post(
@@ -119,7 +119,7 @@ class ProjectCreationFragment : Fragment(), OnBackPressed{
             Snackbar.make(_root_view!!, "Task added successfully", Snackbar.LENGTH_SHORT).show()
         else {
             when (createProjectEvent.result) {
-                1 -> Snackbar.make(_root_view!!, "There is already a task with this name", Snackbar.LENGTH_SHORT).show()
+                1 -> Snackbar.make(_root_view!!, "There is already DueTimeReceiver task with this name", Snackbar.LENGTH_SHORT).show()
             }
         }
     }

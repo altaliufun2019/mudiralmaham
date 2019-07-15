@@ -19,7 +19,7 @@ import com.example.mudiralmaham.utils.OnBackPressed
 
 
 /**
- * A fragment representing a list of Items.
+ * A fragment representing DueTimeReceiver list of Items.
  * Activities containing this fragment MUST implement the
  * [TaskFragment.OnListFragmentInteractionListener] interface.
  */
@@ -37,7 +37,7 @@ class TaskFragment : Fragment(), OnBackPressed {
     private var doneButton: CheckBox? = null
     private var title: TextView? = null
     private var importantButton: CheckBox? = null
-    internal var projectName: String = "efef"
+    internal var projectName: String = "TODAY"
         set
         get
 
@@ -63,7 +63,7 @@ class TaskFragment : Fragment(), OnBackPressed {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_task_list, container, false)
-        tasks = ContextHolder.getProjectTasks(projectName!!)
+        tasks = ContextHolder.getProjectTasks(projectName)
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {

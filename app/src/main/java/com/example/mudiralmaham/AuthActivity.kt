@@ -23,34 +23,31 @@ class AuthActivity : AppCompatActivity() {
         initWebservice()
         initDb()
 
-//        Database.addProject(
-//            Project(
-//                1,
-//                "project1",
-//                Date(234987),
-//                "project 1 desc",
-//                "asdf@asdf.asdf __ majidstic@gmail.com")
-//        )
-//        Database.addProject(
-//            Project(
-//                2,
-//                "project2",
-//                Date(2349877),
-//                "project 2 desc",
-//                "asdf@asdf.asdf __ majidstic@gmail.com __ amoo@yahoo.com")
-//        )
-//        Database.addProject(
-//            Project(
-//                3,
-//                "project3",
-//                Date(23498987),
-//                "project 3 desc",
-//                "asdf@asdf.asdf __ majidstic@gmail.com __ abas@gh.gh __ gh@gh.gh")
-//        )
+        Database.addProject(
+            Project(
+                1,
+                "TODAY",
+                Date(234987),
+                "today jobs",
+                "asdf@asdf.asdf __ majidstic@gmail.com")
+        )
+        Database.addProject(
+            Project(
+                2,
+                "TOMORROW",
+                Date(2349877),
+                "tomorrow jobs",
+                "asdf@asdf.asdf __ majidstic@gmail.com __ amoo@yahoo.com")
+        )
+        Database.addProject(
+            Project(
+                3,
+                "THIS WEEK",
+                Date(23498987),
+                "this week jobs",
+                "asdf@asdf.asdf __ majidstic@gmail.com __ abas@gh.gh __ gh@gh.gh")
+        )
         getCacheData()
-        Intent(this, NotificationService::class.java).also { intent ->
-
-            startService(intent) }
         if (ContextHolder.user == null)
             showFragment(LoginFragment())
         else

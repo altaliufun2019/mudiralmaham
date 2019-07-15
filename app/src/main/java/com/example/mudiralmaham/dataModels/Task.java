@@ -31,24 +31,15 @@ public class Task {
     private boolean isDone;
     private boolean isOver;
 //
-    @ToOne
-    private Project project;
+    private String project;
 
     @NotNull
     private String owner;
 
-    /** Used to resolve relations */
-    @Generated(hash = 2040040024)
-    private transient DaoSession daoSession;
-
-    /** Used for active entity operations. */
-    @Generated(hash = 1469429066)
-    private transient TaskDao myDao;
-
-    @Generated(hash = 253734655)
+    @Generated(hash = 476719917)
     public Task(Long id, @NotNull String name, String comment, String description,
             @NotNull Date created_date, @NotNull Date due_date,
-            Date notification_date, boolean isDone, boolean isOver,
+            Date notification_date, boolean isDone, boolean isOver, String project,
             @NotNull String owner) {
         this.id = id;
         this.name = name;
@@ -59,6 +50,7 @@ public class Task {
         this.notification_date = notification_date;
         this.isDone = isDone;
         this.isOver = isOver;
+        this.project = project;
         this.owner = owner;
     }
 
@@ -138,6 +130,14 @@ public class Task {
         this.isOver = isOver;
     }
 
+    public String getProject() {
+        return this.project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
+
     public String getOwner() {
         return this.owner;
     }
@@ -146,78 +146,4 @@ public class Task {
         this.owner = owner;
     }
 
-    @Generated(hash = 873765639)
-    private transient boolean project__refreshed;
-
-    /** To-one relationship, resolved on first access. */
-    @Generated(hash = 342785038)
-    public Project getProject() {
-        if (project != null || !project__refreshed) {
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            ProjectDao targetDao = daoSession.getProjectDao();
-            targetDao.refresh(project);
-            project__refreshed = true;
-        }
-        return project;
-    }
-
-    /** To-one relationship, returned entity is not refreshed and may carry only the PK property. */
-    @Generated(hash = 915411846)
-    public Project peakProject() {
-        return project;
-    }
-
-    /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 1952231091)
-    public void setProject(Project project) {
-        synchronized (this) {
-            this.project = project;
-            project__refreshed = true;
-        }
-    }
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 128553479)
-    public void delete() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.delete(this);
-    }
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 1942392019)
-    public void refresh() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.refresh(this);
-    }
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 713229351)
-    public void update() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.update(this);
-    }
-
-    /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 1442741304)
-    public void __setDaoSession(DaoSession daoSession) {
-        this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getTaskDao() : null;
-    }
 }
