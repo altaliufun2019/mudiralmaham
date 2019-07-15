@@ -19,6 +19,10 @@ import com.example.mudiralmaham.utils.OnBackPressed
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener ,
     TaskFragment.OnListFragmentInteractionListener {
+    companion object{
+        var currentFragment: Fragment? = null
+    }
+
     override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
         return
     }
@@ -32,7 +36,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
-            showPage(TaskCreationFragment())
+            currentFragment = TaskCreationFragment()
+            currentFragment?.let{
+                showPage(it)
+            }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -43,7 +50,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
-        showPage(TaskFragment())
+        if (currentFragment == null)
+            currentFragment = TaskFragment()
+        currentFragment?.let {
+            showPage(it)
+        }
     }
 
     override fun onBackPressed() {

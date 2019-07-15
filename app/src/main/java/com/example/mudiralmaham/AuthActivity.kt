@@ -3,6 +3,7 @@ package com.example.mudiralmaham
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.example.mudiralmaham.dataModels.DaoMaster
 import com.example.mudiralmaham.dataModels.Project
@@ -47,14 +48,19 @@ class AuthActivity : AppCompatActivity() {
 //                "asdf@asdf.asdf __ majidstic@gmail.com __ abas@gh.gh __ gh@gh.gh")
 //        )
         getCacheData()
-        Intent(this, NotificationService::class.java).also { intent -> startService(intent) }
-        showLoginFragment()
+        Intent(this, NotificationService::class.java).also { intent ->
+
+            startService(intent) }
+        if (ContextHolder.user == null)
+            showFragment(LoginFragment())
+        else
+            startActivity(Intent(applicationContext, MainActivity::class.java))
     }
 
     private fun getCacheData() {
         val email = getPreferences(Context.MODE_PRIVATE).getString("mudir_email", "")
         val name = getPreferences(Context.MODE_PRIVATE).getString("mudir_name", "")
-        if (email == "")
+        if (email?.equals("")!!)
             return
         ContextHolder.user = User(name, email)
         ContextHolder.getCacheData()
@@ -71,11 +77,9 @@ class AuthActivity : AppCompatActivity() {
 
     }
 
-    private fun showLoginFragment() {
+    private fun showFragment(fragment: Fragment) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
-        val loginFragment = LoginFragment()
-//        fragmentTransaction.replace(R.id.fragment_holder, TaskCreationFragment())
-        fragmentTransaction.replace(R.id.fragment_holder, loginFragment).disallowAddToBackStack()
+        fragmentTransaction.replace(R.id.fragment_holder, fragment).disallowAddToBackStack()
         fragmentTransaction.commit()
 
     }

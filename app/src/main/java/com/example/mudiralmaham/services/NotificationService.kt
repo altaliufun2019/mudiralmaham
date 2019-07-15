@@ -1,15 +1,14 @@
 package com.example.mudiralmaham.services
 
-import android.app.IntentService
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
+import android.support.v4.app.JobIntentService
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.mudiralmaham.AuthActivity
 import com.example.mudiralmaham.R
@@ -40,8 +39,13 @@ class NotificationService: IntentService("NotificationService") {
         getCacheData()
     }
 
+    init {
+        setIntentRedelivery(true)
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return super.onStartCommand(intent, flags, startId)
+        super.onStartCommand(intent, flags, startId)
+        return Service.START_REDELIVER_INTENT
     }
 
     override fun onDestroy() {
@@ -55,8 +59,8 @@ class NotificationService: IntentService("NotificationService") {
     }
 
     private fun getCacheData() {
-        projects = Database.getProjects(mDaoSession!!)
         tasks = Database.getActiveTasks(mDaoSession!!)
+        projects = Database.getProjects(mDaoSession!!)
     }
 
 
@@ -103,10 +107,13 @@ class NotificationService: IntentService("NotificationService") {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onHandleIntent(intent: Intent?) {
+        Log.d("notifServ", "is running ${tasks}")
         while(true) {
+            Log.d("notifServ", "is running ${tasks}")
             val now = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())
             for (task in tasks) {
-                if (task.due_date.before(now)) {
+                Log.d("notifServ", "is running ${tasks}")
+                if (task.due_date.before(now) && !task.isOver && !task.isDone) {
                     task.isOver = true
                     Database.updateTask(task, mDaoSession!!)
                     showNotification(task)

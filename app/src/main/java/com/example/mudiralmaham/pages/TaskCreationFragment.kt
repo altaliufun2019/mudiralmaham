@@ -103,6 +103,10 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         EventBus.getDefault().unregister(this)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
 //    override fun action() {
 //        onBackPressed()
 //    }
