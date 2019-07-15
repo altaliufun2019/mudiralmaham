@@ -118,16 +118,17 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         for (project in ContextHolder.projects) {
             projectNames.add(project.name)
         }
-        _project_spinner?.setItems(projectNames)
+        _project_spinner?.setItems(listOf("choose...") + projectNames)
         _project_spinner?.setOnItemSelectedListener(object : MaterialSpinner.OnItemSelectedListener<String> {
             override fun onItemSelected(view: MaterialSpinner?, position: Int, id: Long, item: String?) {
-                Snackbar.make(_root_view!!, item!!, Snackbar.LENGTH_SHORT).show()
+                if (!item.equals("choose..."))
+                    Snackbar.make(_root_view!!, item!!, Snackbar.LENGTH_SHORT).show()
                 for (project in ContextHolder.projects) {
                     if (project.name.equals(item))
                         selected_project = project
                 }
 
-                _initOwnerSpinner(item)
+                item?.let { _initOwnerSpinner(it) }
             }
         })
     }
@@ -137,6 +138,9 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         val scene = Scene.getSceneForLayout(
             root!!, R.layout.owner_spinner_card, activity?.applicationContext!!
         )
+        val emptyScene = Scene.getSceneForLayout(
+            root!!, R.layout.empty_layout, activity?.applicationContext!!
+        )
 
         var selectedProject: Project? = null
         for (project in ContextHolder.projects) {
@@ -145,15 +149,18 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
                 break
             }
         }
-        scene.let { TransitionManager.go(it, Explode()) }
-
-        _owner_spinner = _root_view?.findViewById(R.id.owner_spinner)
         owner_items = selectedProject?.owners?.split(" __ ")
-        val data = ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item, owner_items!!)
-        data.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
-        _owner_spinner?.adapter = data
-        _owner_spinner?.onItemSelectedListener = this
 
+        if (owner_items != null) {
+            scene.let { TransitionManager.go(it, Explode()) }
+            _owner_spinner = _root_view?.findViewById(R.id.owner_spinner)
+            val data = ArrayAdapter<String>(context!!, android.R.layout.simple_spinner_item, owner_items)
+            data.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+            _owner_spinner?.adapter = data
+            _owner_spinner?.onItemSelectedListener = this
+        } else {
+            emptyScene.let { TransitionManager.go(it) }
+        }
 //        _owner_spinner?.setItems(listOf("kjh", "kjhlkj"))
 //        Log.d("spinner", _owner_spinner?.getItems<String>().toString())
 //        _owner_spinner?.setOnItemSelectedListener(object: MaterialSpinner.OnItemSelectedListener<String> {
@@ -218,18 +225,18 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNewTask() {
         if (!(_date_text?.text?.contains('/')!!) || !(_time_text?.text?.contains(':')!!)) {
-            Snackbar.make(_root_view!!, "Must choose DueTimeReceiver date and time", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(_root_view!!, "Must choose due date and time", Snackbar.LENGTH_SHORT).show()
             return
         }
-        if (selected_owner == null || selected_project == null) {
-            Snackbar.make(_root_view!!, "Must choose project and owner", Snackbar.LENGTH_SHORT).show()
-            return
+        val selected_project_name = selected_project?.name ?: "TODAY"
+        if (selected_owner == null) {
+            selected_owner = ContextHolder.user?.email
         }
         EventBus.getDefault().post(
             CreateTaskEvent(
                 _task_name_input?.text.toString(),
                 _comment_input?.text.toString(),
-                selected_project?.name!!,
+                selected_project_name,
                 selected_owner!!,
                 _date_text?.text?.split('/')?.get(0)?.toInt()!!,
                 _date_text?.text?.split('/')?.get(1)?.toInt()!!,
@@ -246,11 +253,14 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         if (createTaskEvent.result) {
             Snackbar.make(_root_view!!, "Task added successfully", Snackbar.LENGTH_SHORT).show()
             ContextHolder.getCacheData()
-        }
-        else {
+        } else {
             when (createTaskEvent.reason) {
                 0 -> {
-                    Snackbar.make(_root_view!!, "There is already DueTimeReceiver task with this name", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        _root_view!!,
+                        "There is already a task with this name",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
                 1 -> Snackbar.make(_root_view!!, "Due date is already over", Snackbar.LENGTH_SHORT).show()
             }

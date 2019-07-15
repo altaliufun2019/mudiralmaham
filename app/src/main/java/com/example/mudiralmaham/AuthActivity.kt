@@ -3,13 +3,13 @@ package com.example.mudiralmaham
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.example.mudiralmaham.dataModels.DaoMaster
 import com.example.mudiralmaham.dataModels.Project
 import com.example.mudiralmaham.dataModels.User
 import com.example.mudiralmaham.pages.LoginFragment
-import com.example.mudiralmaham.services.NotificationService
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.Database
 import com.example.mudiralmaham.webservice.EndPoints
@@ -22,31 +22,9 @@ class AuthActivity : AppCompatActivity() {
         setContentView(R.layout.auth_activity)
         initWebservice()
         initDb()
-
-        Database.addProject(
-            Project(
-                1,
-                "TODAY",
-                Date(234987),
-                "today jobs",
-                "asdf@asdf.asdf __ majidstic@gmail.com")
-        )
-        Database.addProject(
-            Project(
-                2,
-                "TOMORROW",
-                Date(2349877),
-                "tomorrow jobs",
-                "asdf@asdf.asdf __ majidstic@gmail.com __ amoo@yahoo.com")
-        )
-        Database.addProject(
-            Project(
-                3,
-                "THIS WEEK",
-                Date(23498987),
-                "this week jobs",
-                "asdf@asdf.asdf __ majidstic@gmail.com __ abas@gh.gh __ gh@gh.gh")
-        )
+        Handler().post {
+            insertDefaultProjects()
+        }
         getCacheData()
         if (ContextHolder.user == null)
             showFragment(LoginFragment())
@@ -70,8 +48,36 @@ class AuthActivity : AppCompatActivity() {
     private fun initDb() {
         ContextHolder.dbHelper = DaoMaster.DevOpenHelper(this, ContextHolder.databaseName)
         ContextHolder.mDaoSession = DaoMaster(ContextHolder.dbHelper.writableDb).newSession()
+    }
 
-
+    private fun insertDefaultProjects() {
+        Database.addProject(
+            Project(
+                4,
+                "TODAY",
+                Date(234987),
+                "today jobs",
+                "ALL"
+            )
+        )
+        Database.addProject(
+            Project(
+                5,
+                "TOMORROW",
+                Date(2349877),
+                "tomorrow jobs",
+                "ALL"
+            )
+        )
+        Database.addProject(
+            Project(
+                6,
+                "THIS WEEK",
+                Date(23498987),
+                "this week jobs",
+                "ALL"
+            )
+        )
     }
 
     private fun showFragment(fragment: Fragment) {

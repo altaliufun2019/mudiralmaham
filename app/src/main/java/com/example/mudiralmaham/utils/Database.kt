@@ -6,10 +6,14 @@ import java.lang.Exception
 object Database {
     fun getProjects(db: DaoSession = ContextHolder.mDaoSession): MutableList<Project> {
         try {
-            return db.projectDao.queryBuilder().where(
-                ProjectDao.Properties.Owners.like(
-                    "%${ContextHolder.user?.email}%"
-                )).list()
+            val qb = db.projectDao.queryBuilder()
+            return qb.where(
+                qb.or(
+                    ProjectDao.Properties.Owners.like(
+                        "%${ContextHolder.user?.email}%"
+                    ), ProjectDao.Properties.Owners.like("%ALL%")
+                )
+            ).list()
         } catch (err: Exception) {
             return mutableListOf()
         }
@@ -20,16 +24,17 @@ object Database {
             return db.taskDao.queryBuilder().where(
                 TaskDao.Properties.Owner.eq(
                     ContextHolder.user?.email
-                )).list()
-        }catch (err: Exception) {
+                )
+            ).list()
+        } catch (err: Exception) {
             return mutableListOf()
         }
     }
 
-    fun getProjectTasks(project:String, db: DaoSession = ContextHolder.mDaoSession): MutableList<Task> {
+    fun getProjectTasks(project: String, db: DaoSession = ContextHolder.mDaoSession): MutableList<Task> {
         try {
             return db.taskDao.queryBuilder().where(TaskDao.Properties.Project.eq(project)).list()
-        }catch (err: Exception) {
+        } catch (err: Exception) {
             return mutableListOf()
         }
     }
@@ -49,7 +54,7 @@ object Database {
         }
     }
 
-    fun updateTask(task: Task, db: DaoSession = ContextHolder.mDaoSession): Boolean{
+    fun updateTask(task: Task, db: DaoSession = ContextHolder.mDaoSession): Boolean {
         try {
             db.taskDao.update(task)
             return true
@@ -59,7 +64,7 @@ object Database {
     }
 
     fun deleteTask(task: Task, db: DaoSession = ContextHolder.mDaoSession): Boolean {
-        try{
+        try {
             db.taskDao.delete(task)
             return true
         } catch (err: Exception) {
@@ -71,18 +76,19 @@ object Database {
         try {
             db.taskDao.insert(task)
             return true
-        }catch (err: Exception) {}
-        return false
+        } catch (err: Exception) {
+            return false
+        }
     }
 
     fun addProject(project: Project, db: DaoSession = ContextHolder.mDaoSession): Boolean {
         try {
             db.projectDao.insert(project)
             return true
-        }catch (err: Exception) {}
+        } catch (err: Exception) {
+        }
         return false
     }
-
 
 
 }

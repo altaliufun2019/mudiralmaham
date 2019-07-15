@@ -8,17 +8,12 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.*
 import android.app.AlarmManager
-import android.app.Notification
 import android.os.SystemClock
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.media.RingtoneManager
-import android.support.v4.app.NotificationCompat
-import com.example.mudiralmaham.AuthActivity
-import com.example.mudiralmaham.services.DueTimeReceiver
-import com.example.mudiralmaham.services.NotificationReceiver
+import com.example.mudiralmaham.receivers.DueTimeReceiver
+import com.example.mudiralmaham.receivers.NotificationReceiver
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -71,20 +66,13 @@ class CreateTaskEvent(
 
 
     private fun scheduleNotification(task: Task, context: Context) {
-//        val notification = getNotification(task, context)
-
         val notificationIntent = Intent(context, NotificationReceiver::class.java)
-//        notificationIntent.putExtra("notification_id", 1)
-//        notificationIntent.putExtra("notification", notification)
         notificationIntent.putExtra("name", task.name)
         notificationIntent.putExtra("comment", task.comment)
         val notifIntent =
             PendingIntent.getBroadcast(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-//        val dueNotification = getDueNotification(task, context)
         val dueTimeIntent = Intent(context, DueTimeReceiver::class.java)
-        dueTimeIntent.putExtra("notification_id", 1)
-//        notificationIntent.putExtra("notification", dueNotification)
         dueTimeIntent.putExtra("name", task.name)
         dueTimeIntent.putExtra("comment", task.comment)
         val dueIntent =
@@ -104,47 +92,5 @@ class CreateTaskEvent(
             dueIntent
         )
     }
-//
-//    private fun getNotification(task: Task, context: Context): Notification {
-//        val intent = Intent(context, AuthActivity::class.java).apply {
-//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//        }
-//        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
-//
-//        val builder = NotificationCompat.Builder(context, "taskNotification")
-//            .setSmallIcon(com.example.mudiralmaham.R.drawable.task_name1)
-//            .setContentTitle("It's time to do task!!")
-//            .setContentText("${task.name} will be over in less than an hour...")
-//            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-//            .setLargeIcon(BitmapFactory.decodeResource(context.resources, com.example.mudiralmaham.R.drawable.due_time))
-//            .setStyle(NotificationCompat.BigTextStyle().bigText(task.comment))
-//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//            .setContentIntent(pendingIntent)
-//            .setAutoCancel(true)
-//
-//        return builder.build()
-//    }
-//
-//
-//    private fun getDueNotification(task: Task, context: Context): Notification {
-//        val intent = Intent(context, AuthActivity::class.java).apply {
-//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//        }
-//        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
-//        val sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-//
-//        val builder = NotificationCompat.Builder(context, "taskNotification")
-//            .setSmallIcon(com.example.mudiralmaham.R.drawable.task_name1)
-//            .setContentTitle("Task Due time!!")
-//            .setContentText("${task.name} is over...")
-//            .setLargeIcon(BitmapFactory.decodeResource(context.resources, com.example.mudiralmaham.R.drawable.due_time))
-//            .setSound(sound)
-//            .setStyle(NotificationCompat.BigTextStyle().bigText(task.comment))
-//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//            .setContentIntent(pendingIntent)
-//            .setAutoCancel(true)
-//
-//        return builder.build()
-//    }
 
 }

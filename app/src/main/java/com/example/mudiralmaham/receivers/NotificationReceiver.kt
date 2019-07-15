@@ -1,6 +1,5 @@
-package com.example.mudiralmaham.services
+package com.example.mudiralmaham.receivers
 
-import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -10,12 +9,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.support.v4.app.NotificationManagerCompat
-import android.media.RingtoneManager
-import android.media.Ringtone
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import com.example.mudiralmaham.AuthActivity
-import com.example.mudiralmaham.dataModels.Task
 
 
 class NotificationReceiver : BroadcastReceiver() {

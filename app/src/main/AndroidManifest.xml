@@ -27,11 +27,11 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".services.NotificationService"
+        <service android:name=".receivers.NotificationService"
                  android:enabled="true"
         />
-        <receiver android:name=".services.NotificationReceiver"/>
-        <receiver android:name=".services.DueTimeReceiver"/>
+        <receiver android:name=".receivers.NotificationReceiver"/>
+        <receiver android:name=".receivers.DueTimeReceiver"/>
     </application>
 
 </manifest>
