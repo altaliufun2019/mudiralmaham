@@ -2,6 +2,7 @@ package com.example.mudiralmaham.pages
 
 import android.content.Context
 import android.os.Bundle
+import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -12,7 +13,6 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.CheckBox
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import com.example.mudiralmaham.R
 import com.example.mudiralmaham.pages.dummy.DummyContent
@@ -117,7 +117,7 @@ class TaskFragment : Fragment(), OnBackPressed {
                 }
             }
     }
-
+/*
     fun didTapButton(view: View) {
         val button = getView()?.findViewById(R.id.task_list_done_btn) as ImageButton
         val myAnim = AnimationUtils.loadAnimation(context, R.anim.scale_up)
@@ -127,6 +127,6 @@ class TaskFragment : Fragment(), OnBackPressed {
         myAnim.interpolator = interpolator
 
         button.startAnimation(myAnim)
-    }
+    }*/
 
 }

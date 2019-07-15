@@ -1,5 +1,6 @@
 package com.example.mudiralmaham
 
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -43,7 +44,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+        addMenuItemInNavMenuDrawer()
         showPage(TaskFragment())
+
     }
 
     override fun onBackPressed() {
@@ -108,5 +111,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fragmentTransaction.commit()
 
     }
+    private fun addMenuItemInNavMenuDrawer() {
+        val navView:NavigationView? = findViewById<NavigationView>(R.id.nav_view)
+
+        val menu = navView?.menu
+        val submenu = menu?.addSubMenu("Projects")
+
+
+
+
+
+        submenu?.add("Super Item1")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)?.setTitleCondensed("efefe")
+        submenu?.add("Super Item2")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+
+        navView?.invalidate()
+    }
+
 
 }

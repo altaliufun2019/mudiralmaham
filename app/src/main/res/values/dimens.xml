@@ -9,4 +9,5 @@
     <dimen name="list_item_height">72dp</dimen>
     <dimen name="list_btn_padding">20dp</dimen>
     <dimen name="list_item_btn_padding_sides">6dp</dimen>
+    <dimen name="menu_list_item_height">32dp</dimen>
 </resources>
