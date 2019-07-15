@@ -42,12 +42,8 @@ class CreateTaskEvent(
         val now = LocalDateTime.now()
         task.created_date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant())
         val cal = Calendar.getInstance()
-        cal.clear()
-        cal.set(Calendar.YEAR, year)
-        cal.set(Calendar.MONTH, month)
-        cal.set(Calendar.DAY_OF_MONTH, day)
-        cal.set(Calendar.HOUR, hour)
-        cal.set(Calendar.MINUTE, minute)
+        cal.clear(); cal.set(Calendar.HOUR, hour); cal.set(Calendar.MINUTE, minute)
+        cal.set(Calendar.YEAR, year); cal.set(Calendar.MONTH, month); cal.set(Calendar.DAY_OF_MONTH, day)
         task.due_date = cal.time
         cal.set(Calendar.HOUR, if (hour > 1) hour - 1 else 0)
         task.notification_date = cal.time

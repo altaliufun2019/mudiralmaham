@@ -10,16 +10,24 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.support.v4.app.NotificationManagerCompat
 import android.os.Build
+import android.os.VibrationEffect
 import android.support.v4.app.NotificationCompat
 import com.example.mudiralmaham.AuthActivity
+import android.support.v4.content.ContextCompat.getSystemService
+import android.os.Vibrator
+import androidx.annotation.RequiresApi
 
 
 class NotificationReceiver : BroadcastReceiver() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context?, intent: Intent?) {
         createNotificationChannel(context!!)
 
 //        val notificationManager: NotificationManager =
 //            context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val v = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        v.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE))
+
         val name = intent?.getStringExtra("name").toString()
         val comment = intent?.getStringExtra("comment").toString()
         val notification: Notification? = getNotification(name, comment, context)
