@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/owner_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        style="@style/MyInputCard"
+>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/owner_img"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/project"/>
+        <TextView
+                android:layout_marginLeft="8dp"
+                android:id="@+id/owner_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/owner_spinner_label"
+                android:textSize="20dp"
+                android:layout_toRightOf="@id/owner_img"
+                android:textColor="@color/oil"/>
+        <!--<com.jaredrummler.materialspinner.MaterialSpinner-->
+        <!--android:layout_marginLeft="8dp"-->
+        <!--android:layout_below="@id/owner_label"-->
+        <!--android:id="@+id/owner_spinner"-->
+        <!--android:textColor="@color/base"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"/> -->
+        <Spinner
+                android:layout_marginLeft="8dp"
+                android:layout_below="@id/owner_label"
+                android:id="@+id/owner_spinner"
+                android:textColor="@color/base"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
