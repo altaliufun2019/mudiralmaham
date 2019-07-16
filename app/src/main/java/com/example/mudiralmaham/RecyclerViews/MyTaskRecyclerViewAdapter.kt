@@ -55,7 +55,7 @@ class MyTaskRecyclerViewAdapter(
             holder.mTitleView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
 
         holder.mView.findViewById<CheckBox>(R.id.task_list_done_btn).setOnClickListener {
-            mValues[position].isDone = true
+            mValues[position].isDone = !mValues[position].isDone
             ContextHolder.updateTask(item)
             ContextHolder.getCacheData()
         }
