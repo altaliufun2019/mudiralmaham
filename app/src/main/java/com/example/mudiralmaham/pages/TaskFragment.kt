@@ -138,11 +138,14 @@ class TaskFragment : Fragment(), OnBackPressed {
     @Subscribe
     fun taskListChange(taskChange: TaskChange) {
         tasks = ContextHolder.getProjectTasks(projectName)
-        for (task in tasks as MutableList<Task>) {
+        val tempList: LinkedList<Task> = LinkedList(listOf())
+        for (task in tasks!!){
             if (task.isOver)
-                (tasks as MutableList<Task>).add(0, task)
+                tempList.push(task)
+            else
+                tempList.add(task)
         }
-
+        tasks = tempList
         with(root_view as RecyclerView) {
             layoutManager = when {
                 columnCount <= 1 -> LinearLayoutManager(context)
