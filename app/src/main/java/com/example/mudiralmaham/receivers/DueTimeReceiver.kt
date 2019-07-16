@@ -13,17 +13,22 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import com.example.mudiralmaham.AuthActivity
+import com.example.mudiralmaham.dataModels.DaoMaster
+import com.example.mudiralmaham.dataModels.DaoSession
+import com.example.mudiralmaham.utils.Database
 
 
 class DueTimeReceiver : BroadcastReceiver() {
+    private var daoSession: DaoSession? = null
+
     override fun onReceive(context: Context?, intent: Intent?) {
+        val master: DaoMaster.DevOpenHelper = DaoMaster.DevOpenHelper(context, "makhzan")
+        daoSession = DaoMaster(master.writableDb).newSession()
+
         createNotificationChannel(context!!)
-
-//        val notificationManager: NotificationManager =
-//            context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
         val name = intent?.getStringExtra("name").toString()
         val comment = intent?.getStringExtra("comment").toString()
+        daoSession?.let { Database.updateIsOverTask(name, it) }
         val notification: Notification? = getDueNotification(name, comment, context)
 
         val notificationManager = NotificationManagerCompat.from(context)

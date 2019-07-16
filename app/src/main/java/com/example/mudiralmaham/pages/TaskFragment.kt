@@ -14,8 +14,11 @@ import android.widget.TextView
 import com.example.mudiralmaham.R
 import com.example.mudiralmaham.RecyclerViews.MyTaskRecyclerViewAdapter
 import com.example.mudiralmaham.dataModels.Task
+import com.example.mudiralmaham.events.TaskChange
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.OnBackPressed
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 
 /**
@@ -42,6 +45,7 @@ class TaskFragment : Fragment(), OnBackPressed {
         get
 
     private var tasks: List<Task>? = null
+    private var root_view: View? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,23 +66,22 @@ class TaskFragment : Fragment(), OnBackPressed {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_task_list, container, false)
+        root_view = inflater.inflate(R.layout.fragment_task_list, container, false)
         tasks = ContextHolder.getProjectTasks(projectName)
         // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = MyTaskRecyclerViewAdapter(tasks!!, listener)
+        with(root_view as RecyclerView) {
+            layoutManager = when {
+                columnCount <= 1 -> LinearLayoutManager(context)
+                else -> GridLayoutManager(context, columnCount)
             }
+            adapter = MyTaskRecyclerViewAdapter(tasks!!, listener)
         }
-        return view
+        return root_view
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        EventBus.getDefault().register(this)
         if (context is OnListFragmentInteractionListener) {
             listener = context
         } else {
@@ -88,6 +91,7 @@ class TaskFragment : Fragment(), OnBackPressed {
 
     override fun onDetach() {
         super.onDetach()
+        EventBus.getDefault().unregister(this)
         listener = null
     }
 
@@ -120,6 +124,19 @@ class TaskFragment : Fragment(), OnBackPressed {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
             }
+    }
+
+    @Subscribe
+    fun taskListChange(taskChange: TaskChange) {
+        tasks = ContextHolder.getProjectTasks(projectName)
+
+        with(root_view as RecyclerView) {
+            layoutManager = when {
+                columnCount <= 1 -> LinearLayoutManager(context)
+                else -> GridLayoutManager(context, columnCount)
+            }
+            adapter = MyTaskRecyclerViewAdapter(tasks!!, listener)
+        }
     }
 /*
     fun didTapButton(view: View) {

@@ -1,6 +1,8 @@
 package com.example.mudiralmaham.utils
 
 import com.example.mudiralmaham.dataModels.*
+import com.example.mudiralmaham.events.TaskChange
+import org.greenrobot.eventbus.EventBus
 import java.lang.Exception
 
 object Database {
@@ -88,6 +90,20 @@ object Database {
         } catch (err: Exception) {
         }
         return false
+    }
+
+    fun updateIsOverTask(name: String, dao: DaoSession = ContextHolder.mDaoSession) {
+        try{
+            var db = dao
+            if (ContextHolder.mDaoSession != null)
+                db = ContextHolder.mDaoSession
+            var task = db.taskDao.queryBuilder().where(TaskDao.Properties.Name.eq(name)).list()[0]
+            task.isOver = true
+            db.taskDao.update(task)
+            EventBus.getDefault().post(TaskChange())
+        } catch (err: Exception) {
+
+        }
     }
 
 
