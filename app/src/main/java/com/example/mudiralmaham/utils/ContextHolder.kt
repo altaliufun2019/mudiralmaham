@@ -19,6 +19,8 @@ object ContextHolder {
     fun getCacheData() {/*
         tasks = Database.getTasks()
         projects = Database.getProjects()*/
+//        fake data
+
         tasks = mutableListOf()
         projects = mutableListOf()
 
@@ -42,6 +44,7 @@ object ContextHolder {
 
     fun getProjectTasks(projectName: String): MutableList<Task> {
 //        return Database.getProjectTasks(projectName)
+//        fake data
         val taskList = mutableListOf<Task>()
         for (i in 1..10) {
             var t = Task()
@@ -53,5 +56,9 @@ object ContextHolder {
             taskList.add(t)
         }
         return taskList
+    }
+
+    fun updateTask(task: Task){
+        Database.updateTask(task)
     }
 }

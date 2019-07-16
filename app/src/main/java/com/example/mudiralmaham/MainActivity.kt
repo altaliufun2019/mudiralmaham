@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onListFragmentInteraction(item: Task?) {
+//        TODO(show task page)
         return
     }
 
@@ -102,7 +103,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        if (item.numericShortcut.toInt() > 2) {
+        if (item.numericShortcut.toString().toInt() > 2) {
             currentFragment = TaskFragment()
             (currentFragment as TaskFragment).projectName = item.title.toString()
             currentFragment?.let {
@@ -130,7 +131,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 //        TODO(to be replaced with real projects)
         for (project in ContextHolder.projects) {
-            submenu?.add(project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+            submenu?.add(project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)?.numericShortcut = '3'
         }
         navView?.invalidate()
     }

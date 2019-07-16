@@ -1,15 +1,19 @@
 package com.example.mudiralmaham.pages
 
+import android.graphics.Paint
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import com.example.mudiralmaham.R
 import com.example.mudiralmaham.dataModels.Task
 
 
 import com.example.mudiralmaham.pages.TaskFragment.OnListFragmentInteractionListener
+import com.example.mudiralmaham.utils.ContextHolder
+import com.example.mudiralmaham.utils.Database
 
 import kotlinx.android.synthetic.main.fragment_task.view.*
 
@@ -42,11 +46,20 @@ class MyTaskRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mIdView.text = "${item.name}"
+        holder.mTitleView.text = "${item.name}"
 //        holder.mContentView.text = item.content
+//        if (item.isOver)
+
+        holder.mTitleView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+
+        holder.mView.findViewById<CheckBox>(R.id.task_list_done_btn).setOnClickListener {
+            mValues[position].isDone = true
+            ContextHolder.updateTask(item)
+        }
 
         with(holder.mView) {
             tag = item
+            this.findViewById<CheckBox>(R.id.task_list_done_btn).isChecked = item.isOver
             setOnClickListener(mOnClickListener)
         }
     }
@@ -54,7 +67,8 @@ class MyTaskRecyclerViewAdapter(
     override fun getItemCount(): Int = mValues.size
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val mIdView: TextView = mView.task_list_title
+        val mTitleView: TextView = mView.task_list_title
+
 //        val mContentView: TextView = mView.content
 /*
         override fun toString(): String {
