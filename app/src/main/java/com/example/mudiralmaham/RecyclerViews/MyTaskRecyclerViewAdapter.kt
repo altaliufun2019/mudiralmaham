@@ -37,7 +37,7 @@ class MyTaskRecyclerViewAdapter(
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)
         }
-        sortTasks()
+        sortTasks(mValues)
     }
 
 
@@ -69,8 +69,8 @@ class MyTaskRecyclerViewAdapter(
 
     override fun getItemCount(): Int = mValues.size
 
-    fun sortTasks() {
-        Collections.sort(mValues) { t1: Task, t2: Task ->
+    fun sortTasks(tasks:List<Task>) {
+        Collections.sort(tasks) { t1: Task, t2: Task ->
 
             var p1 = 0
             var p2 = 0
@@ -86,7 +86,8 @@ class MyTaskRecyclerViewAdapter(
                 p1 -= 2
             if (p2 == 4)
                 p2 -= 2
-            p2 - p1
+            val dif = p2 - p1
+            if (dif != 0) dif else if (t1.due_date.before(t2.due_date)) -1 else 1
 
         }
     }
