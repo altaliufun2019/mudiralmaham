@@ -5,16 +5,17 @@
 
     <item android:title="@string/menu_title">
         <menu>
-            <item
-                    android:id="@+id/nav_home"
-                    android:icon="@drawable/ic_account_circle_black_24dp"
-                    android:title="@string/menu_account"/>
+            <item android:numericShortcut="1"
+                  android:id="@+id/nav_home"
+                  android:icon="@drawable/ic_account_circle_black_24dp"
+                  android:title="@string/menu_account"/>
             <!--<item
                     android:id="@+id/nav_gallery"
                     android:icon="@drawable/ic_menu_gallery"
                     android:title="@string/menu_gallery"/>-->
             <item
                     android:id="@+id/nav_add_project"
+                    android:numericShortcut="2"
                     android:icon="@drawable/ic_action_btn"
                     android:title="@string/menu_add_project"/>
             <!--        <item
