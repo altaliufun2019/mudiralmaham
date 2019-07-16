@@ -19,6 +19,7 @@ import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.OnBackPressed
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import java.util.*
 
 
 /**
@@ -44,7 +45,7 @@ class TaskFragment : Fragment(), OnBackPressed {
         set
         get
 
-    private var tasks: List<Task>? = null
+    private var tasks: MutableList<Task>? = null
     private var root_view: View? = null
 
 
@@ -68,6 +69,14 @@ class TaskFragment : Fragment(), OnBackPressed {
     ): View? {
         root_view = inflater.inflate(R.layout.fragment_task_list, container, false)
         tasks = ContextHolder.getProjectTasks(projectName)
+        var tempList: LinkedList<Task> = LinkedList(listOf())
+        for (task in tasks!!){
+            if (task.isOver)
+                tempList.push(task)
+            else
+                tempList.add(task)
+        }
+        tasks = tempList
         // Set the adapter
         with(root_view as RecyclerView) {
             layoutManager = when {
@@ -129,6 +138,10 @@ class TaskFragment : Fragment(), OnBackPressed {
     @Subscribe
     fun taskListChange(taskChange: TaskChange) {
         tasks = ContextHolder.getProjectTasks(projectName)
+        for (task in tasks as MutableList<Task>) {
+            if (task.isOver)
+                (tasks as MutableList<Task>).add(0, task)
+        }
 
         with(root_view as RecyclerView) {
             layoutManager = when {
