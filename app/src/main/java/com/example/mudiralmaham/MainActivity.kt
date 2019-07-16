@@ -21,14 +21,14 @@ import com.example.mudiralmaham.utils.OnBackPressed
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     TaskFragment.OnListFragmentInteractionListener {
-    companion object{
+    companion object {
         var currentFragment: Fragment? = null
     }
 
     override fun onListFragmentInteraction(item: Task?) {
+//        TODO(show task page)
         return
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
             currentFragment = TaskCreationFragment()
-            currentFragment?.let{
+            currentFragment?.let {
                 showPage(it)
             }
         }
@@ -103,18 +103,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-//        if (item.menuInfo)
-        currentFragment = TaskFragment()
-        (currentFragment as TaskFragment).projectName = item.title.toString()
-        currentFragment?.let {
-            showPage(it)
+        if (item.numericShortcut.toString().toInt() > 2) {
+            currentFragment = TaskFragment()
+            (currentFragment as TaskFragment).projectName = item.title.toString()
+            currentFragment?.let {
+                showPage(it)
+            }
+            val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+            drawerLayout.closeDrawer(GravityCompat.START)
         }
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    fun showPage(fragment:Fragment){
+    fun showPage(fragment: Fragment) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
 //        fragmentTransaction.replace(R.id.fragment_holder, TaskCreationFragment())
         fragmentTransaction.replace(R.id.main_fragment_holder, fragment).addToBackStack("main_page")
@@ -130,7 +131,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 //        TODO(to be replaced with real projects)
         for (project in ContextHolder.projects) {
-            submenu?.add(project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+            submenu?.add(project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)?.numericShortcut = '3'
         }
         navView?.invalidate()
     }
