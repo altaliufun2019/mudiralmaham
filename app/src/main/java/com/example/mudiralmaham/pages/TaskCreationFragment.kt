@@ -24,6 +24,7 @@ import androidx.annotation.RequiresApi
 import com.example.mudiralmaham.events.CreateTaskEvent
 import com.example.mudiralmaham.R
 import com.example.mudiralmaham.dataModels.Project
+import com.example.mudiralmaham.events.CreateProjectEvent
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.OnBackPressed
 import com.jaredrummler.materialspinner.MaterialSpinner
@@ -103,6 +104,10 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         EventBus.getDefault().unregister(this)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
 //    override fun action() {
 //        onBackPressed()
 //    }
@@ -160,7 +165,7 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        Snackbar.make(_root_view!!, "owner: ${parent?.getItemAtPosition(position)!!}", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(_root_view!!, "Owner: ${parent?.getItemAtPosition(position)!!}", Snackbar.LENGTH_SHORT).show()
         selected_owner = parent.getItemAtPosition(position).toString()
     }
 
@@ -213,11 +218,11 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNewTask() {
         if (!(_date_text?.text?.contains('/')!!) || !(_time_text?.text?.contains(':')!!)) {
-            Snackbar.make(_root_view!!, "must choose a date and time", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(_root_view!!, "Must choose a date and time", Snackbar.LENGTH_SHORT).show()
             return
         }
         if (selected_owner == null || selected_project == null) {
-            Snackbar.make(_root_view!!, "must choose project and owner", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(_root_view!!, "Must choose project and owner", Snackbar.LENGTH_SHORT).show()
             return
         }
         EventBus.getDefault().post(
@@ -238,22 +243,28 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun taskCreated(createTaskEvent: CreateTaskEvent) {
         if (createTaskEvent.result)
-            Snackbar.make(_root_view!!, "task added successfully", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(_root_view!!, "Task added successfully", Snackbar.LENGTH_SHORT).show()
         else {
             when (createTaskEvent.reason) {
-                0 -> Snackbar.make(_root_view!!, "there is already a task with this name", Snackbar.LENGTH_SHORT).show()
-                1 -> Snackbar.make(_root_view!!, "due date is already over", Snackbar.LENGTH_SHORT).show()
+                0 -> Snackbar.make(_root_view!!, "There is already a task with this name", Snackbar.LENGTH_SHORT).show()
+                1 -> Snackbar.make(_root_view!!, "Due date is already over", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun projectCreated(createProjectEvent: CreateProjectEvent) {
+
+    }
+
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-        Snackbar.make(_root_view!!, "time set to $hourOfDay:$minute", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(_root_view!!, "Time set to $hourOfDay:$minute", Snackbar.LENGTH_SHORT).show()
         _time_text?.text = "$hourOfDay:$minute"
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        Snackbar.make(_root_view!!, "date set to $year/$monthOfYear/$dayOfMonth", Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(_root_view!!, "Date set to $year/$monthOfYear/$dayOfMonth", Snackbar.LENGTH_SHORT).show()
         _date_text?.text = "$year/$monthOfYear/$dayOfMonth"
     }
 }
