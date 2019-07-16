@@ -46,20 +46,20 @@ class MyTaskRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = mValues[position]
-        holder.mTitleView.text = "${item.name}"
+        holder.mTitleView.text = item.name
 //        holder.mContentView.text = item.content
-//        if (item.isOver)
-
-        holder.mTitleView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        if (item.isOver)
+            holder.mTitleView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
 
         holder.mView.findViewById<CheckBox>(R.id.task_list_done_btn).setOnClickListener {
             mValues[position].isDone = true
             ContextHolder.updateTask(item)
+            ContextHolder.getCacheData()
         }
 
         with(holder.mView) {
             tag = item
-            this.findViewById<CheckBox>(R.id.task_list_done_btn).isChecked = item.isOver
+            this.findViewById<CheckBox>(R.id.task_list_done_btn).isChecked = item.isDone
             setOnClickListener(mOnClickListener)
         }
     }
