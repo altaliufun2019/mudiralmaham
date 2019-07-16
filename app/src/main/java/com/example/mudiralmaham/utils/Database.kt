@@ -26,6 +26,18 @@ object Database {
         }
     }
 
+    fun getProjectTasks(db: DaoSession = ContextHolder.mDaoSession, project:Project): MutableList<Task> {
+        try {
+            return db.taskDao.queryBuilder().where(
+                TaskDao.Properties.Owner.eq(
+                    ContextHolder.user?.email
+                )).where(TaskDao.Properties.Project.eq(project)).list()
+        }catch (err: Exception) {
+            return mutableListOf()
+        }
+    }
+
+
     fun getActiveTasks(db: DaoSession = ContextHolder.mDaoSession): MutableList<Task> {
         try {
             val qb = db.taskDao.queryBuilder()
@@ -73,4 +85,7 @@ object Database {
         }catch (err: Exception) {}
         return false
     }
+
+
+
 }

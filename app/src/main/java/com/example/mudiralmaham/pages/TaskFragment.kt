@@ -2,7 +2,6 @@ package com.example.mudiralmaham.pages
 
 import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -10,14 +9,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.CheckBox
-import android.widget.ImageButton
 import android.widget.TextView
 import com.example.mudiralmaham.R
-import com.example.mudiralmaham.pages.dummy.DummyContent
-import com.example.mudiralmaham.pages.dummy.DummyContent.DummyItem
-import com.example.mudiralmaham.utils.MyBounceInterpolator
+import com.example.mudiralmaham.dataModels.Task
+import com.example.mudiralmaham.utils.ContextHolder
+import com.example.mudiralmaham.utils.Database
 import com.example.mudiralmaham.utils.OnBackPressed
 
 
@@ -27,6 +24,7 @@ import com.example.mudiralmaham.utils.OnBackPressed
  * [TaskFragment.OnListFragmentInteractionListener] interface.
  */
 class TaskFragment : Fragment(), OnBackPressed {
+
 
     override fun onBackPressed() {
     }
@@ -39,6 +37,12 @@ class TaskFragment : Fragment(), OnBackPressed {
     private var doneButton: CheckBox? = null
     private var title: TextView? = null
     private var importantButton: CheckBox? = null
+    internal var projectName: String = "efef"
+        set
+        get
+
+    private var tasks: List<Task>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +63,7 @@ class TaskFragment : Fragment(), OnBackPressed {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_task_list, container, false)
-
+        tasks = ContextHolder.getProjectTasks(projectName!!)
         // Set the adapter
         if (view is RecyclerView) {
             with(view) {
@@ -67,7 +71,7 @@ class TaskFragment : Fragment(), OnBackPressed {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyTaskRecyclerViewAdapter(DummyContent.ITEMS, listener)
+                adapter = MyTaskRecyclerViewAdapter(tasks!!, listener)
             }
         }
         return view
@@ -100,7 +104,7 @@ class TaskFragment : Fragment(), OnBackPressed {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyItem?)
+        fun onListFragmentInteraction(item: Task?)
     }
 
     companion object {

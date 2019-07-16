@@ -6,20 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.mudiralmaham.R
+import com.example.mudiralmaham.dataModels.Task
 
 
 import com.example.mudiralmaham.pages.TaskFragment.OnListFragmentInteractionListener
-import com.example.mudiralmaham.pages.dummy.DummyContent.DummyItem
 
 import kotlinx.android.synthetic.main.fragment_task.view.*
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
+ * [RecyclerView.Adapter] that can display a [Task] and makes a call to the
  * specified [OnListFragmentInteractionListener].
  * TODO: Replace the implementation with code for your data type.
  */
 class MyTaskRecyclerViewAdapter(
-    private val mValues: List<DummyItem>,
+    private val mValues: List<Task>,
     private val mListener: OnListFragmentInteractionListener?
 ) : RecyclerView.Adapter<MyTaskRecyclerViewAdapter.ViewHolder>() {
 
@@ -27,7 +27,7 @@ class MyTaskRecyclerViewAdapter(
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyItem
+            val item = v.tag as Task
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
             mListener?.onListFragmentInteraction(item)

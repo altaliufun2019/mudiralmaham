@@ -19,4 +19,15 @@ object ContextHolder {
         projects = Database.getProjects()
         tasks = Database.getTasks()
     }
+
+    fun getProjectTasks(projectName: String): MutableList<Task> {
+
+        for (p in projects){
+            if (p.name == projectName){
+                return Database.getProjectTasks(project = p)
+            }
+        }
+        return MutableList(1) { Task()}
+
+    }
 }

@@ -1,9 +1,7 @@
 package com.example.mudiralmaham
 
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
@@ -13,14 +11,15 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import com.example.mudiralmaham.dataModels.Task
 import com.example.mudiralmaham.pages.TaskCreationFragment
 import com.example.mudiralmaham.pages.TaskFragment
-import com.example.mudiralmaham.pages.dummy.DummyContent
+import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.OnBackPressed
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener ,
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     TaskFragment.OnListFragmentInteractionListener {
-    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
+    override fun onListFragmentInteraction(item: Task?) {
         return
     }
 
@@ -44,8 +43,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         navView.setNavigationItemSelectedListener(this)
+
+//        to init lateinit vars in ContextHolder
+        ContextHolder.getCacheData()
+
         addMenuItemInNavMenuDrawer()
-        showPage(TaskFragment())
+        val taskFragment = TaskFragment()
+        taskFragment.projectName = ""//TODO(proper value)
+        showPage(taskFragment)
 
     }
 
@@ -86,43 +91,52 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_gallery -> {
 
             }
-            R.id.nav_slideshow -> {
+            R.id.nav_add_project -> {
 
             }
             R.id.nav_tools -> {
 
             }
-            R.id.nav_share -> {
+           /* R.id.nav_share -> {
 
             }
             R.id.nav_send -> {
 
-            }
+            }*/
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    fun showPage(fragment:Fragment){
+    fun showPage(fragment: Fragment) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
 //        fragmentTransaction.replace(R.id.fragment_holder, TaskCreationFragment())
         fragmentTransaction.replace(R.id.main_fragment_holder, fragment).addToBackStack("main_page")
         fragmentTransaction.commit()
 
     }
+
     private fun addMenuItemInNavMenuDrawer() {
-        val navView:NavigationView? = findViewById<NavigationView>(R.id.nav_view)
+        val navView: NavigationView? = findViewById<NavigationView>(R.id.nav_view)
 
         val menu = navView?.menu
         val submenu = menu?.addSubMenu("Projects")
 
-
-
-
-
-        submenu?.add("Super Item1")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)?.setTitleCondensed("efefe")
+//        TODO(to be replaced with real projects)
+        submenu?.add("Super Item1")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
         submenu?.add("Super Item2")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        submenu?.add("Super Item1")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        submenu?.add("Super Item2")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+        submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
         submenu?.add("Super Item3")?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
 
         navView?.invalidate()
