@@ -31,4 +31,6 @@
     <string name="collaborator_holder_label">add collaborator</string>
     <string name="menu_title">Menu</string>
     <string name="mudiralmaham_label">Mudiralmaham</string>
+    <string name="menu_add_project">add project</string>
+    <string name="menu_account">account</string>
 </resources>

@@ -55,6 +55,7 @@ class MyTaskRecyclerViewAdapter(
         holder.mView.findViewById<CheckBox>(R.id.task_list_done_btn).setOnClickListener {
             mValues[position].isDone = true
             ContextHolder.updateTask(item)
+            ContextHolder.getCacheData()
         }
 
         with(holder.mView) {
