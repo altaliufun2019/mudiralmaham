@@ -17,45 +17,50 @@ object ContextHolder {
     var user: User? = null
 
     fun getCacheData() {
-        tasks = Database.getTasks()
-        projects = Database.getProjects()
+//        tasks = Database.getTasks()
+//        projects = Database.getProjects()
 //        fake data
 
-//        tasks = mutableListOf()
-//        projects = mutableListOf()
-//
-//        for (i in 1..10) {
-//            var p = Project()
-//            p.name = "Project Number $i"
-//            p.created_date = Date()
-//            projects.add(p)
-//        }
-//
-//        for (i in 1..10) {
-//            var t = Task()
-//            t.name = "Task Number $i"
-//            t.created_date = Date()
-//            t.due_date = Date()
-//            t.owner = "me"
-//            t.project = "Project Number 1"
-//            tasks.add(t)
-//        }
+        tasks = mutableListOf()
+        projects = mutableListOf()
+
+        for (i in 1..10) {
+            var p = Project()
+            p.name = "Project Number $i"
+            p.created_date = Date()
+            projects.add(p)
+        }
+
+        for (i in 1..10) {
+            var t = Task()
+            t.name = "Task Number $i"
+            t.created_date = Date()
+            t.due_date = Date()
+            t.owner = "me"
+            t.project = "Project Number 1"
+            tasks.add(t)
+        }
     }
 
+//    TODO(to be replaced with Database method)
     fun getProjectTasks(projectName: String): MutableList<Task> {
-        return Database.getProjectTasks(projectName)
+//        return Database.getProjectTasks(projectName)
 //        fake data
-//        val taskList = mutableListOf<Task>()
-//        for (i in 1..10) {
-//            var t = Task()
-//            t.name = "Task Number $i from $projectName "
-//            t.created_date = Date()
-//            t.due_date = Date()
-//            t.owner = "me"
-//            t.project = "Project Number 1"
-//            taskList.add(t)
-//        }
-//        return taskList
+        val taskList = mutableListOf<Task>()
+        for (i in 1..13) {
+            var t = Task()
+            t.name = "Task Number $i from $projectName "
+            t.created_date = Date()
+            t.due_date = Date()
+            t.owner = "me"
+            t.project = "Project Number 1"
+            if (i in 4..7)
+                t.isDone = true
+            if (i in 7..11)
+                t.isOver = true
+            taskList.add(t)
+        }
+        return taskList
     }
 
     fun updateTask(task: Task){
