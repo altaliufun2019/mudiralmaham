@@ -1,4 +1,4 @@
-package com.example.mudiralmaham.pages
+package com.example.mudiralmaham.RecyclerViews
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

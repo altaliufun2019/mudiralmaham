@@ -28,11 +28,18 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".receivers.NotificationService"
-                 android:enabled="true"
-        />
         <receiver android:name=".receivers.NotificationReceiver"/>
         <receiver android:name=".receivers.DueTimeReceiver"/>
+        <receiver android:name=".receivers.MudirWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                       android:resource="@xml/mudirwidget"/>
+        </receiver>
+        
+        <service android:name=".receivers.ListWidgetService"
+                 android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

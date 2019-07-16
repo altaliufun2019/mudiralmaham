@@ -12,9 +12,9 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import com.example.mudiralmaham.R
+import com.example.mudiralmaham.RecyclerViews.MyTaskRecyclerViewAdapter
 import com.example.mudiralmaham.dataModels.Task
 import com.example.mudiralmaham.utils.ContextHolder
-import com.example.mudiralmaham.utils.Database
 import com.example.mudiralmaham.utils.OnBackPressed
 
 
