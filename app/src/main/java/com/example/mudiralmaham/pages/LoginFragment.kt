@@ -149,7 +149,7 @@ class LoginFragment: Fragment() {
         val password = _passwordText?.text.toString()
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText?.error = "enter DueTimeReceiver valid email address"
+            _emailText?.error = "enter valid email address"
             valid = false
         } else {
             _emailText?.error = null

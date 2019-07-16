@@ -73,7 +73,6 @@ class SignupFragment : Fragment() {
         _progress_dialog?.dismiss()
 
         nextPage(LoginFragment(), true)
-
     }
 
     private fun onFailure() {
@@ -129,11 +128,19 @@ class SignupFragment : Fragment() {
 
         var valid = true
 
+        val nameText = name?.text.toString()
         val emailText = email?.text.toString()
         val passwordText = password?.text.toString()
 
+        if (nameText.isEmpty()) {
+            name?.error = "enter your name"
+            valid = false
+        } else {
+            name?.error = null
+        }
+
         if (emailText.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
-            email?.error = "enter DueTimeReceiver valid email address"
+            email?.error = "enter valid email address"
             valid = false
         } else {
             email?.error = null
