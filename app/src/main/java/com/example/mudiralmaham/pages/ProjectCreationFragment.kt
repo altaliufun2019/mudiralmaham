@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import com.example.mudiralmaham.events.CreateTaskEvent
 import com.example.mudiralmaham.R
 import com.example.mudiralmaham.events.CreateProjectEvent
+import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.OnBackPressed
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -31,10 +32,10 @@ class ProjectCreationFragment : Fragment(), OnBackPressed{
     private var _save_btn: ImageView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _root_view = inflater.inflate(R.layout.task_creation_fragment, container, false)
+        _root_view = inflater.inflate(R.layout.project_creation_fragment, container, false)
 
-        _back_btn = _root_view?.findViewById(R.id.back_btn)
-        _save_btn = _root_view?.findViewById(R.id.save_btn)
+        _back_btn = _root_view?.findViewById(R.id.project_creation_back_btn)
+        _save_btn = _root_view?.findViewById(R.id.project_creation_save_btn)
 
         _project_name_input = _root_view?.findViewById(R.id.project_name)
         _description_input = _root_view?.findViewById(R.id.input_description)
@@ -100,8 +101,8 @@ class ProjectCreationFragment : Fragment(), OnBackPressed{
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNewProject() {
-        if (_project_name_input?.text != null) {
-            Snackbar.make(_root_view!!, "Enter DueTimeReceiver name to continue", Snackbar.LENGTH_SHORT).show()
+        if (_project_name_input?.text.toString() == "") {
+            Snackbar.make(_root_view!!, "Enter name to continue", Snackbar.LENGTH_SHORT).show()
             return
         }
         EventBus.getDefault().post(
@@ -115,11 +116,12 @@ class ProjectCreationFragment : Fragment(), OnBackPressed{
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun projectCreated(createProjectEvent: CreateProjectEvent) {
+        ContextHolder.getCacheData()
         if (createProjectEvent.result == 0)
-            Snackbar.make(_root_view!!, "Task added successfully", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(_root_view!!, "project added successfully", Snackbar.LENGTH_SHORT).show()
         else {
             when (createProjectEvent.result) {
-                1 -> Snackbar.make(_root_view!!, "There is already DueTimeReceiver task with this name", Snackbar.LENGTH_SHORT).show()
+                1 -> Snackbar.make(_root_view!!, "There is already project with this name", Snackbar.LENGTH_SHORT).show()
             }
         }
     }

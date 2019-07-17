@@ -11,18 +11,27 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.view.SubMenu
 import android.widget.TextView
 import com.example.mudiralmaham.dataModels.Task
+import com.example.mudiralmaham.events.CreateProjectEvent
+import com.example.mudiralmaham.events.CreateTaskEvent
+import com.example.mudiralmaham.pages.ProjectCreationFragment
 import com.example.mudiralmaham.pages.TaskCreationFragment
 import com.example.mudiralmaham.pages.TaskFragment
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.OnBackPressed
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     TaskFragment.OnListFragmentInteractionListener {
     companion object {
+        var lastFragment: Fragment? = null
         var currentFragment: Fragment? = null
     }
+
+    private var navSubMenu: SubMenu? = null
 
     override fun onListFragmentInteraction(item: Task?) {
 //        TODO(show task page)
@@ -35,9 +44,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
+        EventBus.getDefault().register(this)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
+            lastFragment = currentFragment
             currentFragment = TaskCreationFragment()
             currentFragment?.let {
                 showPage(it)
@@ -103,15 +114,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
-        if (item.numericShortcut.toString().toInt() > 2) {
-            currentFragment = TaskFragment()
-            (currentFragment as TaskFragment).projectName = item.title.toString()
-            currentFragment?.let {
-                showPage(it)
+        when (item.itemId) {
+            R.id.nav_add_project -> {
+                lastFragment = currentFragment
+                currentFragment = ProjectCreationFragment()
+                showPage(currentFragment!!)
             }
-            val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-            drawerLayout.closeDrawer(GravityCompat.START)
+            else -> {
+                if (item.numericShortcut.toString().toInt() > 2) {
+                    currentFragment = TaskFragment()
+                    (currentFragment as TaskFragment).projectName = item.title.toString()
+                    currentFragment?.let {
+                        showPage(it)
+                    }
+                }
+            }
         }
+        val drawerLayout
+                : DrawerLayout = findViewById(R.id.drawer_layout)
+        drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
@@ -127,11 +148,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navView: NavigationView? = findViewById<NavigationView>(R.id.nav_view)
 
         val menu = navView?.menu
-        val submenu = menu?.addSubMenu("Projects")
+        navSubMenu = menu?.addSubMenu("Projects")
 
 //        TODO(to be replaced with real projects)
         for (project in ContextHolder.projects) {
-            submenu?.add(project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)?.numericShortcut = '3'
+            navSubMenu?.add(project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)?.numericShortcut = '3'
         }
         navView?.invalidate()
     }
@@ -143,5 +164,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
+    @Subscribe
+    fun onTaskCreated(createTaskEvent: CreateTaskEvent) {
+
+    }
+
+    @Subscribe
+    fun onProjectCreated(createProjectEvent: CreateProjectEvent) {
+        val navView: NavigationView? = findViewById<NavigationView>(R.id.nav_view)
+
+        val menu = navView?.menu
+
+        navSubMenu?.add(createProjectEvent.project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)?.numericShortcut = '3'
+        navView?.invalidate()
+    }
 
 }

@@ -77,6 +77,7 @@ class TaskFragment : Fragment(), OnBackPressed {
                 tempList.add(task)
         }
         tasks = tempList
+        tasks?.reverse()
         // Set the adapter
         with(root_view as RecyclerView) {
             layoutManager = when {
@@ -146,6 +147,7 @@ class TaskFragment : Fragment(), OnBackPressed {
                 tempList.add(task)
         }
         tasks = tempList
+        tasks?.reverse()
         with(root_view as RecyclerView) {
             layoutManager = when {
                 columnCount <= 1 -> LinearLayoutManager(context)

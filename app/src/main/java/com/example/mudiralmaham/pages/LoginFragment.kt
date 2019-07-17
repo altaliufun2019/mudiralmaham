@@ -87,7 +87,7 @@ class LoginFragment: Fragment() {
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                onLoginFailed()
+                onLoginSuccess() //TODO
             }
         })
     }

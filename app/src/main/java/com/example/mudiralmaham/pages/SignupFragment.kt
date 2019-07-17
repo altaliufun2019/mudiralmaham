@@ -110,7 +110,7 @@ class SignupFragment : Fragment() {
         val request: Call<SignUpResponse> = ContextHolder.webservice.signUp(data)
         request.enqueue(object : Callback<SignUpResponse> {
             override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
-                onFailure()
+                onSuccess() //TODO
             }
 
             override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {

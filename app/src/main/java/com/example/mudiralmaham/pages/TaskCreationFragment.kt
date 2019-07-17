@@ -2,6 +2,8 @@ package com.example.mudiralmaham.pages
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.appwidget.AppWidgetManager
+import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -21,10 +23,12 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.annotation.RequiresApi
+import com.example.mudiralmaham.MainActivity
 import com.example.mudiralmaham.events.CreateTaskEvent
 import com.example.mudiralmaham.R
 import com.example.mudiralmaham.dataModels.Project
 import com.example.mudiralmaham.events.CreateProjectEvent
+import com.example.mudiralmaham.receivers.MudirWidget
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.OnBackPressed
 import com.jaredrummler.materialspinner.MaterialSpinner
@@ -219,11 +223,16 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
     }
 
     override fun onBackPressed() {
+        MainActivity.currentFragment = MainActivity.lastFragment
         fragmentManager?.popBackStack()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNewTask() {
+        if (_task_name_input?.text.toString() == "") {
+            Snackbar.make(_root_view!!, "Enter name to continue", Snackbar.LENGTH_SHORT).show()
+            return
+        }
         if (!(_date_text?.text?.contains('/')!!) || !(_time_text?.text?.contains(':')!!)) {
             Snackbar.make(_root_view!!, "Must choose due date and time", Snackbar.LENGTH_SHORT).show()
             return
@@ -265,6 +274,7 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
                 1 -> Snackbar.make(_root_view!!, "Due date is already over", Snackbar.LENGTH_SHORT).show()
             }
         }
+        MudirWidget.sendUpdateBroadcastToAllWidgets(activity?.applicationContext!!)
     }
 
 

@@ -12,8 +12,10 @@ import java.util.*
 @RequiresApi(Build.VERSION_CODES.O)
 class CreateProjectEvent(name: String, description: String, collaborators: String) {
     var result: Int = 0
+    lateinit var project: Project
+
     init {
-        val project = Project()
+        project = Project()
         project.name = name; project.description = description; project.owners = "${ContextHolder.user?.email} __ $collaborators"
         val now = LocalDateTime.now()
         project.created_date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant())

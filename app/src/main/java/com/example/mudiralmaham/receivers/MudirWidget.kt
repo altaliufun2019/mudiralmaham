@@ -15,10 +15,25 @@ import com.example.mudiralmaham.dataModels.DaoSession
 import com.example.mudiralmaham.dataModels.Task
 import com.example.mudiralmaham.pages.TaskFragment
 import com.example.mudiralmaham.utils.Database
+import android.content.ComponentName
+
+
 
 class MudirWidget: AppWidgetProvider(), TaskFragment.OnListFragmentInteractionListener{
     override fun onListFragmentInteraction(item: Task?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+    companion object {
+        fun sendUpdateBroadcastToAllWidgets(context: Context) {
+            val appWidgetManager = AppWidgetManager.getInstance(context)
+            val allWidgetIds = appWidgetManager
+                    .getAppWidgetIds(ComponentName(context, MudirWidget::class.java))
+            appWidgetManager.notifyAppWidgetViewDataChanged(allWidgetIds, R.id.widget_list)
+//            val intent = Intent(context, MudirWidget::class.java)
+//            intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+//            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, allWidgetIds)
+//            context.sendBroadcast(intent)
+        }
     }
 
     var daoSession: DaoSession? = null
@@ -48,7 +63,7 @@ class MudirWidget: AppWidgetProvider(), TaskFragment.OnListFragmentInteractionLi
                 context?.packageName,
                 R.layout.widget
             ).apply {
-                setOnClickPendingIntent(R.id.widget_holder, pendingIntent)
+                setOnClickPendingIntent(R.id.add_task_widget, pendingIntent)
                 setRemoteAdapter(R.id.widget_list, listIntent)
             }
             // Tell the AppWidgetManager to perform an update on the current app widget

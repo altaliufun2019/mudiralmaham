@@ -10,25 +10,29 @@ import com.example.mudiralmaham.dataModels.DaoSession
 import com.example.mudiralmaham.dataModels.Task
 import com.example.mudiralmaham.dataModels.WidgetItem
 import com.example.mudiralmaham.utils.Database
+import java.text.SimpleDateFormat
 
 class ListWidgetService: RemoteViewsService() {
     override fun onGetViewFactory(intent: Intent?): RemoteViewsFactory {
         val master: DaoMaster.DevOpenHelper = DaoMaster.DevOpenHelper(applicationContext, "makhzan")
-        val daoSession: DaoSession = DaoMaster(master.writableDb).newSession()
-        val tasks = Database.getTasks(daoSession)
+        ListWidgetFactory.daoSession = DaoMaster(master.writableDb).newSession()
+        val tasks = Database.getTasks(ListWidgetFactory.daoSession!!)
         val listWidgetFactory = ListWidgetFactory(this.applicationContext, intent!!, tasks)
         return listWidgetFactory
     }
 }
 
-class ListWidgetFactory(private val context: Context, intent: Intent, val tasks: List<Task>): RemoteViewsService.RemoteViewsFactory {
+class ListWidgetFactory(private val context: Context, intent: Intent, var tasks: List<Task>): RemoteViewsService.RemoteViewsFactory {
+    companion object{
+        var daoSession: DaoSession? = null
+    }
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
 
     override fun onDataSetChanged() {
-
+        tasks = daoSession?.let { Database.getTasks(it) } as List<Task>
     }
 
     override fun hasStableIds(): Boolean {
@@ -57,6 +61,7 @@ class ListWidgetFactory(private val context: Context, intent: Intent, val tasks:
         return RemoteViews(context.packageName, R.layout.widget_item).apply {
             setTextViewText(R.id.widget_task_name, tasks[position].name)
             setTextViewText(R.id.widget_task_comment, tasks[position].comment)
+            setTextViewText(R.id.widget_due_date, SimpleDateFormat("yyyy/mm/dd").format(tasks[position].due_date))
         }
     }
 
