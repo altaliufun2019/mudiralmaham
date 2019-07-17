@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.support.v4.widget.DrawerLayout
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
-import android.support.v4.widget.TextViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -62,6 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ContextHolder.getCacheData()
 
         addMenuItemInNavMenuDrawer()
+        setNavHeaderInfo()
 
 
         if (currentFragment == null) {
@@ -134,6 +134,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             submenu?.add(project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)?.numericShortcut = '3'
         }
         navView?.invalidate()
+    }
+
+    private fun setNavHeaderInfo() {
+        val navigationBarHeader = findViewById<NavigationView>(R.id.nav_view).getHeaderView(0)
+        navigationBarHeader.findViewById<TextView>(R.id.user_nav_name).text = ContextHolder.user?.name
+        navigationBarHeader.findViewById<TextView>(R.id.user_nav_email).text = ContextHolder.user?.email
+
     }
 
 
