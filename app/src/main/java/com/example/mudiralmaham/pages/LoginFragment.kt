@@ -95,7 +95,7 @@ class LoginFragment: Fragment() {
     fun onLoginSuccess() {
         Snackbar.make(
             _root!!,
-            "logged in successfully",
+            "Logged In Successfully",
             Snackbar.LENGTH_SHORT
         ).show()
         _loginButton?.isEnabled = true
@@ -108,7 +108,7 @@ class LoginFragment: Fragment() {
     fun onLoginFailed() {
         Snackbar.make(
             _root!!,
-            "authentication failed",
+            "Authentication Failed",
             Snackbar.LENGTH_SHORT
         ).show()
         _loginButton?.isEnabled = true
@@ -149,14 +149,14 @@ class LoginFragment: Fragment() {
         val password = _passwordText?.text.toString()
 
         if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText?.error = "enter valid email address"
+            _emailText?.error = "Enter valid email address"
             valid = false
         } else {
             _emailText?.error = null
         }
 
         if (password.isEmpty() || password.length < 4 || password.length > 10) {
-            _passwordText?.error = "between 4 and 10 alphanumeric characters"
+            _passwordText?.error = "Between 4 and 10 alphanumeric characters"
             valid = false
         } else {
             _passwordText?.error = null

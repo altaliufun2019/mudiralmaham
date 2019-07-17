@@ -66,7 +66,7 @@ class SignupFragment : Fragment() {
     private fun onSuccess() {
         Snackbar.make(
             root!!,
-            "signed up in successfully",
+            "Signed Up Successfully",
             Snackbar.LENGTH_SHORT
         ).show()
         signupButton?.isEnabled = true
@@ -78,7 +78,7 @@ class SignupFragment : Fragment() {
     private fun onFailure() {
         Snackbar.make(
             root!!,
-            "sign up failed",
+            "Sign Up Failed",
             Snackbar.LENGTH_SHORT
         ).show()
         signupButton?.isEnabled = true
@@ -133,21 +133,21 @@ class SignupFragment : Fragment() {
         val passwordText = password?.text.toString()
 
         if (nameText.isEmpty()) {
-            name?.error = "enter your name"
+            name?.error = "Enter Your Name"
             valid = false
         } else {
             name?.error = null
         }
 
         if (emailText.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
-            email?.error = "enter valid email address"
+            email?.error = "Enter a Valid Email Address"
             valid = false
         } else {
             email?.error = null
         }
 
         if (passwordText.isEmpty() || passwordText.length < 4 || passwordText.length > 10) {
-            password?.error = "between 4 and 10 alphanumeric characters"
+            password?.error = "Between 4 And 10 Alphanumeric Characters"
             valid = false
         } else {
             password?.error = null
