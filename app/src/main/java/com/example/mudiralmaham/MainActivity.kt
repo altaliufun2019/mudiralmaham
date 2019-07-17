@@ -171,12 +171,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     @Subscribe
     fun onProjectCreated(createProjectEvent: CreateProjectEvent) {
-        val navView: NavigationView? = findViewById<NavigationView>(R.id.nav_view)
-
-        val menu = navView?.menu
-
-        navSubMenu?.add(createProjectEvent.project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)?.numericShortcut = '3'
-        navView?.invalidate()
+        if (createProjectEvent.result == 0) {
+            val navView: NavigationView? = findViewById<NavigationView>(R.id.nav_view)
+            navSubMenu?.add(createProjectEvent.project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
+                ?.numericShortcut = '3'
+            navView?.invalidate()
+        }
     }
 
 }

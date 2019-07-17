@@ -4,5 +4,5 @@
           android:drawable="@drawable/ic_checked_done"/>
     <item android:state_checked="false"
           android:drawable="@drawable/ic_radio_button_unchecked_black_24dp"/>
-    <item android:drawable="@drawable/ic_radio_button_unchecked_black_24dp"/>
+    <item android:state_enabled="false" android:drawable="@drawable/ic_radio_button_unchecked_gray_24dp" />
 </selector>

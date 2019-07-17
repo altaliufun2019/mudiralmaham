@@ -51,8 +51,11 @@ class MyTaskRecyclerViewAdapter(
         val item = mValues[position]
         holder.mTitleView.text = item.name
 //        holder.mContentView.text = item.content
-        if (item.isOver)
+        if (item.isOver) {
             holder.mTitleView.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            holder.mView.findViewById<CheckBox>(R.id.task_list_done_btn).isClickable = false
+            holder.mView.findViewById<CheckBox>(R.id.task_list_done_btn).isEnabled = false
+        }
 
         holder.mView.findViewById<CheckBox>(R.id.task_list_done_btn).setOnClickListener {
             mValues[position].isDone = !mValues[position].isDone
