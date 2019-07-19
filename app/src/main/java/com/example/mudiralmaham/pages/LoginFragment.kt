@@ -1,6 +1,5 @@
 package com.example.mudiralmaham.pages
 
-import android.app.Activity.RESULT_OK
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -17,14 +16,16 @@ import android.widget.*
 import com.example.mudiralmaham.MainActivity
 import com.example.mudiralmaham.dataModels.User
 import com.example.mudiralmaham.utils.ContextHolder
+import com.example.mudiralmaham.webservice.request.GetProjectRequest
 import com.example.mudiralmaham.webservice.request.LoginRequest
 import com.example.mudiralmaham.webservice.response.LoginResponse
+import com.example.mudiralmaham.webservice.response.ProjectResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class LoginFragment: Fragment() {
+class LoginFragment : Fragment() {
 
     private var _emailText: EditText? = null
     private var _passwordText: EditText? = null
@@ -47,7 +48,7 @@ class LoginFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _loginButton?.setOnClickListener{
+        _loginButton?.setOnClickListener {
             loginToServer()
         }
         _signupLink?.setOnClickListener {
@@ -78,21 +79,21 @@ class LoginFragment: Fragment() {
         val data = LoginRequest(email, password)
 
         val request: Call<LoginResponse> = ContextHolder.webservice.login(data)
-        request.enqueue(object: Callback<LoginResponse>{
+        request.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.code() == 200)
-                    onLoginSuccess()
+                    onLoginSuccess(response.body())
                 else
                     onLoginFailed()
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                onLoginSuccess() //TODO
+                onLoginFailed() //TODO
             }
         })
     }
 
-    fun onLoginSuccess() {
+    fun onLoginSuccess(credits: LoginResponse?) {
         Snackbar.make(
             _root!!,
             "Logged In Successfully",
@@ -101,7 +102,7 @@ class LoginFragment: Fragment() {
         _loginButton?.isEnabled = true
         _progress_dialog?.dismiss()
 
-        dataUpdate()
+        dataUpdate(credits)
         startActivity(Intent(context, MainActivity::class.java))
     }
 
@@ -115,26 +116,45 @@ class LoginFragment: Fragment() {
         _progress_dialog?.dismiss()
     }
 
-    private fun dataUpdate() {
+    private fun dataUpdate(credits: LoginResponse?) {
         // TODO: request server for past tasks and projects
-        cacheData()
+        if (ContextHolder.isNetworkConnected) {
+            cacheUserData(credits)
+            val data = GetProjectRequest(ContextHolder.user!!.email)
+            val request: Call<List<ProjectResponse>> = ContextHolder.webservice.getProjects("Bearer ${ContextHolder.user!!.token}", data)
+            request.enqueue(object : Callback<List<ProjectResponse>> {
+                override fun onResponse(call: Call<List<ProjectResponse>>, response: Response<List<ProjectResponse>>) {
+                    if (response.code() == 200)
+                        ContextHolder.updateCacheFromNetwork(response.body())
+                    else
+                        Toast.makeText(
+                            activity?.applicationContext,
+                            "Cannot retrieve data from server",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                }
+
+                override fun onFailure(call: Call<List<ProjectResponse>>, t: Throwable) {
+                    Toast.makeText(activity?.applicationContext, "Cannot retrieve data from server", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else
+            ContextHolder.getCacheData()
     }
 
-    private fun cacheData() {
-        // TODO: change "mudir" to name gotten from server
-        ContextHolder.user = User("mudir", _emailText?.text?.toString())
+    private fun cacheUserData(credits: LoginResponse?) {
+        ContextHolder.user = User(credits?.name, _emailText?.text?.toString(), credits?.token)
         val sharedPreferences: SharedPreferences = activity?.getPreferences(Context.MODE_PRIVATE)!!
         with(sharedPreferences.edit()) {
             putString("mudir_email", ContextHolder.user?.email)
             putString("mudir_name", ContextHolder.user?.name)
+            putString("mudir_token", ContextHolder.user?.token)
             apply()
         }
-
-        ContextHolder.getCacheData()
     }
 
 
-    private fun nextPage(page: Fragment, crossFade:Boolean = false) {
+    private fun nextPage(page: Fragment, crossFade: Boolean = false) {
         val transaction = fragmentManager?.beginTransaction()
         if (crossFade)
             transaction?.setCustomAnimations(R.anim.no_anim, R.anim.ltr_slide_in)

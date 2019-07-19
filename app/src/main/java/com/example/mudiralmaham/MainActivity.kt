@@ -1,6 +1,13 @@
 package com.example.mudiralmaham
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -12,6 +19,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.SubMenu
+import android.widget.ImageView
 import android.widget.TextView
 import com.example.mudiralmaham.dataModels.Task
 import com.example.mudiralmaham.events.CreateProjectEvent
@@ -45,6 +53,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         EventBus.getDefault().register(this)
+        ContextHolder.networkMonitor?.enable(this)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -82,6 +91,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         currentFragment?.let {
             showPage(it)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ContextHolder.networkMonitor?.disable()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onBackPressed() {
@@ -176,6 +191,50 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             navSubMenu?.add(createProjectEvent.project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
                 ?.numericShortcut = '3'
             navView?.invalidate()
+        }
+    }
+
+
+    /**
+     * a monitor class for network connectivity
+     */
+    class ConnectionMonitor(context: Context) :
+        ConnectivityManager.NetworkCallback() {
+        private val networkRequest: NetworkRequest = NetworkRequest.Builder()
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .build()
+        private var context: Context? = null
+        internal var connection: Boolean? = false
+            private set
+
+        init {
+            enable(context)
+        }
+
+        internal fun enable(context: Context) {
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            cm.registerNetworkCallback(networkRequest, this)
+            this.context = context
+            val network = cm.activeNetworkInfo
+            if (network == null || !network.isConnected) {
+            } else {
+                ContextHolder.isNetworkConnected = true
+            }
+        }
+
+        fun disable() {
+            val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            cm.unregisterNetworkCallback(this)
+            this.context = null
+        }
+
+        override fun onAvailable(network: Network) {
+            ContextHolder.isNetworkConnected = true
+        }
+
+        override fun onLost(network: Network) {
+            ContextHolder.isNetworkConnected = false
         }
     }
 

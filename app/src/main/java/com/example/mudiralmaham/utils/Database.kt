@@ -106,5 +106,13 @@ object Database {
         }
     }
 
+    fun deleteTaks(db: DaoSession = ContextHolder.mDaoSession) {
+        db.taskDao.deleteAll()
+    }
+
+    fun deleteProjects(db: DaoSession = ContextHolder.mDaoSession) {
+        db.projectDao.deleteAll()
+    }
+
 
 }
