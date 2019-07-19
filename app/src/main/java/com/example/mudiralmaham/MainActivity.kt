@@ -103,7 +103,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         currentFragment?.let {
             showPage(it)
         }
-        (resources.getLayout() as MenuItem).setOnMenuItemClickListener { showChangeThemeDialog() }
     }
 
     override fun onDestroy() {

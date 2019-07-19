@@ -18,11 +18,15 @@ import android.widget.Toast
 import com.example.mudiralmaham.MainActivity
 import com.example.mudiralmaham.R
 import com.example.mudiralmaham.dataModels.User
+import com.example.mudiralmaham.events.NetworkUpdate
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.webservice.request.GetProjectRequest
 import com.example.mudiralmaham.webservice.request.SignUpRequest
 import com.example.mudiralmaham.webservice.response.ProjectResponse
 import com.example.mudiralmaham.webservice.response.SignUpResponse
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,6 +63,16 @@ class SignupFragment : Fragment() {
 //            signupRequest()
         }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        EventBus.getDefault().unregister(this)
     }
 
     private fun nextPage(page: Fragment, crossFade: Boolean = false) {
@@ -109,10 +123,14 @@ class SignupFragment : Fragment() {
             "Signed Up Successfully",
             Snackbar.LENGTH_SHORT
         ).show()
-        signupButton?.isEnabled = true
-        _progress_dialog?.dismiss()
 
         dataUpdate(credits)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun networkUpdateDone(networkUpdate: NetworkUpdate) {
+        signupButton?.isEnabled = true
+        _progress_dialog?.dismiss()
         startActivity(Intent(context, MainActivity::class.java))
     }
 
