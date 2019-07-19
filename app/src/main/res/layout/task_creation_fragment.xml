@@ -90,8 +90,8 @@
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
                           android:inputType="text"
-                          android:textColorHint="@color/colorPrimary"
-                          android:textColor="@color/colorPrimary"
+                          android:textColorHint="@color/colorPrimaryBlue"
+                          android:textColor="@color/colorPrimaryBlue"
                           android:theme="@style/MyEditText"
                           android:hint="@string/name_label"/>
                 <!--</android.support.design.widget.TextInputLayout>-->

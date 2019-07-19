@@ -1,5 +1,7 @@
 package com.example.mudiralmaham
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.view.GravityCompat
@@ -40,6 +42,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        try {
+            setTheme()
+        } catch (_: Error) {
+
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
@@ -127,8 +134,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     currentFragment?.let {
                         showPage(it)
                     }
+                } else {
+                    application.getSharedPreferences("Theme", Context.MODE_PRIVATE).edit().putString("Theme", "GREEN")
+                        .commit()
+                    recreate()
                 }
             }
+
         }
         val drawerLayout
                 : DrawerLayout = findViewById(R.id.drawer_layout)
@@ -176,6 +188,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             navSubMenu?.add(createProjectEvent.project.name)?.setIcon(R.drawable.ic_format_list_bulleted_red_24dp)
                 ?.numericShortcut = '3'
             navView?.invalidate()
+        }
+    }
+
+    private fun setTheme() {
+        when (getSharedPreferences("Theme", Context.MODE_PRIVATE)?.getString("Theme", "BLUE")) {
+            "GREEN" -> setTheme(R.style.AppTheme_Green)
+            "BLUE" -> setTheme(R.style.AppTheme_NoActionBar)
         }
     }
 
