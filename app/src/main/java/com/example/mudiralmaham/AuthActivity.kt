@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import com.example.mudiralmaham.dataModels.DaoMaster
 import com.example.mudiralmaham.dataModels.Project
 import com.example.mudiralmaham.dataModels.User
@@ -14,6 +16,12 @@ import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.Database
 import com.example.mudiralmaham.webservice.EndPoints
 import com.example.mudiralmaham.webservice.RetrofitInstance
+import com.example.mudiralmaham.webservice.request.GetProjectRequest
+import com.example.mudiralmaham.webservice.response.LoginResponse
+import com.example.mudiralmaham.webservice.response.ProjectResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 class AuthActivity : AppCompatActivity() {
@@ -25,6 +33,11 @@ class AuthActivity : AppCompatActivity() {
         Handler().post {
             insertDefaultProjects()
         }
+
+
+        ContextHolder.networkMonitor = MainActivity.ConnectionMonitor(
+            this
+        )
         getCacheData()
         if (ContextHolder.user == null)
             showFragment(LoginFragment())
@@ -34,11 +47,32 @@ class AuthActivity : AppCompatActivity() {
 
     private fun getCacheData() {
         val email = getPreferences(Context.MODE_PRIVATE).getString("mudir_email", "")
+        val token = getPreferences(Context.MODE_PRIVATE).getString("mudir_token", "")
         val name = getPreferences(Context.MODE_PRIVATE).getString("mudir_name", "")
-        if (email?.equals("")!!)
+        if (token?.equals("")!!)
             return
-        ContextHolder.user = User(name, email)
-        ContextHolder.getCacheData()
+        if (ContextHolder.isNetworkConnected) {
+            ContextHolder.user = User(name, email, token)
+            val data = GetProjectRequest(email!!)
+            val request: Call<List<ProjectResponse>> = ContextHolder.webservice.getProjects("Bearer $token", data)
+            request.enqueue(object : Callback<List<ProjectResponse>> {
+                override fun onResponse(call: Call<List<ProjectResponse>>, response: Response<List<ProjectResponse>>) {
+                    if (response.code() == 200)
+                        ContextHolder.updateCacheFromNetwork(response.body())
+                    else
+                        Toast.makeText(
+                            applicationContext,
+                            "Cannot retrieve data from server",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                }
+
+                override fun onFailure(call: Call<List<ProjectResponse>>, t: Throwable) {
+                    Toast.makeText(applicationContext, "Cannot retrieve data from server, check credentials", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else
+            ContextHolder.getCacheData()
     }
 
     private fun initWebservice() {
@@ -89,6 +123,7 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        ContextHolder.networkMonitor?.disable()
     }
 
     override fun onPause() {

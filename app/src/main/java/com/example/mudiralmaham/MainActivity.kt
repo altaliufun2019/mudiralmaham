@@ -2,7 +2,15 @@ package com.example.mudiralmaham
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Network
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -14,7 +22,9 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.SubMenu
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.mudiralmaham.dataModels.Task
 import com.example.mudiralmaham.events.CreateProjectEvent
 import com.example.mudiralmaham.events.CreateTaskEvent
@@ -23,8 +33,14 @@ import com.example.mudiralmaham.pages.TaskCreationFragment
 import com.example.mudiralmaham.pages.TaskFragment
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.OnBackPressed
+import com.example.mudiralmaham.webservice.request.AddProjectRequest
+import com.example.mudiralmaham.webservice.request.AddTaskRequest
+import com.example.mudiralmaham.webservice.response.AddResponse
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     TaskFragment.OnListFragmentInteractionListener {
@@ -52,6 +68,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         EventBus.getDefault().register(this)
+        ContextHolder.networkMonitor?.enable(this)
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener { view ->
@@ -89,6 +106,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         currentFragment?.let {
             showPage(it)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ContextHolder.networkMonitor?.disable()
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onBackPressed() {
@@ -195,6 +218,82 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (getSharedPreferences("Theme", Context.MODE_PRIVATE)?.getString("Theme", "BLUE")) {
             "GREEN" -> setTheme(R.style.AppTheme_Green)
             "BLUE" -> setTheme(R.style.AppTheme_NoActionBar)
+        }
+    }
+
+
+    /**
+     * a monitor class for network connectivity
+     */
+    class ConnectionMonitor(context: Context) :
+        ConnectivityManager.NetworkCallback() {
+
+        val projectSyncQueue: MutableList<AddProjectRequest> = mutableListOf()
+        val taskSyncQueue: MutableList<AddTaskRequest> = mutableListOf()
+        private val networkRequest: NetworkRequest = NetworkRequest.Builder()
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .build()
+        private var context: Context? = null
+        internal var connection: Boolean? = false
+            private set
+
+        init {
+            enable(context)
+        }
+
+        internal fun enable(context: Context) {
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            cm.registerNetworkCallback(networkRequest, this)
+            this.context = context
+            val network = cm.activeNetworkInfo
+            if (network == null || !network.isConnected) {
+            } else {
+                ContextHolder.isNetworkConnected = true
+            }
+        }
+
+        fun disable() {
+            val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            cm.unregisterNetworkCallback(this)
+            this.context = null
+        }
+
+        override fun onAvailable(network: Network) {
+            ContextHolder.isNetworkConnected = true
+
+            var idx = 0
+            while (idx < projectSyncQueue.size) {
+                val request: Call<AddResponse> = ContextHolder.webservice.addProject("Bearer ${ContextHolder.user?.token}", projectSyncQueue[idx])
+                request.enqueue(object : Callback<AddResponse> {
+                    override fun onFailure(call: Call<AddResponse>, t: Throwable) {
+                    }
+
+                    override fun onResponse(call: Call<AddResponse>, response: Response<AddResponse>) {
+                        projectSyncQueue.removeAt(idx)
+                        idx--
+                    }
+                })
+                idx ++
+            }
+            idx = 0
+            while (idx < taskSyncQueue.size) {
+                val request: Call<AddResponse> = ContextHolder.webservice.addTask("Bearer ${ContextHolder.user?.token}", taskSyncQueue[idx])
+                request.enqueue(object : Callback<AddResponse> {
+                    override fun onFailure(call: Call<AddResponse>, t: Throwable) {
+                    }
+
+                    override fun onResponse(call: Call<AddResponse>, response: Response<AddResponse>) {
+                        taskSyncQueue.removeAt(idx)
+                        idx--
+                    }
+                })
+                idx ++
+            }
+        }
+
+        override fun onLost(network: Network) {
+            ContextHolder.isNetworkConnected = false
         }
     }
 
