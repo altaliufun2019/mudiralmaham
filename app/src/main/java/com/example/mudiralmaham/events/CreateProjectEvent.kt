@@ -30,7 +30,7 @@ class CreateProjectEvent(name: String, description: String, collaborators: Strin
 
         val data = AddProjectRequest(project.name, project.created_date, project.description, collaborators)
         if (ContextHolder.isNetworkConnected) {
-            val request: Call<AddResponse> = ContextHolder.webservice.addProject(data)
+            val request: Call<AddResponse> = ContextHolder.webservice.addProject("Bearer ${ContextHolder.user?.token}", data)
             request.enqueue(object : Callback<AddResponse> {
                 override fun onFailure(call: Call<AddResponse>, t: Throwable) {
                     Toast.makeText(context, "couldn't sync with server", Toast.LENGTH_SHORT).show()

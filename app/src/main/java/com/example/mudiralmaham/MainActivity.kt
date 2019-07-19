@@ -244,7 +244,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             var idx = 0
             while (idx < projectSyncQueue.size) {
-                val request: Call<AddResponse> = ContextHolder.webservice.addProject(projectSyncQueue[idx])
+                val request: Call<AddResponse> = ContextHolder.webservice.addProject("Bearer ${ContextHolder.user?.token}", projectSyncQueue[idx])
                 request.enqueue(object : Callback<AddResponse> {
                     override fun onFailure(call: Call<AddResponse>, t: Throwable) {
                     }
@@ -258,7 +258,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             idx = 0
             while (idx < taskSyncQueue.size) {
-                val request: Call<AddResponse> = ContextHolder.webservice.addTask(taskSyncQueue[idx])
+                val request: Call<AddResponse> = ContextHolder.webservice.addTask("Bearer ${ContextHolder.user?.token}", taskSyncQueue[idx])
                 request.enqueue(object : Callback<AddResponse> {
                     override fun onFailure(call: Call<AddResponse>, t: Throwable) {
                     }

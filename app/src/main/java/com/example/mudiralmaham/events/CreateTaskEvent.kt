@@ -67,7 +67,7 @@ class CreateTaskEvent(
             task.isDone
         )
         if (ContextHolder.isNetworkConnected) {
-            val request: Call<AddResponse> = ContextHolder.webservice.addTask(data)
+            val request: Call<AddResponse> = ContextHolder.webservice.addTask("Bearer ${ContextHolder.user?.token}", data)
             request.enqueue(object : Callback<AddResponse> {
                 override fun onFailure(call: Call<AddResponse>, t: Throwable) {
                     Toast.makeText(context, "couldn't sync with server", Toast.LENGTH_SHORT).show()

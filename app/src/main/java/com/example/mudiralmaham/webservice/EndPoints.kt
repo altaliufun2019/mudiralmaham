@@ -19,17 +19,17 @@ interface EndPoints {
     fun login(@Body data: LoginRequest): Call<LoginResponse>
 
     @POST("/project/add")
-    fun addProject(@Body data: AddProjectRequest): Call<AddResponse>
+    fun addProject(@Header("Authorization") token: String, @Body data: AddProjectRequest): Call<AddResponse>
 
     @POST("/project/get")
     fun getProjects(@Header("Authorization") token: String, @Body data: GetProjectRequest): Call<List<ProjectResponse>>
 
     @POST("/project/add_collaborator")
-    fun addCollaborator(@Body data: AddCollaboratorRequest): Call<AddResponse>
+    fun addCollaborator(@Header("Authorization") token: String, @Body data: AddCollaboratorRequest): Call<AddResponse>
 
     @POST("/task/add")
-    fun addTask(@Body data: AddTaskRequest): Call<AddResponse>
+    fun addTask(@Header("Authorization") token: String, @Body data: AddTaskRequest): Call<AddResponse>
 
     @POST("/task/update")
-    fun updateTask(@Body data: AddTaskRequest): Call<AddResponse>
+    fun updateTask(@Header("Authorization") token: String, @Body data: AddTaskRequest): Call<AddResponse>
 }
