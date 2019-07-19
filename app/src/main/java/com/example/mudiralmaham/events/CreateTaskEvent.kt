@@ -12,8 +12,15 @@ import android.os.SystemClock
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 import com.example.mudiralmaham.receivers.DueTimeReceiver
 import com.example.mudiralmaham.receivers.NotificationReceiver
+import com.example.mudiralmaham.utils.ContextHolder
+import com.example.mudiralmaham.webservice.request.AddTaskRequest
+import com.example.mudiralmaham.webservice.response.AddResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -47,6 +54,33 @@ class CreateTaskEvent(
         task.due_date = cal.time
         cal.set(Calendar.HOUR, if (hour > 1) hour - 1 else 0)
         task.notification_date = cal.time
+
+        val data = AddTaskRequest(
+            task.name,
+            task.comment,
+            task.created_date,
+            task.due_date,
+            task.notification_date,
+            "",
+            task.owner,
+            task.isOver,
+            task.isDone
+        )
+        if (ContextHolder.isNetworkConnected) {
+            val request: Call<AddResponse> = ContextHolder.webservice.addTask(data)
+            request.enqueue(object : Callback<AddResponse> {
+                override fun onFailure(call: Call<AddResponse>, t: Throwable) {
+                    Toast.makeText(context, "couldn't sync with server", Toast.LENGTH_SHORT).show()
+                    ContextHolder.networkMonitor?.taskSyncQueue?.add(data)
+                }
+
+                override fun onResponse(call: Call<AddResponse>, response: Response<AddResponse>) {
+
+                }
+            })
+        } else {
+            ContextHolder.networkMonitor?.taskSyncQueue?.add(data)
+        }
 
         if (task.due_date.after(task.created_date)) {
             task.isOver = false

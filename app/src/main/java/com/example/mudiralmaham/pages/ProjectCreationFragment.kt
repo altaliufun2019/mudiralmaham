@@ -106,7 +106,7 @@ class ProjectCreationFragment : Fragment(), OnBackPressed{
             return
         }
         EventBus.getDefault().post(
-             CreateProjectEvent(_project_name_input?.text.toString(), _description_input?.text.toString(), _collaborators_holder?.text.toString())
+             CreateProjectEvent(_project_name_input?.text.toString(), _description_input?.text.toString(), _collaborators_holder?.text.toString(), activity?.applicationContext!!)
         )
     }
 

@@ -21,6 +21,7 @@ import android.view.Menu
 import android.view.SubMenu
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.example.mudiralmaham.dataModels.Task
 import com.example.mudiralmaham.events.CreateProjectEvent
 import com.example.mudiralmaham.events.CreateTaskEvent
@@ -29,8 +30,14 @@ import com.example.mudiralmaham.pages.TaskCreationFragment
 import com.example.mudiralmaham.pages.TaskFragment
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.OnBackPressed
+import com.example.mudiralmaham.webservice.request.AddProjectRequest
+import com.example.mudiralmaham.webservice.request.AddTaskRequest
+import com.example.mudiralmaham.webservice.response.AddResponse
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     TaskFragment.OnListFragmentInteractionListener {
@@ -200,6 +207,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
      */
     class ConnectionMonitor(context: Context) :
         ConnectivityManager.NetworkCallback() {
+
+        val projectSyncQueue: MutableList<AddProjectRequest> = mutableListOf()
+        val taskSyncQueue: MutableList<AddTaskRequest> = mutableListOf()
         private val networkRequest: NetworkRequest = NetworkRequest.Builder()
             .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
             .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
@@ -231,6 +241,35 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         override fun onAvailable(network: Network) {
             ContextHolder.isNetworkConnected = true
+
+            var idx = 0
+            while (idx < projectSyncQueue.size) {
+                val request: Call<AddResponse> = ContextHolder.webservice.addProject(projectSyncQueue[idx])
+                request.enqueue(object : Callback<AddResponse> {
+                    override fun onFailure(call: Call<AddResponse>, t: Throwable) {
+                    }
+
+                    override fun onResponse(call: Call<AddResponse>, response: Response<AddResponse>) {
+                        projectSyncQueue.removeAt(idx)
+                        idx--
+                    }
+                })
+                idx ++
+            }
+            idx = 0
+            while (idx < taskSyncQueue.size) {
+                val request: Call<AddResponse> = ContextHolder.webservice.addTask(taskSyncQueue[idx])
+                request.enqueue(object : Callback<AddResponse> {
+                    override fun onFailure(call: Call<AddResponse>, t: Throwable) {
+                    }
+
+                    override fun onResponse(call: Call<AddResponse>, response: Response<AddResponse>) {
+                        taskSyncQueue.removeAt(idx)
+                        idx--
+                    }
+                })
+                idx ++
+            }
         }
 
         override fun onLost(network: Network) {

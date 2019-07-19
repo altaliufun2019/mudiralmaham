@@ -1,6 +1,7 @@
 package com.example.mudiralmaham.webservice
 
 import com.example.mudiralmaham.webservice.request.*
+import com.example.mudiralmaham.webservice.response.AddResponse
 import com.example.mudiralmaham.webservice.response.LoginResponse
 import com.example.mudiralmaham.webservice.response.SignUpResponse
 import com.example.mudiralmaham.webservice.response.ProjectResponse
@@ -18,17 +19,17 @@ interface EndPoints {
     fun login(@Body data: LoginRequest): Call<LoginResponse>
 
     @POST("/project/add")
-    fun addProject(@Body data: AddProjectRequest)
+    fun addProject(@Body data: AddProjectRequest): Call<AddResponse>
 
     @POST("/project/get")
     fun getProjects(@Header("Authorization") token: String, @Body data: GetProjectRequest): Call<List<ProjectResponse>>
 
     @POST("/project/add_collaborator")
-    fun addCollaborator(@Body data: AddCollaboratorRequest)
+    fun addCollaborator(@Body data: AddCollaboratorRequest): Call<AddResponse>
 
     @POST("/task/add")
-    fun addTask(@Body data: AddTaskRequest)
+    fun addTask(@Body data: AddTaskRequest): Call<AddResponse>
 
     @POST("/task/update")
-    fun updateTask(@Body data: AddTaskRequest)
+    fun updateTask(@Body data: AddTaskRequest): Call<AddResponse>
 }
