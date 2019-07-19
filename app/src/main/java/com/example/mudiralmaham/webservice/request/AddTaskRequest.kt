@@ -21,5 +21,7 @@ class AddTaskRequest (
     @SerializedName("is_over")
     var isOver: Boolean? = false,
     @SerializedName("is_done")
-    var isDone: Boolean? = false
+    var isDone: Boolean? = false,
+    @SerializedName("project")
+    var project: String? = null
 )

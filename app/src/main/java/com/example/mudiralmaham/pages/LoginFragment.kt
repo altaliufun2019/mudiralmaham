@@ -99,10 +99,10 @@ class LoginFragment : Fragment() {
             "Logged In Successfully",
             Snackbar.LENGTH_SHORT
         ).show()
-        _loginButton?.isEnabled = true
-        _progress_dialog?.dismiss()
 
         dataUpdate(credits)
+        _loginButton?.isEnabled = true
+        _progress_dialog?.dismiss()
         startActivity(Intent(context, MainActivity::class.java))
     }
 

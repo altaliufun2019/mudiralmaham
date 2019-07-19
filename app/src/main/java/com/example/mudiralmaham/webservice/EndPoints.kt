@@ -1,10 +1,7 @@
 package com.example.mudiralmaham.webservice
 
 import com.example.mudiralmaham.webservice.request.*
-import com.example.mudiralmaham.webservice.response.AddResponse
-import com.example.mudiralmaham.webservice.response.LoginResponse
-import com.example.mudiralmaham.webservice.response.SignUpResponse
-import com.example.mudiralmaham.webservice.response.ProjectResponse
+import com.example.mudiralmaham.webservice.response.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -29,6 +26,9 @@ interface EndPoints {
 
     @POST("/task/add")
     fun addTask(@Header("Authorization") token: String, @Body data: AddTaskRequest): Call<AddResponse>
+
+    @POST("/task/get")
+    fun getTask(@Header("Authorization") token: String, @Body data: GetTaskRequest): Call<List<TaskResponse>>
 
     @POST("/task/update")
     fun updateTask(@Header("Authorization") token: String, @Body data: AddTaskRequest): Call<AddResponse>
