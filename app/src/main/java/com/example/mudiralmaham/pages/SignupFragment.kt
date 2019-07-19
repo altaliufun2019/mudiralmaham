@@ -1,7 +1,9 @@
 package com.example.mudiralmaham.pages
 
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -12,10 +14,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.example.mudiralmaham.MainActivity
 import com.example.mudiralmaham.R
+import com.example.mudiralmaham.dataModels.User
 import com.example.mudiralmaham.utils.ContextHolder
+import com.example.mudiralmaham.webservice.request.GetProjectRequest
 import com.example.mudiralmaham.webservice.request.SignUpRequest
+import com.example.mudiralmaham.webservice.response.ProjectResponse
 import com.example.mudiralmaham.webservice.response.SignUpResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -63,31 +69,6 @@ class SignupFragment : Fragment() {
         transaction?.commit()
     }
 
-    private fun onSuccess() {
-        Snackbar.make(
-            root!!,
-            "Signed Up Successfully",
-            Snackbar.LENGTH_SHORT
-        ).show()
-        signupButton?.isEnabled = true
-        _progress_dialog?.dismiss()
-
-        nextPage(LoginFragment(), true)
-    }
-
-    private fun onFailure() {
-        Snackbar.make(
-            root!!,
-            "Sign Up Failed",
-            Snackbar.LENGTH_SHORT
-        ).show()
-        signupButton?.isEnabled = true
-        _progress_dialog?.dismiss()
-
-
-    }
-
-
     private fun signupRequest() {
         Log.d(ContentValues.TAG, "Signup attempt")
 
@@ -105,24 +86,84 @@ class SignupFragment : Fragment() {
         val emailText = email?.text.toString()
         val passwordText = password?.text.toString()
         val nameText = name?.text.toString()
-        val data = SignUpRequest(nameText, passwordText, emailText)
+        val data = SignUpRequest(nameText, emailText, passwordText)
 
         val request: Call<SignUpResponse> = ContextHolder.webservice.signUp(data)
         request.enqueue(object : Callback<SignUpResponse> {
-            override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
-                onSuccess() //TODO
-            }
-
             override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
                 if (response.code() == 200)
-                    onSuccess()
+                    onSuccess(response.body()!!)
                 else
                     onFailure()
+            }
 
+            override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
+                onFailure() //TODO
             }
         })
+    }
+
+    private fun onSuccess(credits: SignUpResponse) {
+        Snackbar.make(
+            root!!,
+            "Signed Up Successfully",
+            Snackbar.LENGTH_SHORT
+        ).show()
+        signupButton?.isEnabled = true
+        _progress_dialog?.dismiss()
+
+        dataUpdate(credits)
+        startActivity(Intent(context, MainActivity::class.java))
+    }
+
+    private fun onFailure() {
+        Snackbar.make(
+            root!!,
+            "Sign Up Failed",
+            Snackbar.LENGTH_SHORT
+        ).show()
+        signupButton?.isEnabled = true
+        _progress_dialog?.dismiss()
+
 
     }
+
+    private fun dataUpdate(credits: SignUpResponse?) {
+        if (ContextHolder.isNetworkConnected) {
+            cacheUserData(credits)
+            val data = GetProjectRequest(ContextHolder.user!!.email)
+            val request: Call<List<ProjectResponse>> = ContextHolder.webservice.getProjects("Bearer ${ContextHolder.user!!.token}", data)
+            request.enqueue(object : Callback<List<ProjectResponse>> {
+                override fun onResponse(call: Call<List<ProjectResponse>>, response: Response<List<ProjectResponse>>) {
+                    if (response.code() == 200)
+                        ContextHolder.updateCacheFromNetwork(response.body())
+                    else
+                        Toast.makeText(
+                            activity?.applicationContext,
+                            "Cannot retrieve data from server",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                }
+
+                override fun onFailure(call: Call<List<ProjectResponse>>, t: Throwable) {
+                    Toast.makeText(activity?.applicationContext, "Cannot retrieve data from server", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else
+            ContextHolder.getCacheData()
+    }
+
+    private fun cacheUserData(credits: SignUpResponse?) {
+        ContextHolder.user = User(name?.text.toString(), email?.text.toString(), credits?.token)
+        val sharedPreferences: SharedPreferences = activity?.getPreferences(Context.MODE_PRIVATE)!!
+        with(sharedPreferences.edit()) {
+            putString("mudir_email", ContextHolder.user?.email)
+            putString("mudir_name", ContextHolder.user?.name)
+            putString("mudir_token", ContextHolder.user?.token)
+            apply()
+        }
+    }
+
 
     private fun validate(): Boolean {
 
