@@ -15,11 +15,15 @@ import android.util.Log
 import android.widget.*
 import com.example.mudiralmaham.MainActivity
 import com.example.mudiralmaham.dataModels.User
+import com.example.mudiralmaham.events.NetworkUpdate
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.webservice.request.GetProjectRequest
 import com.example.mudiralmaham.webservice.request.LoginRequest
 import com.example.mudiralmaham.webservice.response.LoginResponse
 import com.example.mudiralmaham.webservice.response.ProjectResponse
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -58,6 +62,12 @@ class LoginFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
+        EventBus.getDefault().unregister(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
     }
 
     private fun loginToServer() {
@@ -88,7 +98,7 @@ class LoginFragment : Fragment() {
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                onLoginFailed() //TODO
+                onLoginFailed()
             }
         })
     }
@@ -101,6 +111,10 @@ class LoginFragment : Fragment() {
         ).show()
 
         dataUpdate(credits)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun networkUpdateDone(networkUpdate: NetworkUpdate) {
         _loginButton?.isEnabled = true
         _progress_dialog?.dismiss()
         startActivity(Intent(context, MainActivity::class.java))
