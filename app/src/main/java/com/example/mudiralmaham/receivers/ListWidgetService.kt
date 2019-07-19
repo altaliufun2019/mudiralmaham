@@ -61,7 +61,7 @@ class ListWidgetFactory(private val context: Context, intent: Intent, var tasks:
         return RemoteViews(context.packageName, R.layout.widget_item).apply {
             setTextViewText(R.id.widget_task_name, tasks[position].name)
             setTextViewText(R.id.widget_task_comment, tasks[position].comment)
-            setTextViewText(R.id.widget_due_date, SimpleDateFormat("yyyy/mm/dd").format(tasks[position].due_date))
+            setTextViewText(R.id.widget_due_date, SimpleDateFormat("yyyy/MM/dd").format(tasks[position].due_date))
         }
     }
 

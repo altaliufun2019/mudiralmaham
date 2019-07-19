@@ -24,10 +24,7 @@ import android.widget.TextView
 import com.example.mudiralmaham.dataModels.Task
 import com.example.mudiralmaham.events.CreateProjectEvent
 import com.example.mudiralmaham.events.CreateTaskEvent
-import com.example.mudiralmaham.pages.ChangeThemeFragment
-import com.example.mudiralmaham.pages.ProjectCreationFragment
-import com.example.mudiralmaham.pages.TaskCreationFragment
-import com.example.mudiralmaham.pages.TaskFragment
+import com.example.mudiralmaham.pages.*
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.OnBackPressed
 import com.example.mudiralmaham.webservice.request.AddProjectRequest
@@ -49,7 +46,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var navSubMenu: SubMenu? = null
 
     override fun onListFragmentInteraction(item: Task?) {
-//        TODO(show task page)
+        val showTask: ShowTaskFragment = ShowTaskFragment()
+        showTask.task = item
+        showTask.show(supportFragmentManager, "task_show")
         return
     }
 
