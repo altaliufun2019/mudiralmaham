@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/AppTheme"
                 android:layout_width="match_parent"
+                android:theme="@style/AppTheme"
+                android:background="@color/black"
                 android:layout_height="wrap_content">
 
-    <TextView android:layout_margin="8dp" android:textSize="20sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/task_name"/>
-    <TextView android:layout_margin="8dp" android:textSize="20sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/task_comment" android:layout_below="@id/task_name"/>
-    <TextView android:layout_margin="8dp" android:textSize="20sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/task_due_date" android:layout_below="@id/task_comment"/>
-    <TextView android:layout_margin="8dp" android:textSize="20sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/task_due_time" android:layout_below="@id/task_due_date"/>
-    <TextView android:layout_margin="8dp" android:textSize="20sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/task_project" android:layout_below="@id/task_due_time"/>
+    <TextView android:layout_marginBottom="1dp" android:padding="12dp" android:layout_width="match_parent"
+              android:layout_height="wrap_content" android:text="Task"
+              android:background="@color/colorPrimaryDarkOrange" android:textColor="@color/white"
+              android:textSize="26sp" android:id="@+id/task_label"/>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:id="@+id/task_detail"
+                    android:layout_marginBottom="2dp"
+                    android:layout_below="@id/task_label">
+        <ImageView android:paddingTop="15dp" android:layout_width="30dp" android:layout_height="30dp"
+                   android:src="@drawable/task_name1"
+                   android:id="@+id/task_img"/>
+        <TextView android:background="@color/white" android:layout_marginBottom="0dp" android:padding="8dp"
+                  android:textColor="@color/oil" android:textSize="20sp" android:backgroundTint="@color/white"
+                  android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/task_name"
+                  android:layout_toRightOf="@id/task_img"/>
+        <TextView android:background="@color/white" android:padding="8dp"
+                  android:textSize="16sp" android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:id="@+id/task_comment" android:layout_below="@id/task_name"/>
+
+    </RelativeLayout>
+    <TextView android:background="@color/white" android:layout_marginBottom="1dp" android:padding="8dp"
+              android:textColor="@color/oil" android:textSize="20sp" android:layout_width="wrap_content"
+              android:layout_height="wrap_content" android:id="@+id/task_due_date"
+              android:layout_below="@id/task_detail"/>
+    <TextView android:background="@color/white" android:layout_marginBottom="1dp" android:padding="8dp"
+              android:textColor="@color/oil" android:textSize="20sp" android:layout_width="match_parent"
+              android:layout_height="wrap_content" android:id="@+id/task_due_time"
+              android:layout_below="@id/task_detail" android:layout_toRightOf="@id/task_due_date"/>
+    <TextView android:background="@color/white" android:layout_marginBottom="1dp" android:padding="8dp"
+              android:textSize="20sp" android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:id="@+id/task_project" android:layout_below="@id/task_due_time"/>
 </RelativeLayout>

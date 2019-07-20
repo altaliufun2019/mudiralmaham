@@ -15,6 +15,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import com.example.mudiralmaham.events.CreateTaskEvent
 import com.example.mudiralmaham.R
+import com.example.mudiralmaham.events.AddCollaborator
 import com.example.mudiralmaham.events.CreateProjectEvent
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.OnBackPressed
@@ -93,24 +94,18 @@ class ProjectCreationFragment : Fragment(), OnBackPressed {
                 createNewProject()
             }
         }
-    }
-/*
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (savedInstanceState != null) {
-            _project_name_input?.setText(savedInstanceState.getString("name"))
-            _description_input?.setText(savedInstanceState.getString("description"))
+        _collaborators_holder?.setOnClickListener {
+            if (_project_name_input?.text.toString() == "") {
+                Snackbar.make(_root_view!!, "Enter name to continue", Snackbar.LENGTH_SHORT).show()
+            }
+            else {
+                val addCollaboratorFragment = CollaboratorFragment()
+                addCollaboratorFragment.projectName = _project_name_input?.text.toString()
+                addCollaboratorFragment.show(fragmentManager, "add collaborator")
+            }
         }
     }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("name", _project_name_input?.text.toString())
-        outState.putString("description", _description_input?.text.toString())
-
-    }
-*/
 
     override fun onBackPressed() {
         fragmentManager?.popBackStack()
@@ -122,14 +117,24 @@ class ProjectCreationFragment : Fragment(), OnBackPressed {
             Snackbar.make(_root_view!!, "Enter name to continue", Snackbar.LENGTH_SHORT).show()
             return
         }
-        EventBus.getDefault().post(
-            CreateProjectEvent(
-                _project_name_input?.text.toString(),
-                _description_input?.text.toString(),
-                "",
-                activity?.applicationContext!!
+        if (_collaborators_holder?.text.toString().equals("Add Collaborator"))
+            EventBus.getDefault().post(
+                CreateProjectEvent(
+                    _project_name_input?.text.toString(),
+                    _description_input?.text.toString(),
+                    "",
+                    activity?.applicationContext!!
+                )
             )
-        )
+        else
+            EventBus.getDefault().post(
+                CreateProjectEvent(
+                    _project_name_input?.text.toString(),
+                    _description_input?.text.toString(),
+                    _collaborators_holder?.text.toString(),
+                    activity?.applicationContext!!
+                )
+            )
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -152,4 +157,12 @@ class ProjectCreationFragment : Fragment(), OnBackPressed {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun collaboratorAdded(addCollaborator: AddCollaborator) {
+        Snackbar.make(_root_view!!, "request sent to user", Snackbar.LENGTH_SHORT).show()
+        if (_collaborators_holder?.text.toString().equals("Add Collaborator"))
+            _collaborators_holder?.text = addCollaborator.collaborator
+        else
+            _collaborators_holder?.text = "${_collaborators_holder?.text.toString()} __ ${addCollaborator.collaborator}"
+    }
 }
