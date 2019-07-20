@@ -34,4 +34,5 @@
     <string name="menu_add_project">Add Project</string>
     <string name="menu_account">Account</string>
     <string name="pick_color">Choose Theme</string>
+    <string name="account_title">Account</string>
 </resources>

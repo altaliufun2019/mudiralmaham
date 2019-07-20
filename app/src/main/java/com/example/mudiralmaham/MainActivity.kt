@@ -25,10 +25,7 @@ import android.widget.TextView
 import com.example.mudiralmaham.dataModels.Task
 import com.example.mudiralmaham.events.CreateProjectEvent
 import com.example.mudiralmaham.events.CreateTaskEvent
-import com.example.mudiralmaham.pages.ChangeThemeFragment
-import com.example.mudiralmaham.pages.ProjectCreationFragment
-import com.example.mudiralmaham.pages.TaskCreationFragment
-import com.example.mudiralmaham.pages.TaskFragment
+import com.example.mudiralmaham.pages.*
 import com.example.mudiralmaham.utils.ContextHolder
 import com.example.mudiralmaham.utils.OnBackPressed
 import com.example.mudiralmaham.webservice.request.AddProjectRequest
@@ -166,8 +163,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     currentFragment?.let {
                         showPage(it)
                     }
-                }
+                } else
+                    showAccountDialog()
             }
+
 
         }
         val drawerLayout
@@ -227,6 +226,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             3 -> setTheme(R.style.AppTheme_Orange)
             4 -> setTheme(R.style.AppTheme_Black)
         }
+
     }
 
 
@@ -310,6 +310,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun showChangeThemeDialog(): Boolean {
         val newFragment = ChangeThemeFragment()
         newFragment.show(supportFragmentManager, "themes")
+        return true
+    }
+
+
+    private fun showAccountDialog(): Boolean {
+        val newFragment = AccountFragment()
+        newFragment.show(supportFragmentManager, "account")
         return true
     }
 
