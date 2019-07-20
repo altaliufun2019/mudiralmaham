@@ -10,9 +10,11 @@ import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.MenuItemCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.view.menu.MenuItemImpl
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
@@ -101,6 +103,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         currentFragment?.let {
             showPage(it)
         }
+        (resources.getLayout() as MenuItem).setOnMenuItemClickListener { showChangeThemeDialog() }
     }
 
     override fun onDestroy() {
@@ -157,7 +160,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                    application.getSharedPreferences("Theme", Context.MODE_PRIVATE).edit().putString("Theme", "GREEN")
 //                        .commit()
 //                    recreate()
-                    showChangeThemeDialoge()
+                    showChangeThemeDialog()
                 }
             }
 
@@ -212,7 +215,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun setTheme() {
-
         when (getSharedPreferences("AppTheme", Context.MODE_PRIVATE)?.getInt("Theme", 0)) {
             0 -> setTheme(R.style.AppTheme_NoActionBar)
             1 -> setTheme(R.style.AppTheme_Red)
@@ -265,7 +267,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             var idx = 0
             while (idx < projectSyncQueue.size) {
-                val request: Call<AddResponse> = ContextHolder.webservice.addProject("Bearer ${ContextHolder.user?.token}", projectSyncQueue[idx])
+                val request: Call<AddResponse> =
+                    ContextHolder.webservice.addProject("Bearer ${ContextHolder.user?.token}", projectSyncQueue[idx])
                 request.enqueue(object : Callback<AddResponse> {
                     override fun onFailure(call: Call<AddResponse>, t: Throwable) {
                     }
@@ -275,11 +278,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         idx--
                     }
                 })
-                idx ++
+                idx++
             }
             idx = 0
             while (idx < taskSyncQueue.size) {
-                val request: Call<AddResponse> = ContextHolder.webservice.addTask("Bearer ${ContextHolder.user?.token}", taskSyncQueue[idx])
+                val request: Call<AddResponse> =
+                    ContextHolder.webservice.addTask("Bearer ${ContextHolder.user?.token}", taskSyncQueue[idx])
                 request.enqueue(object : Callback<AddResponse> {
                     override fun onFailure(call: Call<AddResponse>, t: Throwable) {
                     }
@@ -289,7 +293,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         idx--
                     }
                 })
-                idx ++
+                idx++
             }
         }
 
@@ -297,9 +301,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ContextHolder.isNetworkConnected = false
         }
     }
-    fun showChangeThemeDialoge() {
+
+    private fun showChangeThemeDialog(): Boolean {
         val newFragment = ChangeThemeFragment()
         newFragment.show(supportFragmentManager, "themes")
+        return true
     }
 
 }
