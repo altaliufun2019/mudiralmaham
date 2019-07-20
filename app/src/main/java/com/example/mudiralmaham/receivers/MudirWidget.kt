@@ -21,7 +21,7 @@ import android.content.ComponentName
 
 class MudirWidget: AppWidgetProvider(), TaskFragment.OnListFragmentInteractionListener{
     override fun onListFragmentInteraction(item: Task?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
     companion object {
         fun sendUpdateBroadcastToAllWidgets(context: Context) {

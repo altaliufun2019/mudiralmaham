@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <TextView android:layout_margin="8dp" android:textSize="20sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/task_name"/>
+    <TextView android:layout_margin="8dp" android:textSize="20sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/task_comment" android:layout_below="@id/task_name"/>
+    <TextView android:layout_margin="8dp" android:textSize="20sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/task_due_date" android:layout_below="@id/task_comment"/>
+    <TextView android:layout_margin="8dp" android:textSize="20sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/task_due_time" android:layout_below="@id/task_due_date"/>
+    <TextView android:layout_margin="8dp" android:textSize="20sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/task_project" android:layout_below="@id/task_due_time"/>
+</RelativeLayout>

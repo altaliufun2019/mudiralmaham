@@ -4,7 +4,7 @@
     <string name="password_hint">Password</string>
     <string name="email_label">Email</string>
     <string name="signUp_recom">No account yet? Create one</string>
-    <string name="wait">wait...</string>
+    <string name="wait">Wait...</string>
     <string name="add_task">Add Task</string>
     <string name="name_label">Name</string>
     <string name="date_label">Date</string>
@@ -35,4 +35,5 @@
     <string name="menu_account">Account</string>
     <string name="pick_color">Choose Theme</string>
     <string name="account_title">Account</string>
+    <string name="add_collaborator">Add Collaborator</string>
 </resources>
