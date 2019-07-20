@@ -8,6 +8,10 @@
                   android:id="@+id/nav_home"
                   android:icon="@drawable/ic_account_circle_black_24dp"
                   android:title="@string/menu_account"/>
+            <item android:numericShortcut="1"
+                  android:id="@+id/signout"
+                  android:icon="@drawable/logout"
+                  android:title="@string/sign_out_menu_label"/>
             <item
                     android:id="@+id/nav_add_project"
                     android:numericShortcut="2"

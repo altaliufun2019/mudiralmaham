@@ -1,12 +1,15 @@
 package com.example.mudiralmaham
 
 import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.preference.PreferenceManager
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -158,6 +161,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 currentFragment = ProjectCreationFragment()
                 showPage(currentFragment!!)
             }
+            R.id.signout -> {
+                val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+                with(sharedPreferences.edit()) {
+                    remove("mudir_token")
+                    remove("mudir_name")
+                    remove("mudir_email")
+                    apply()
+                }
+                val intent = Intent(applicationContext, AuthActivity::class.java)
+                startActivity(intent)
+                finish()
+//                Runtime.getRuntime().exit(0)
+//                System.exit(0)
+            }
             else -> {
                 if (item.numericShortcut.toString().toInt() > 2) {
                     currentFragment = TaskFragment()
@@ -253,10 +270,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         internal fun enable(context: Context) {
-            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            cm.registerNetworkCallback(networkRequest, this)
+            val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+            cm?.registerNetworkCallback(networkRequest, this)
             this.context = context
-            val network = cm.activeNetworkInfo
+            val network = cm?.activeNetworkInfo
             if (network == null || !network.isConnected) {
             } else {
                 ContextHolder.isNetworkConnected = true
@@ -264,8 +281,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         fun disable() {
-            val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            cm.unregisterNetworkCallback(this)
+            val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+            cm?.unregisterNetworkCallback(this)
             this.context = null
         }
 

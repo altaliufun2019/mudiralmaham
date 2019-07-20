@@ -10,6 +10,7 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.util.Log
 import android.widget.*
@@ -158,7 +159,8 @@ class LoginFragment : Fragment() {
 
     private fun cacheUserData(credits: LoginResponse?) {
         ContextHolder.user = User(credits?.name, _emailText?.text?.toString(), credits?.token)
-        val sharedPreferences: SharedPreferences = activity?.getPreferences(Context.MODE_PRIVATE)!!
+        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity?.applicationContext)
+//        val sharedPreferences: SharedPreferences = activity?.getPreferences(Context.MODE_PRIVATE)!!
         with(sharedPreferences.edit()) {
             putString("mudir_email", ContextHolder.user?.email)
             putString("mudir_name", ContextHolder.user?.name)

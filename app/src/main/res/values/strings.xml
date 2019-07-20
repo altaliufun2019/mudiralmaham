@@ -36,4 +36,5 @@
     <string name="pick_color">Choose Theme</string>
     <string name="account_title">Account</string>
     <string name="add_collaborator">Add Collaborator</string>
+    <string name="sign_out_menu_label">sign out</string>
 </resources>

@@ -2,8 +2,10 @@ package com.example.mudiralmaham
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -46,11 +48,17 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun getCacheData() {
-        val email = getPreferences(Context.MODE_PRIVATE).getString("mudir_email", "")
-        val token = getPreferences(Context.MODE_PRIVATE).getString("mudir_token", "")
-        val name = getPreferences(Context.MODE_PRIVATE).getString("mudir_name", "")
-        if (token?.equals("")!!)
+        val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val email = sharedPreferences.getString("mudir_email", "")
+        val token = sharedPreferences.getString("mudir_token", "")
+        val name = sharedPreferences.getString("mudir_name", "")
+//        val email = getPreferences(Context.MODE_PRIVATE).getString("mudir_email", "")
+//        val token = getPreferences(Context.MODE_PRIVATE).getString("mudir_token", "")
+//        val name = getPreferences(Context.MODE_PRIVATE).getString("mudir_name", "")
+        if (token?.equals("")!!) {
+            ContextHolder.user = null
             return
+        }
         if (ContextHolder.isNetworkConnected) {
             ContextHolder.user = User(name, email, token)
             val data = GetProjectRequest(email!!)
@@ -85,33 +93,33 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun insertDefaultProjects() {
-        Database.addProject(
-            Project(
-                4,
-                "TODAY",
-                Date(234987),
-                "today jobs",
-                "ALL"
-            )
-        )
-        Database.addProject(
-            Project(
-                5,
-                "TOMORROW",
-                Date(2349877),
-                "tomorrow jobs",
-                "ALL"
-            )
-        )
-        Database.addProject(
-            Project(
-                6,
-                "THIS WEEK",
-                Date(23498987),
-                "this week jobs",
-                "ALL"
-            )
-        )
+//        Database.addProject(
+//            Project(
+//                4,
+//                "TODAY",
+//                Date(234987),
+//                "today jobs",
+//                "ALL"
+//            )
+//        )
+//        Database.addProject(
+//            Project(
+//                5,
+//                "TOMORROW",
+//                Date(2349877),
+//                "tomorrow jobs",
+//                "ALL"
+//            )
+//        )
+//        Database.addProject(
+//            Project(
+//                6,
+//                "NEXTWEEK",
+//                Date(23498987),
+//                "this week jobs",
+//                "ALL"
+//            )
+//        )
     }
 
     private fun showFragment(fragment: Fragment) {
