@@ -23,7 +23,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 
-class ProjectCreationFragment : Fragment(), OnBackPressed{
+class ProjectCreationFragment : Fragment(), OnBackPressed {
     private var _project_name_input: EditText? = null
     private var _description_input: EditText? = null
     private var _collaborators_holder: TextView? = null
@@ -94,6 +94,23 @@ class ProjectCreationFragment : Fragment(), OnBackPressed{
             }
         }
     }
+/*
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if (savedInstanceState != null) {
+            _project_name_input?.setText(savedInstanceState.getString("name"))
+            _description_input?.setText(savedInstanceState.getString("description"))
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("name", _project_name_input?.text.toString())
+        outState.putString("description", _description_input?.text.toString())
+
+    }
+*/
 
     override fun onBackPressed() {
         fragmentManager?.popBackStack()
@@ -106,7 +123,12 @@ class ProjectCreationFragment : Fragment(), OnBackPressed{
             return
         }
         EventBus.getDefault().post(
-             CreateProjectEvent(_project_name_input?.text.toString(), _description_input?.text.toString(), "", activity?.applicationContext!!)
+            CreateProjectEvent(
+                _project_name_input?.text.toString(),
+                _description_input?.text.toString(),
+                "",
+                activity?.applicationContext!!
+            )
         )
     }
 
@@ -121,7 +143,11 @@ class ProjectCreationFragment : Fragment(), OnBackPressed{
             Snackbar.make(_root_view!!, "project added successfully", Snackbar.LENGTH_SHORT).show()
         else {
             when (createProjectEvent.result) {
-                1 -> Snackbar.make(_root_view!!, "There is already project with this name", Snackbar.LENGTH_SHORT).show()
+                1 -> Snackbar.make(
+                    _root_view!!,
+                    "There is already project with this name",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
     }

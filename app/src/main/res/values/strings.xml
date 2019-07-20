@@ -12,7 +12,7 @@
     <string name="time_pick">Due Time</string>
     <string name="date_pick">Due Tate</string>
     <string name="project_creation_description_label">Description</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Tasks</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="nav_header_title">Android Studio</string>

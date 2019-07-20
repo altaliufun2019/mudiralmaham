@@ -55,8 +55,7 @@ class SignupFragment : Fragment() {
             nextPage(LoginFragment(), true)
         }
         signupButton?.setOnClickListener {
-                        startActivity(Intent(context, MainActivity::class.java))
-//            signupRequest()
+            signupRequest()
         }
 
     }

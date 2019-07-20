@@ -6,6 +6,7 @@ import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -60,7 +61,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } catch (_: Error) {
 
         }
-        super.onCreate(savedInstanceState)
+        /*if (savedInstanceState != null)
+            currentFragment = supportFragmentManager.getFragment(savedInstanceState, "myFragmentName")
+        */super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -103,8 +107,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         currentFragment?.let {
             showPage(it)
         }
-        (resources.getLayout() as MenuItem).setOnMenuItemClickListener { showChangeThemeDialog() }
     }
+/*
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        if (outState != null && currentFragment!=null) {
+             supportFragmentManager.putFragment(outState, "myFragmentName", currentFragment!!)
+        };
+
+    }*/
 
     override fun onDestroy() {
         super.onDestroy()
@@ -113,15 +124,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            val fragments: List<Fragment> = supportFragmentManager.fragments
-            for (fragment in fragments) {
-                (fragment as OnBackPressed).onBackPressed()
-            }
-        }
+        /* val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+             drawerLayout.closeDrawer(GravityCompat.START)
+         } else {
+             val fragments: List<Fragment> = supportFragmentManager.fragments
+             for (fragment in fragments) {
+                 (fragment as OnBackPressed).onBackPressed()
+             }
+         }*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -135,7 +146,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify DueTimeReceiver parent activity in AndroidManifest.mudirwidget.
         return when (item.itemId) {
-            R.id.action_settings -> true
+            R.id.action_settings -> showChangeThemeDialog()
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -155,12 +166,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     currentFragment?.let {
                         showPage(it)
                     }
-                } else {
-//
-//                    application.getSharedPreferences("Theme", Context.MODE_PRIVATE).edit().putString("Theme", "GREEN")
-//                        .commit()
-//                    recreate()
-                    showChangeThemeDialog()
                 }
             }
 
