@@ -136,7 +136,5 @@ class AuthActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        getCacheData()
-
     }
 }

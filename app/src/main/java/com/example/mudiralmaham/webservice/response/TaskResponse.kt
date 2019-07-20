@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 class TaskResponse(
-    @SerializedName("Name")
+    @SerializedName("name")
     var name: String,
-    @SerializedName("Comment")
+    @SerializedName("comment")
     var comment: String,
     @SerializedName("created_date")
     var createdDate: Date,
@@ -21,6 +21,8 @@ class TaskResponse(
     @SerializedName("owner")
     var owner: String,
     @SerializedName("config")
-    var config: String
+    var config: String,
+    @SerializedName("project")
+    var project: String
 
 )

@@ -4,8 +4,15 @@ import android.annotation.SuppressLint
 import android.os.Handler
 import com.example.mudiralmaham.MainActivity
 import com.example.mudiralmaham.dataModels.*
+import com.example.mudiralmaham.events.NetworkUpdate
 import com.example.mudiralmaham.webservice.EndPoints
+import com.example.mudiralmaham.webservice.request.GetTaskRequest
 import com.example.mudiralmaham.webservice.response.ProjectResponse
+import com.example.mudiralmaham.webservice.response.TaskResponse
+import org.greenrobot.eventbus.EventBus
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 object ContextHolder {
     val databaseName: String = "makhzan"
@@ -28,32 +35,17 @@ object ContextHolder {
 
     fun updateCacheFromNetwork(networkProjects: List<ProjectResponse>?) {
         projects = mutableListOf()
-        var pId = 1L
-        var tId = 1L
-        Handler().post{
-            Database.deleteTaks()
-            Database.deleteProjects()
-            for (p in networkProjects!!) {
-                val newProject = Project(pId, p.name, p.createdDate, p.description, p.collaborators)
-                Database.addProject(newProject)
-                projects.add(newProject)
-                pId++
-                for (t in p.tasks) {
-                    val newTask = Task(tId, t.name, t.comment, t.config, t.createdDate, t.dueDate, t.notificationDate, t.isDone, t.isOver, p.name, t.owner)
-                    Database.addTask(newTask)
-                    tasks.add(newTask)
-                }
-            }
-        }
+        tasks = mutableListOf()
+        EventBus.getDefault().post(networkProjects?.let { NetworkUpdate(it) })
     }
 
 
-//    TODO(to be replaced with Database method)
+    //    TODO(to be replaced with Database method)
     fun getProjectTasks(projectName: String): MutableList<Task> {
         return Database.getProjectTasks(projectName)
     }
 
-    fun updateTask(task: Task){
+    fun updateTask(task: Task) {
         Database.updateTask(task)
     }
 }

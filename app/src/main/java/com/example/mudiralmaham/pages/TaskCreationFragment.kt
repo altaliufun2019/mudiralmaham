@@ -167,6 +167,9 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
             }
         }
         owner_items = selectedProject?.owners?.split(" __ ")
+        if (!owner_items?.contains(ContextHolder.user?.email)!!)
+            owner_items = mutableListOf(ContextHolder.user?.email.toString())
+
 
         if (owner_items != null) {
             scene.let { TransitionManager.go(it, Explode()) }

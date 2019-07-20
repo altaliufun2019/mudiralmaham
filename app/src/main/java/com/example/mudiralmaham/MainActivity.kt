@@ -257,7 +257,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         fun disable() {
-            val cm = context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             cm.unregisterNetworkCallback(this)
             this.context = null
         }

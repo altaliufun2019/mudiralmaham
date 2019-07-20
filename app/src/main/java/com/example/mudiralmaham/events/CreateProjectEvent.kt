@@ -24,11 +24,11 @@ class CreateProjectEvent(name: String, description: String, collaborators: Strin
     init {
         project = Project()
         project.name = name; project.description = description; project.owners =
-            "${ContextHolder.user?.email} __ $collaborators"
+        if(!collaborators.equals("")) "${ContextHolder.user?.email} __ $collaborators" else ContextHolder.user?.email
         val now = LocalDateTime.now()
         project.created_date = Date.from(now.atZone(ZoneId.systemDefault()).toInstant())
 
-        val data = AddProjectRequest(project.name, project.created_date, project.description, collaborators)
+        val data = AddProjectRequest(project.name, project.created_date, project.description, project.owners)
         if (ContextHolder.isNetworkConnected) {
             val request: Call<AddResponse> = ContextHolder.webservice.addProject("Bearer ${ContextHolder.user?.token}", data)
             request.enqueue(object : Callback<AddResponse> {
