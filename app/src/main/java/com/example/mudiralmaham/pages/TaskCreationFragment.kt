@@ -36,6 +36,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener,
@@ -123,7 +124,9 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         outState.putString("comment", _comment_input?.text.toString())
         outState.putString("date", _date_text?.text.toString())
         outState.putString("due_time", _time_text?.text.toString())
-        outState.putStringArrayList("owner", owner_items as ArrayList<String>?)
+        owner_items?.let {
+            outState.putStringArrayList("owner", ArrayList<String>(owner_items!!))
+        }
         outState.putString("selected_owner", selected_owner)
 
 
