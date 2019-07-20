@@ -71,6 +71,7 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         _date_text = _root_view?.findViewById(R.id.date_text)
         _time_text = _root_view?.findViewById(R.id.time_text)
 
+
         return _root_view
     }
 
@@ -115,6 +116,18 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
 //    override fun action() {
 //        onBackPressed()
 //    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("project_name", _task_name_input?.text.toString())
+        outState.putString("comment", _comment_input?.text.toString())
+        outState.putString("date", _date_text?.text.toString())
+        outState.putString("due_time", _time_text?.text.toString())
+        outState.putStringArrayList("owner", owner_items as ArrayList<String>?)
+        outState.putString("selected_owner", selected_owner)
+
+
+    }
 
     private fun initSpinner() {
         // initialize spinner for parent
@@ -292,4 +305,5 @@ class TaskCreationFragment : Fragment(), DatePickerDialog.OnDateSetListener, Tim
         Snackbar.make(_root_view!!, "Date set to $year/$monthOfYear/$dayOfMonth", Snackbar.LENGTH_SHORT).show()
         _date_text?.text = "$year/$monthOfYear/$dayOfMonth"
     }
+
 }

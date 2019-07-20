@@ -1,33 +1,28 @@
 package com.example.mudiralmaham
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.net.Network
-import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.support.design.widget.FloatingActionButton
-import android.support.v4.view.GravityCompat
-import android.support.v7.app.ActionBarDrawerToggle
-import android.view.MenuItem
-import android.support.v4.widget.DrawerLayout
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
+import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.view.MenuItem
 import android.view.SubMenu
-import android.widget.ImageView
+import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import com.example.mudiralmaham.dataModels.Task
 import com.example.mudiralmaham.events.CreateProjectEvent
 import com.example.mudiralmaham.events.CreateTaskEvent
+import com.example.mudiralmaham.pages.ChangeThemeFragment
 import com.example.mudiralmaham.pages.ProjectCreationFragment
 import com.example.mudiralmaham.pages.TaskCreationFragment
 import com.example.mudiralmaham.pages.TaskFragment
@@ -158,9 +153,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         showPage(it)
                     }
                 } else {
-                    application.getSharedPreferences("Theme", Context.MODE_PRIVATE).edit().putString("Theme", "GREEN")
-                        .commit()
-                    recreate()
+//
+//                    application.getSharedPreferences("Theme", Context.MODE_PRIVATE).edit().putString("Theme", "GREEN")
+//                        .commit()
+//                    recreate()
+                    showChangeThemeDialoge()
                 }
             }
 
@@ -215,9 +212,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun setTheme() {
-        when (getSharedPreferences("Theme", Context.MODE_PRIVATE)?.getString("Theme", "BLUE")) {
-            "GREEN" -> setTheme(R.style.AppTheme_Green)
-            "BLUE" -> setTheme(R.style.AppTheme_NoActionBar)
+
+        when (getSharedPreferences("AppTheme", Context.MODE_PRIVATE)?.getInt("Theme", 0)) {
+            0 -> setTheme(R.style.AppTheme_NoActionBar)
+            1 -> setTheme(R.style.AppTheme_Red)
+            2 -> setTheme(R.style.AppTheme_Green)
+            3 -> setTheme(R.style.AppTheme_Orange)
+            4 -> setTheme(R.style.AppTheme_Black)
         }
     }
 
@@ -295,6 +296,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         override fun onLost(network: Network) {
             ContextHolder.isNetworkConnected = false
         }
+    }
+    fun showChangeThemeDialoge() {
+        val newFragment = ChangeThemeFragment()
+        newFragment.show(supportFragmentManager, "themes")
     }
 
 }
